@@ -1,67 +1,82 @@
-*{
-    padding:0;
+* {
+    padding: 0;
     margin: 0;
     border: 0;
 }
-.grid{
+
+.grid {
     width: 100vw;
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
     grid-template-rows: 1fr 5fr 1fr;
 }
-header{
+
+header {
     grid-column: 1/5;
     grid-row: 1;
 }
-aside:first-of-type{
+
+aside:first-of-type {
     grid-column: 1;
     grid-row: 2/5;
     border-right: 2px solid rgba(201, 201, 201, 0.603);
     overflow-y: auto;
 }
-section{
+
+section {
     grid-column: 2/4;
-    grid-row: 2/5;
+    grid-row: auto;
 }
-aside:last-of-type{
-    background-color: brown;
+
+aside:last-of-type {
     grid-column: 4;
     grid-row: 2/4;
 }
-footer{
+
+footer {
     grid-column: 1/5;
-    grid-row:5;
+    grid-row: auto;
     background-color: rgb(43, 147, 113);
 }
 
 /* header */
-.header{
+.header {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
-    padding: 2% 2% 3% 2%;
+    padding: 0% 2%;
     border-bottom: 2px solid rgba(201, 201, 201, 0.603);
 }
-.logo{
+
+.logo {
     grid-column: 1/2;
     grid-row: 1;
 }
-.iniciarSesion{
-    grid-column: 4/5;
-    grid-row: 1;
+
+.logo-header {
+    border-radius: 50%;
+    width: 8vw;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.iniciarSesion {
     border-radius: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(70, 227, 174, 0.79);
-    width: 35%;
-    height:190%;
+    background-color: rgba(124, 105, 191, 0.652);
+    height: 3vh;
     color: black;
-    margin-right: 3%;
-    
+    margin-right: 8%;
+    font-size: 100%;
+    width: 8rem;
+
 }
-.tresPuntos{
+
+.tresPuntos {
     grid-column: 5;
     grid-row: 1;
     color: rgb(215, 212, 212);
@@ -69,15 +84,17 @@ footer{
     justify-content: flex-end;
     align-items: center;
 }
+
 /* aside*/
-.aside{
+.aside {
     flex-wrap: wrap;
     flex-direction: column;
     margin-left: 5%;
-    margin-top: 5%;
-   
+    margin-top: 2%;
+
 }
-.popular{
+
+.popular {
     border-bottom: 1px solid rgba(201, 201, 201, 0.603);
     margin: 2% 2%;
     padding-bottom: 2%;
@@ -86,109 +103,181 @@ footer{
     align-items: center;
     justify-content: space-between;
 }
-.temas{
+
+.temas {
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
-    color: rgb(160, 160, 160);
+    color: rgb(124, 105, 191);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.comunidades{
+
+.comunidades {
     border-bottom: 1px solid rgba(201, 201, 201, 0.603);
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
-    color: rgb(160, 160, 160);
+    color: rgb(124, 105, 191);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
- #textoAside{
+
+#textoAside {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.050rem;
-    color:black;
+    color: black;
     padding: 1%;
     display: flex;
     justify-items: center;
     align-items: center;
     margin-top: 2%;
- }
+}
 
- /* section */
+/* section */
 
- .section{
+.section {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-section {
+    margin: 2% 1%;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
     padding: 3%;
- }
- .imagenLogo-section{
-    grid-column: 1;
-    grid-row: 1;
-    border: 1px solid black;
+    background-color: rgba(242, 242, 242, 0.194);
+    border-radius: 1rem;
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra */
+}
+
+.imagenLogo-section {
     border-radius: 50%;
-    width: 10%;
+    width: 3vw;
     display: flex;
     text-align: center;
     justify-content: flex-start;
- }
- .nombre-section{
-    grid-column: 2;
+    margin-right: 5%;
+}
+.encabezado-section{
+    grid-column: 1/5;
     grid-row: 1;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
- }
- .fecha-section{
-    grid-column: 3;
-    grid-row: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
- }
-.unirseBoton-section{
-    grid-column: 4;
-    grid-row: 1;
+}
+.encabezado-section > div {
+    margin-right: 5%; /* Espacio entre los textos */
+}
+ .encabezado-section > div:last-child {
+    margin-right: 0; /* Elimina el margen del último elemento */
+} 
+.fecha-section {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.titulo-section{
+
+.unirseBoton-section {
+    margin-left: auto;
+    grid-column: 5;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(124, 105, 191);
+    border-radius: 1rem;
+    width: 4rem;
+    height: 3vh;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+.titulo-section {
     grid-column: 1/5;
     grid-row: 2;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 2%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-.contenido-section{
+
+.contenido-section {
     grid-column: 1/5;
     grid-row: 3/5;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: bisque;
     padding: 2%;
 }
-.votos-section{
+
+.videos-fotos-section {
+    grid-column: 1/5;
+    grid-row: 3/5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+    max-width: 100%;
+}
+
+.video-section {
+    max-width: 50vw;
+    width: 100%;
+}
+
+.imagen-section {
+    max-width: 75vw;
+    max-height: 50vh;
+    height: 100%;
+    width: 100%;
+   
+}
+.pie-section{
+    grid-column: 1/5;
+    grid-row: 5;
+    display: flex;
+    justify-content:flex-start;
+}
+.pie-section > div {
+    margin-right: 5%; /* Ajusta el espacio entre elementos */
+}
+/* Elimina el margen del último elemento */
+.pie-section > div:last-child {
+    margin-right: 0;
+}
+
+.votos-section {
     grid-column: 1;
     grid-row: 5;
     justify-content: center;
     align-items: center;
 }
-.comentarios-section{
+
+.comentarios-section {
     grid-column: 2;
     grid-row: 5;
     justify-content: center;
     align-items: center;
 }
-.compartir-section{
+
+.compartir-section {
     grid-column: 3;
     grid-row: 5;
     justify-content: center;
     align-items: center;
 }
+
+/*@media (max-width: 600px) {
+    .iniciarSesion {
+        font-size: 100%;
+        width: 12rem;
+    }
+}*/
