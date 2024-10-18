@@ -2,6 +2,11 @@
     padding: 0;
     margin: 0;
     border: 0;
+    color: rgb(0, 0, 0);
+}
+
+html {
+    background-color: #eaeaea50;
 }
 
 .grid {
@@ -20,17 +25,19 @@ header {
 aside:first-of-type {
     grid-column: 1;
     grid-row: 2/5;
-    border-right: 2px solid rgba(201, 201, 201, 0.603);
     overflow-y: auto;
+    /* Scroll vertical si es necesario */
+    overflow-x: hidden;
+    /* Oculta el scroll horizontal */
 }
 
 section {
-    grid-column: 2/4;
+    grid-column: 2/3;
     grid-row: auto;
 }
 
 aside:last-of-type {
-    grid-column: 4;
+    grid-column: 3;
     grid-row: 2/4;
 }
 
@@ -46,7 +53,7 @@ footer {
     grid-template-columns: auto;
     grid-template-rows: auto;
     padding: 0% 2%;
-    border-bottom: 2px solid rgba(201, 201, 201, 0.603);
+    border-bottom: 2px solid #007A33;
 }
 
 .logo {
@@ -56,7 +63,7 @@ footer {
 
 .logo-header {
     border-radius: 50%;
-    width: 8vw;
+    width: 5vw;
     display: flex;
     text-align: center;
     justify-content: center;
@@ -67,12 +74,13 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(124, 105, 191, 0.652);
-    height: 3vh;
+    background-color: rgb(0, 150, 136);
+    font-family: Georgia, 'Times New Roman', Times, serif;
     color: black;
     margin-right: 8%;
     font-size: 100%;
     width: 8rem;
+    padding: 2%;
 
 }
 
@@ -85,21 +93,22 @@ footer {
     align-items: center;
 }
 
-/* aside*/
-.aside {
-    flex-wrap: wrap;
+/* aside izquierda */
+.aside1 {
+    display: flex;
     flex-direction: column;
-    margin-left: 5%;
-    margin-top: 2%;
-
+    padding-left: 5%;
+    padding-top: 2%;
+    border-right: 2px solid #007A33;
 }
 
 .popular {
-    border-bottom: 1px solid rgba(201, 201, 201, 0.603);
+    border-bottom: 1px solid#007A33;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
+    color: #007A33;
     align-items: center;
     justify-content: space-between;
 }
@@ -108,7 +117,7 @@ footer {
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
-    color: rgb(124, 105, 191);
+    color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     align-items: center;
@@ -116,11 +125,11 @@ footer {
 }
 
 .comunidades {
-    border-bottom: 1px solid rgba(201, 201, 201, 0.603);
+    border-bottom: 1px solid #007A33;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
-    color: rgb(124, 105, 191);
+    color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     align-items: center;
@@ -130,7 +139,7 @@ footer {
 #textoAside {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.050rem;
-    color: black;
+    color: #000000;
     padding: 1%;
     display: flex;
     justify-items: center;
@@ -151,7 +160,7 @@ footer {
     grid-template-columns: auto;
     grid-template-rows: auto;
     padding: 3%;
-    background-color: rgba(242, 242, 242, 0.194);
+    background-color: rgba(185, 251, 192, 0.485);
     border-radius: 1rem;
     box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
     /* Sombra */
@@ -165,19 +174,25 @@ footer {
     justify-content: flex-start;
     margin-right: 5%;
 }
-.encabezado-section{
+
+.encabezado-section {
     grid-column: 1/5;
     grid-row: 1;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
-.encabezado-section > div {
-    margin-right: 5%; /* Espacio entre los textos */
+
+.encabezado-section>div {
+    margin-right: 5%;
+    /* Espacio entre los textos */
 }
- .encabezado-section > div:last-child {
-    margin-right: 0; /* Elimina el margen del último elemento */
-} 
+
+.encabezado-section>div:last-child {
+    margin-right: 0;
+    /* Elimina el margen del último elemento */
+}
+
 .fecha-section {
     display: flex;
     justify-content: center;
@@ -186,22 +201,24 @@ footer {
 
 .unirseBoton-section {
     margin-left: auto;
-    grid-column: 5;
-    grid-row: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(124, 105, 191);
+    background-color: rgb(0, 150, 136);
     border-radius: 1rem;
-    width: 4rem;
-    height: 3vh;
+    width: 5rem;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    
+
+}
+
+.section-card {
+    grid-column: 1/5;
+    grid-row: 2/5;
+    display: flex;
+    flex-direction: column;
 }
 
 .titulo-section {
-    grid-column: 1/5;
-    grid-row: 2;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -210,8 +227,6 @@ footer {
 }
 
 .contenido-section {
-    grid-column: 1/5;
-    grid-row: 3/5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,46 +253,130 @@ footer {
     max-height: 50vh;
     height: 100%;
     width: 100%;
-   
+
 }
-.pie-section{
+
+.pie-section {
     grid-column: 1/5;
     grid-row: 5;
     display: flex;
-    justify-content:flex-start;
+    justify-content: flex-start;
 }
-.pie-section > div {
-    margin-right: 5%; /* Ajusta el espacio entre elementos */
+
+.pie-section>div {
+    margin-right: 5%;
+    background-color: rgb(0, 150, 136);
+    width: 5rem;
+    border-radius: 1rem;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ajusta el espacio entre elementos */
 }
+
 /* Elimina el margen del último elemento */
-.pie-section > div:last-child {
+.pie-section>div:last-child {
     margin-right: 0;
 }
 
 .votos-section {
-    grid-column: 1;
-    grid-row: 5;
+    background-color: rgb(255, 0, 0);
+    width: 10rem;
+    border-radius: 1rem;
+    padding: 1%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .comentarios-section {
-    grid-column: 2;
-    grid-row: 5;
+
     justify-content: center;
     align-items: center;
 }
 
 .compartir-section {
-    grid-column: 3;
-    grid-row: 5;
+
     justify-content: center;
     align-items: center;
 }
 
-/*@media (max-width: 600px) {
-    .iniciarSesion {
-        font-size: 100%;
-        width: 12rem;
+/* aside2 lado derecho */
+
+.aside2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: rgba(255, 255, 255);
+    box-shadow: -5px -5px 10px #4caf4f30;
+    border-radius: 1rem;
+    padding: 2%;
+    width: 12vw;
+    height: 80vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    /* Scroll vertical si es necesario */
+    overflow-x: hidden;
+    /* Oculta el scroll horizontal */
+    margin-bottom: 10%;
+    margin-top: 5%;
+}
+
+.card-aside2 {
+    margin: 5% 0%;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+.titulo-aside {
+    grid-column: 1/3;
+    grid-row: 1;
+    display: flex;
+    text-align: center;
+    justify-content: flex-start;
+
+}
+
+.imagenLogo-aside {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+
+}
+
+.nombre-aside {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
+}
+
+.miembros-aside {
+    grid-column: 1/3;
+    grid-row: 2;
+    color: rgb(152, 152, 152);
+    display: flex;
+    justify-content: flex-start;
+}
+
+@media (max-width: 600px) {
+    .imagenLogo-section {
+        width: 10vw;
     }
-}*/
+
+    aside:last-of-type {
+        display: none;
+    }
+
+    section {
+        grid-column: 2/5;
+        grid-row: 2;
+    }
+
+    aside:first-of-type {
+        display: none;
+    }
+}
