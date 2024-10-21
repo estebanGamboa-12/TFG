@@ -1,7 +1,6 @@
 window.onload=function(){
     document.querySelector(".iniciarSesion").addEventListener("click",abrirVentanaSesion);
     document.querySelector(".cerrar").addEventListener("click",cerrarVentanaSesion);
-    document.querySelector(".botonIniciarSesion").addEventListener("click",ventanaLogin);
 }
  
 function abrirVentanaSesion(){
@@ -14,6 +13,3 @@ function cerrarVentanaSesion(){
     modal.style.display="none";
 }
 
-function ventanaLogin(){
-
-}
