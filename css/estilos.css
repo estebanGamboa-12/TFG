@@ -30,6 +30,7 @@ aside:first-of-type {
     position: relative; 
     overflow-y: auto; /* Scroll vertical si es necesario */
     overflow-x: hidden; /* Oculta el scroll horizontal */
+    border-right: 1px solid #007A33;
 }
 
 section {
@@ -65,6 +66,12 @@ footer {
 .logo {
     grid-column: 1/2;
     grid-row: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.bars{
+    display: none;
 }
 
 .logo-header {
@@ -103,9 +110,9 @@ footer {
 .aside1 {
     display: flex;
     flex-direction: column;
-    padding-left: 5%;
-    padding-top: 2%;
-    border-right: 2px solid #007A33;
+    padding-left: 10%;
+    padding-top: 5%;
+    padding-right: 5%;
 }
 
 .popular {
@@ -186,6 +193,20 @@ footer {
     text-align: center;
     justify-content: flex-start;
     margin-right: 5%;
+}
+.logo-texto{
+    display: flex;
+    justify-content: flex-start;
+    text-align: center;
+    margin: 3% 0%;
+}
+.logo-texto img{
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+}
+.logo-texto div{
+    margin-left: 10%;
 }
 
 .encabezado-section {
@@ -320,19 +341,15 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    box-shadow: -5px -5px 10px #4caf4f30;
     border-radius: 1rem;
-    padding: 2%;
-    width: 80%;
+    padding: 0% 2%;
+    width: 15rem;
     height: 50vh;
-    position: sticky;
-    top: 0;
     overflow-y: auto;
-    /* Scroll vertical si es necesario */
     overflow-x: hidden;
-    /* Oculta el scroll horizontal */
-    margin-bottom: 10%;
     margin-top: 5%;
+    background-color: #8080800d;
+    margin-left: -15%;
 }
 
 .comunidades-aside {
@@ -375,7 +392,7 @@ footer {
 .miembros-aside {
     grid-column: 1/3;
     grid-row: 2;
-    color: rgb(152, 152, 152);
+    color: rgb(120, 120, 120);
     display: flex;
     justify-content: flex-start;
 }
@@ -448,22 +465,62 @@ footer {
 
 }
 
-/*  */
-@media (max-width: 600px) {
-    .imagenLogo-section {
-        width: 10vw;
+/* medias queries */
+@media (max-width: 1060px) {
+    .mostrar{
+        display: block;
+        background-color: white;
+        width: 15rem;
     }
-
-    aside:last-of-type {
+    aside:first-of-type{
         display: none;
-    }
+        background-color: white;
+         width: 15rem;
 
-    section {
-        grid-column: 2/5;
+    }
+    .aside2{
+        margin-left: 0%;
+        width: 13rem;
+    }
+    section{
         grid-row: 2;
+        grid-column: 1/3;
+        margin: 0%;
     }
+    .fondo{
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    .bars{
+        display: block;
+    }
+    .card-section{
+        margin: 1% 5%;
+    }
+}
 
-    aside:first-of-type {
+
+@media (max-width: 960px) {
+    .mostrar{
+        display: block;
+        background-color: white;
+        width: 15rem;
+    }
+    aside:first-of-type{
+        background-color: white;
+        width: 15rem;
+    }
+    aside:last-of-type{
         display: none;
+    }
+    section{
+        grid-row: 2;
+        grid-column: 1/5;
+        margin: 0%;
+    }
+    .fondo{
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    .bars{
+        display: block;
     }
 }
