@@ -465,8 +465,8 @@ footer {
 
 }
 @media (min-width: 1061px) {
-    aside:first-of-type {
-        display: flex; /* Muestra el aside en pantallas más grandes */
+    aside:first-of-type  {
+        display: flex !important; /* Muestra el aside en pantallas más grandes */
     }
 
     .bars {
