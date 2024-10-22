@@ -18,7 +18,7 @@ function mostrarAside(){
     let aside=document.querySelector('.contenido-aside');
     let section=document.querySelector("section");
     section.classList.add("fondo");
-    aside.style.display="block";
+    aside.style.display="flex";
 }
 function cerrarAsideFuera(event){
     let aside=document.querySelector('.contenido-aside');

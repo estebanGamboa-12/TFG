@@ -464,6 +464,15 @@ footer {
     text-decoration: none
 
 }
+@media (min-width: 1061px) {
+    aside:first-of-type {
+        display: flex; /* Muestra el aside en pantallas más grandes */
+    }
+
+    .bars {
+        display: none; /* Oculta el botón en pantallas más grandes */
+    }
+}
 
 /* medias queries */
 @media (max-width: 1060px) {
