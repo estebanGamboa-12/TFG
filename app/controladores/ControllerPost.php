@@ -1,23 +1,26 @@
 <?php
-require '../modelos/Post.php';
+
 class ControllerPost
 {
-    private $postModel;
+    private $conexion;
 
     public function __construct()
     {
-        $this->postModel = new Post(); // Asegúrate de que la clase Post esté definida correctamente
+        $this->conexion = Conectar::conexion(); // Asegúrate de que la clase Post esté definida correctamente
     }
 
-    public function mostrarPostAleatorios()
+    public function mostrarPostAleatorios()// la parte del home
     {
         header('Content-Type: application/json'); // Establece el tipo de contenido para JSON
-        $posts = $this->postModel->obtenerPostAleatorios(); // Llama al método para obtener los posts
+        $m = new Post();
+        $posts = $m->obtenerPostAleatorios();
         
-        if (empty($posts)) {
-            echo json_encode([]); // Devuelve un array vacío si no hay posts
-        } else {
-            echo json_encode($posts); // Devuelve los posts en formato JSON
-        }
+        echo json_encode($posts);
+        
+        include 'app/vistas/main.php';
     }
+
+    
 }
+$controller=new ControllerPost();
+$controller->mostrarPostAleatorios();

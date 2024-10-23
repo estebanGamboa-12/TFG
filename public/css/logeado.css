@@ -260,7 +260,7 @@ footer {
 
 .contenido-section {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 2%;
 }

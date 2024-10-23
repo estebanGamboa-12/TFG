@@ -1,9 +1,11 @@
 <?php 
-const HOST='localhost';
-const DATABASE='foro';
-const USERNAME='root';
-const PASSWORD='';
-const PORT='3306';//puerto en el que escucha MariaDB
-const CHARSET='utf8mb4';
+class Config{
+    static public $host = 'localhost';
+    static public $database  = 'foro';
+    static public $username = 'root';
+    static public $password    = '';
+    static public $charset    = 'utf8mb4';
+    static public $port    = '3306';
+}
 
 ?>

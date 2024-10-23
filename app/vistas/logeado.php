@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
-    <link rel="stylesheet" href="../../public/css/logeado.css">
-    <script src="../../public/js/scriptLogeado.js"></script>
+    <link rel="stylesheet" href="public/css/logeado.css">
+    <script src="public/js/scriptLogeado.js"></script>
     <title>Foro:logeado</title>
 </head>
 
@@ -14,7 +14,6 @@
     <div class="grid">
         <header>
             <div class="header">
-                
                 <div class="logo">
                     <div class="bars">☰</div>
                     <img src="../../public/img/logo1.jpg" alt="" class="logo-header">
