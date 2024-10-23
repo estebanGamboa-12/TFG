@@ -29,5 +29,26 @@ class Post
             die($e->getMessage());
         }
     }
+    public function getPostPopular()
+    {
+        $sql = "SELECT * FROM post; "; 
+        try{
+            $consulta=$this->conexion->prepare($sql);
+            $consulta->execute();
+            
+            while($dato=$consulta->fetch(PDO::FETCH_ASSOC)){
+                $this->posts[]=$dato;
+            }
+            return $this->posts;
+
+        }catch(PDOException $e){
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
+    public function cerrar_conexion(){
+        $this->conexion=NULL;
+    }
 }
 ?>

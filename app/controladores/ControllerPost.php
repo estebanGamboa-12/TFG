@@ -11,15 +11,21 @@ class ControllerPost
 
     public function mostrarPostAleatorios()// la parte del home
     {
-        header('Content-Type: application/json'); // Establece el tipo de contenido para JSON
         $m = new Post();
         $posts = $m->obtenerPostAleatorios();
         
         echo json_encode($posts);
         
-        include 'app/vistas/main.php';
     }
-
+    public function mostrarPostPopulares()// inicio y la parte populares logeado es la misma
+    {
+        $post=new Post();
+        $datos=$post->getPostPopular();
+        $post->cerrar_conexion();
+        //var_dump($datos);
+        include 'app/vistas/main.php';
+        
+    }
     
 }
 $controller=new ControllerPost();

@@ -17,7 +17,7 @@ spl_autoload_register(function ($clase) {
 $map=array(
     'home'=>array(
         'controller'=>'ControllerPost',
-        'action'=> 'mostrarPostAleatorios',
+        'action'=> 'mostrarPostPopulares',
     ),
 );
 

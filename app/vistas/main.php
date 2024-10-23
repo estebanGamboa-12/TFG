@@ -53,19 +53,19 @@
         </aside>
         <section>
             <div class="section">
+            
+    <?php foreach($datos as $indice => $contenido) {
+        ?>
                 <div class="card-section">
                     <div class="encabezado-section">
                         <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
+                        <div class="nombre-section"><?=$contenido['titulo'] ?></div>
+                        <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                         <div class="unirseBoton-section">Unirse</div>
                     </div>
                     <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
+                        <div class="titulo-section"><?= $contenido['titulo'] ?></div>
+                        <div class="contenido-section"><?= $contenido['contenido'] ?> </div>
                     </div>
                     <div class="pie-section">
                         <div class="votos-seccion">votos</div>
@@ -73,7 +73,8 @@
                         <div class="compartir-section">Compartir</div>
                     </div>
                 </div>
-                <div class="card-section">
+                <?php } ?>
+                <!-- <div class="card-section">
                     <div class="encabezado-section">
                         <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
                         <div class="nombre-section">Esteban</div>
@@ -121,53 +122,7 @@
                         <div class="comentarios-section">Comentarios</div>
                         <div class="compartir-section">Compartir</div>
                     </div>
-                </div>
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                        <div class="videos-fotos-section">
-                            <video class="video-section " controls>
-                                <source src="public\videos\215484_tiny.mp4" type="video/mp4">
-                                Tu navegador no soporta la etiqueta de video.
-                            </video>
-                        </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </section>
         <aside>
