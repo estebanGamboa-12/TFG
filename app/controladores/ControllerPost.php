@@ -15,18 +15,13 @@ class ControllerPost
         $posts = $m->obtenerPostAleatorios();
         
         echo json_encode($posts);
-        
+
     }
     public function mostrarPostPopulares()// inicio y la parte populares logeado es la misma
     {
         $post=new Post();
         $datos=$post->getPostPopular();
         $post->cerrar_conexion();
-        //var_dump($datos);
         include 'app/vistas/main.php';
-        
     }
-    
 }
-$controller=new ControllerPost();
-$controller->mostrarPostAleatorios();

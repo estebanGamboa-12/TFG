@@ -37,14 +37,14 @@
                     <div id="textoAside1">123</div>
                 </div>
                 <div class="temas">Temas <i class="fa fa-sort-down"></i></div>
+                <?php
+                 foreach($datos['temas'] as $indice=>$contenido){ ?>
                 <div class="logo-texto">
                     <img src="public/img/administrador.png" alt="foto">
-                    <div id="textoAside1">esteban123</div>
+                    <div id="textoAside1"><?= $contenido['nombre_tema']?></div>
                 </div>
-                <div class="logo-texto">
-                    <img src="public/img/administrador4.png" alt="foto">
-                    <div id="textoAside1">ESTEBASND</div>
-                </div>
+                <?php }?>
+                
                 <div class="logo-texto comunidades">
                     <img src="public/img/administrador3.png" alt="foto">
                     <div id="textoAside1">Comunidades</div>
@@ -53,19 +53,40 @@
         </aside>
         <section>
             <div class="section">
-            
-    <?php foreach($datos as $indice => $contenido) {
+    <?php foreach($datos['post'] as $indice => $contenido) {
+      
         ?>
                 <div class="card-section">
                     <div class="encabezado-section">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section"><?=$contenido['titulo'] ?></div>
+                        <img src="public/img/<?=$contenido['imagen_logo_usuario'] ?>" alt="" class="imagenLogo-section">
+                        <div class="nombre-section"><?php
+                                if($contenido['tipo_post']==='normal'){
+                                    echo 'n/' .$contenido['nombre'] ;
+                                }elseif($contenido['tipo_post']==='comunidad'){
+                                    echo 'c/' .$contenido['nombre'] ;
+                                }
+                         ?>
+                        </div>
                         <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                         <div class="unirseBoton-section">Unirse</div>
                     </div>
                     <div class="section-card">
                         <div class="titulo-section"><?= $contenido['titulo'] ?></div>
                         <div class="contenido-section"><?= $contenido['contenido'] ?> </div>
+                        <?php if(!empty($contenido['video'])){ ?>
+                        <!-- si existe video -->
+                        <div class="videos-fotos-section">
+                            <video class="video-section " controls>
+                            <source src="public\videos\<?=$contenido['video']?>" type="video/mp4">
+                                Tu navegador no soporta la etiqueta de video.
+                            </video>
+                        </div>
+                        <?php }elseif(!empty($contenido['imagen'])){?>
+                        <!-- si existe video -->
+                        <div class="videos-fotos-section">
+                            <img src="public/img/<?=$contenido['imagen']?>" alt="imagen" class="imagen-section">
+                        </div>
+                        <?php } ?>
                     </div>
                     <div class="pie-section">
                         <div class="votos-seccion">votos</div>
@@ -74,78 +95,22 @@
                     </div>
                 </div>
                 <?php } ?>
-                <!-- <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                        <div class="videos-fotos-section">
-                            <video class="video-section " controls>
-                            <source src="public\videos\215484_tiny.mp4" type="video/mp4">
-                                Tu navegador no soporta la etiqueta de video.
-                            </video>
-                        </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">Toma croasant rico rico de pelotas manito</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                        <div class="videos-fotos-section">
-                            <img src="public/img/manzana.jpg" alt="imagen" class="imagen-section">
-                        </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div> -->
             </div>
         </section>
         <aside>
             <div class="aside2">
                 <div class="comunidades-aside">Comunidades Populares</div>
+                <?php foreach($datos['comunidades'] as $indice=>$contenido) {?>
                 <div class="card-aside2">
                     <div class="titulo-aside">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
+                        <img src="public/img/<?= $contenido['comunidad_imagen'] ?>" alt="" class="imagenLogo-section">
                         <div class="nombre-aside">
-                            <div class="nombre-aside"> Esteban</div>
-                            <div class="miembros-aside">34.2mill miembros</div>
+                            <div class="nombre-aside"> <?= $contenido['comunidad_nombre'] ?></div>
+                            <div class="miembros-aside"><?= $contenido['total_miembros'] ?> miembros</div>
                         </div>
                     </div>
                 </div>
-                <div class="card-aside2">
-                    <div class="titulo-aside">
-                        <img src="public/img/administrador3.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-aside">
-                            <div class="nombre-aside"> Esteban</div>
-                            <div class="miembros-aside">34.2mill miembros</div>
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
         </aside>
         <footer>pie </footer>
