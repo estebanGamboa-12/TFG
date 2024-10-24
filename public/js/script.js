@@ -1,9 +1,19 @@
 window.onload=function(){
-    document.querySelector(".iniciarSesion").addEventListener("click",abrirVentanaSesion);
-    document.querySelector(".cerrar").addEventListener("click",cerrarVentanaSesion);
+    //document.querySelector(".iniciarSesion").addEventListener("click",abrirVentanaSesion);
+    //document.querySelector(".cerrar").addEventListener("click",cerrarVentanaSesion);
     document.querySelector(".bars").addEventListener("click",mostrarAside);
     document.addEventListener("click",cerrarAsideFuera);
     document.querySelector(".popular").addEventListener("click", mostrarPostAleatorios);
+    document.getElementById("editor").addEventListener("input", marked);
+        const markdownText = this.value;
+        const htmlText = marked(markdownText); // Usa la librería marked.js
+        document.getElementById("preview").innerHTML = htmlText;
+    
+}
+function marked(){
+    const markdownText = this.value;
+    const htmlText = marked(markdownText); // Usa la librería marked.js
+    document.getElementById("preview").innerHTML = htmlText;
 }
  
 function abrirVentanaSesion(){

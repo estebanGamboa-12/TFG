@@ -3,7 +3,81 @@
     margin: 0;
     border: 0;
     color: rgb(0, 0, 0);
+
 }
+
+/* crearPublicaciones */
+.CrearPublicaciones-titulo {
+    display: flex;
+    justify-content: flex-start;
+    margin: 5%;
+
+}
+
+.Crearpublicaciones-select {
+    border-radius: 1rem;
+    width: 16rem;
+    padding: 3%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 5%;
+    background-color: gainsboro;
+}
+
+.CrearPublicaciones-opciones {
+    display: flex;
+    justify-content: flex-start;
+    padding: 2%;
+    margin: 3% 0% 0% 5%;
+}
+
+.CrearPublicaciones-opciones div {
+    border: 1px solid black;
+    padding: 1rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.CrearPublicaciones-titulo {
+    margin-left: 5%;
+}
+
+.CrearPublicaciones-titulo input {
+    width: 34rem;
+    border-radius: 1rem;
+    border: 1px solid black;
+    color: black;
+    padding: 2%;
+}
+
+.CrearPublicaciones-contenido {
+    margin-left: 5%;
+    
+}
+.CrearPublicaciones-contenido textarea{
+    border-radius: 1rem;
+    border: 1px solid black;
+    width: 34rem;
+    padding: 2%;
+    height: 4rem;
+}
+
+.CrearPublicaciones-botonPost {
+    margin-top: 2%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3rem;
+}
+.CrearPublicaciones-botonPost button{
+    background-color: gainsboro;
+    border-radius: 1rem;
+    padding: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 
 html {
     background-color: #eaeaea50;
@@ -25,28 +99,27 @@ header {
     /* esté por encima del contenido */
 }
 
-aside:first-of-type {
+/* aside de crear Post */
+.first-aside {
     grid-column: 1;
     grid-row: 2/4;
     position: relative;
-    overflow-y: auto;
-    /* Scroll vertical si es necesario */
+    overflow-y: hidden;
     overflow-x: hidden;
-    /* Oculta el scroll horizontal */
     border-right: 1px solid #007A33;
 }
+
 
 section {
     grid-column: 2/3;
     grid-row: 2;
-    /* Se coloca directamente en la fila 2 */
     margin: 0 10%;
     /* Margen ajustado */
     overflow-y: auto;
     /* Permite scroll vertical si es necesario */
 }
 
-aside:last-of-type {
+.second-aside {
     grid-column: 3;
     grid-row: 2/4;
     position: relative;
@@ -493,7 +566,7 @@ footer {
 }
 
 @media (min-width: 1061px) {
-    aside:first-of-type {
+    .first-aside {
         display: flex !important;
         /* Muestra el aside en pantallas más grandes */
     }
@@ -512,7 +585,7 @@ footer {
         width: 15rem;
     }
 
-    aside:first-of-type {
+    .first-aside {
         display: none;
         background-color: white;
         width: 15rem;
@@ -551,12 +624,12 @@ footer {
         width: 15rem;
     }
 
-    aside:first-of-type {
+    .first-aside {
         background-color: white;
         width: 15rem;
     }
 
-    aside:last-of-type {
+    .second-aside {
         display: none;
     }
 

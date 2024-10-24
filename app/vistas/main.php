@@ -24,7 +24,7 @@
                 </div>
             </div>
         </header>
-        <aside class="contenido-aside">
+        <aside class="contenido-aside first-aside">
             <div class="aside1">
                 <div class="popular">Popular <i class="fa fa-sort-down"></i></div>
                 <div class="recientes">Recientes <i class="fa fa-sort-down"></i></div>
@@ -93,11 +93,11 @@
                         <div class="comentarios-section">Comentarios</div>
                         <div class="compartir-section">Compartir</div>
                     </div>
-                </div>
+                </div> 
                 <?php } ?>
             </div>
         </section>
-        <aside>
+        <aside class="second-aside">
             <div class="aside2">
                 <div class="comunidades-aside">Comunidades Populares</div>
                 <?php foreach($datos['comunidades'] as $indice=>$contenido) {?>
