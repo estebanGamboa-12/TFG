@@ -19,6 +19,10 @@ $map=array(
         'controller'=>'ControllerPost',
         'action'=> 'mostrarPostPopulares',
     ),
+    'iniciarSesion'=>array(
+        'controller'=>'ControllerUsuario',
+        'action'=> 'iniciarSesion',
+    ),
 );
 
 if (isset($_REQUEST['ctl'])) {

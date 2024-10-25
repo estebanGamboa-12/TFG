@@ -120,12 +120,12 @@
         <div class="modal-content-sesion">
             <div class=" cerrar">x</div>
             <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-            <form action="app/controladores/ControllerUsuario.php" method="post">
+            <form action="../../index.php?ctl=iniciarSesion" method="post">
                 <label for="nombre">
                     <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
                 </label>
                 <label for="contreaseña">
-                    <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" required>
+                    <input type="password" name="contrasena" id="contraseña" placeholder="Contraseña" required>
                 </label>
 
                 <input type="submit" value="Iniciar Sesion">
