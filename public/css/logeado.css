@@ -102,7 +102,7 @@ footer {
     grid-row: 1;
     color: rgb(215, 212, 212);
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 }
 

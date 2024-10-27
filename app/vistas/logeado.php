@@ -9,19 +9,20 @@
     <script src="public/js/scriptLogeado.js"></script>
     <title>Foro:logeado</title>
 </head>
-
+<?php var_dump($_SESSION) ?>
 <body>
     <div class="grid">
         <header>
             <div class="header">
                 <div class="logo">
                     <div class="bars">☰</div>
-                    <img src="../../public/img/logo1.jpg" alt="" class="logo-header">
+                    <img src="public/img/logo1.jpg" alt="" class="logo-header">
                 </div>
 
                 <div class="perfil">
                     <div class="CrearPost">Crear Post</div>
-                    <img src="../../public/img/administrador3.png" alt="">
+                    <div><?php echo $_SESSION["nombre"] ?></div>
+                    <img src="public/img/<?php echo $_SESSION["imagen_logo_usuario"] ?>" alt="">
                 </div>
             </div>
         </header>
@@ -33,11 +34,11 @@
                 <div id="textoAside" class="todasComunidades"> <i class="fa-solid fa-users"></i>Todos </div>
                 <div class="recientes">Recientes <i class="fa fa-sort-down"></i></div>
                 <div class="logo-texto">
-                    <img src="../../public/img/administrador2.png" alt="foto">
+                    <img src="public/img/administrador2.png" alt="foto">
                     <div id="textoAside1">ESTEBASND</div>
                 </div>
                 <div class="logo-texto">
-                    <img src="../../public/img/administrador3.png" alt="foto">
+                    <img src="public/img/administrador3.png" alt="foto">
                     <div id="textoAside1">ESTEBASND</div>
                 </div>
 
@@ -48,11 +49,11 @@
                     <div id="textoAside1">Crea una comunidad</div>
                 </div>
                 <div class="logo-texto">
-                    <img src="../../public/img/administrador3.png" alt="foto">
+                    <img src="public/img/administrador3.png" alt="foto">
                     <div id="textoAside1">comunidad 1</div>
                 </div>
                 <div class="logo-texto">
-                    <img src="../../public/img/administrador3.png" alt="foto">
+                    <img src="public/img/administrador3.png" alt="foto">
                     <div id="textoAside1">comunidad 2</div>
                 </div>
                
@@ -60,130 +61,48 @@
             </div>
         </aside>
         <section>
-            <div class="section">
-                <!-- es carta sin foto ni videos -->
+        <div class="section">
+    <?php foreach($datos as $indice => $contenido) {
+        ?>
                 <div class="card-section">
                     <div class="encabezado-section">
-                        <img src="../../public/img/administrador.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
+                        <img src="public/img/<?=$contenido['imagen_logo_usuario'] ?>" alt="" class="imagenLogo-section">
+                        <div class="nombre-section"><?php
+                                if($contenido['tipo_post']==='normal'){
+                                    echo 'n/' .$contenido['nombre'] ;
+                                }elseif($contenido['tipo_post']==='comunidad'){
+                                    echo 'c/' .$contenido['nombre'] ;
+                                }
+                         ?>
+                        </div>
+                        <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                         <div class="unirseBoton-section">Unirse</div>
                     </div>
                     <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
-                <!-- carta para videos -->
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="../../public/img/administrador2.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
+                        <div class="titulo-section"><?= $contenido['titulo'] ?></div>
+                        <div class="contenido-section"><?= $contenido['contenido'] ?> </div>
+                        <?php if(!empty($contenido['video'])){ ?>
+                        <!-- si existe video -->
                         <div class="videos-fotos-section">
                             <video class="video-section " controls>
-                                <source src="../../public/videos/215484_tiny.mp4" type="video/mp4">
+                            <source src="public\videos\<?=$contenido['video']?>" type="video/mp4">
                                 Tu navegador no soporta la etiqueta de video.
                             </video>
                         </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
-                <!-- carta para imagenes -->
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="../../public/img/administrador2.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">Toma croasant rico rico de pelotas manito</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
+                        <?php }elseif(!empty($contenido['imagen'])){?>
+                        <!-- si existe video -->
                         <div class="videos-fotos-section">
-                            <img src="../../public/img/manzana.jpg" alt="imagen" class="imagen-section">
+                            <img src="public/img/<?=$contenido['imagen']?>" alt="imagen" class="imagen-section">
                         </div>
+                        <?php } ?>
                     </div>
                     <div class="pie-section">
                         <div class="votos-seccion">votos</div>
                         <div class="comentarios-section">Comentarios</div>
                         <div class="compartir-section">Compartir</div>
                     </div>
-                </div>
-                <!-- carta para videos -->
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="../../public/img/administrador2.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">Esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">titulo</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                        <div class="videos-fotos-section">
-                            <video class="video-section " controls>
-                                <source src="../../public/videos/215484_tiny.mp4" type="video/mp4">
-                                Tu navegador no soporta la etiqueta de video.
-                            </video>
-                        </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
-                <!-- carta para imagenes -->
-                <div class="card-section">
-                    <div class="encabezado-section">
-                        <img src="../../public/img/administrador2.png" alt="" class="imagenLogo-section">
-                        <div class="nombre-section">esteban</div>
-                        <div class="fecha-section">13/08/2002</div>
-                        <div class="unirseBoton-section">Unirse</div>
-                    </div>
-                    <div class="section-card">
-                        <div class="titulo-section">Toma croasant rico rico de pelotas manito</div>
-                        <div class="contenido-section"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-                            laborum sit, asperiores fugiat ratione porro a amet magnam tempore quia qui officiis ipsa,
-                            eius
-                            minus laudantium explicabo consectetur, temporibus aspernatur?</div>
-                        <div class="videos-fotos-section">
-                            <img src="../../public/img/manzana.jpg" alt="imagen" class="imagen-section">
-                        </div>
-                    </div>
-                    <div class="pie-section">
-                        <div class="votos-seccion">votos</div>
-                        <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
-                    </div>
-                </div>
+                </div> 
+                <?php } ?>
             </div>
         </section>
         <footer>pie </footer>

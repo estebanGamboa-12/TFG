@@ -1,19 +1,18 @@
 window.onload=function(){
-    //document.querySelector(".iniciarSesion").addEventListener("click",abrirVentanaSesion);
-    //document.querySelector(".cerrar").addEventListener("click",cerrarVentanaSesion);
+    document.querySelector(".iniciarSesion").addEventListener("click",abrirVentanaSesion);
+    document.querySelector(".cerrar").addEventListener("click",cerrarVentanasModales);
     document.querySelector(".bars").addEventListener("click",mostrarAside);
     document.addEventListener("click",cerrarAsideFuera);
-    document.querySelector(".popular").addEventListener("click", mostrarPostAleatorios);
-    document.getElementById("editor").addEventListener("input", marked);
-        const markdownText = this.value;
-        const htmlText = marked(markdownText); // Usa la librería marked.js
-        document.getElementById("preview").innerHTML = htmlText;
+    document.querySelector(".botonRegistrarse").addEventListener("click",mostrarVentanaRegistrar);
+    //document.querySelector(".popular").addEventListener("click", mostrarPostAleatorios);
     
 }
-function marked(){
-    const markdownText = this.value;
-    const htmlText = marked(markdownText); // Usa la librería marked.js
-    document.getElementById("preview").innerHTML = htmlText;
+function mostrarVentanaRegistrar(){
+    let modalIniciarSesion=document.querySelector(".modalIniciarSesion");
+    let modalRegistrar=document.querySelector(".modalRegistrar");
+    modalIniciarSesion.style.display="none";
+    modalRegistrar.style.display="flex";
+   
 }
  
 function abrirVentanaSesion(){
@@ -21,9 +20,11 @@ function abrirVentanaSesion(){
     let modal=document.querySelector(".modalIniciarSesion");
     modal.style.display="flex";
 }
-function cerrarVentanaSesion(){
+function cerrarVentanasModales(){
     let modal=document.querySelector(".modalIniciarSesion");
+    let modal1=document.querySelector(".modalRegistrar")
     modal.style.display="none";
+    modal1.stle.display="none";
 }
 function mostrarAside(){
     let aside=document.querySelector('.contenido-aside');

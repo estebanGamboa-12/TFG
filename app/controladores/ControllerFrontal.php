@@ -23,6 +23,10 @@ $map=array(
         'controller'=>'ControllerUsuario',
         'action'=> 'iniciarSesion',
     ),
+    'registrar'=>array(
+        'controller'=>'ControllerUsuario',
+        'action'=> 'registrarUsuarios',
+    ),
 );
 
 if (isset($_REQUEST['ctl'])) {

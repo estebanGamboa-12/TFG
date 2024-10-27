@@ -113,14 +113,18 @@
                 <?php } ?>
             </div>
         </aside>
-        <footer>pie </footer>
+        <footer> 
+            <?php if($_REQUEST['error']==1){
+                echo "Usuario o contraseña incorrecta";
+            } ?>
+        </footer>
     </div>
-    <!-- Ventana modal que la pulsar el votón de iniciar sesion se muestra -->
+    <!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
     <div class="modalIniciarSesion" id="modal-IniciarSesion">
         <div class="modal-content-sesion">
             <div class=" cerrar">x</div>
             <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-            <form action="../../index.php?ctl=iniciarSesion" method="post">
+            <form action="index.php?ctl=iniciarSesion" method="post">
                 <label for="nombre">
                     <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
                 </label>
@@ -130,9 +134,35 @@
 
                 <input type="submit" value="Iniciar Sesion">
             </form>
-            <div class="texto-registro">¿Es tu primera vez en Foro? <a href="#">Registrarse</a></div>
+            <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse" href="#">Registrarse</a></div>
         </div>
     </div>
+    <!-- ventana modal registrarse ----------------------------------------------------------------- -->
+    <div class="modalRegistrar" id="modal-registrarse" >
+        <div class="modal-content-registrarse">
+            <div class="cerrar">x</div>
+            <div class="titulo-registrarse">Registrarse</div>
+            <form action="index.php?ctl=registrar" method="post">
+                <label for="nombre">
+                    <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
+                </label>
+                <label for="apellido">
+                    <input type="text" name="apellido" id="apellido" placeholder="apellido" required>
+                </label>
+                <label for="correo">
+                    <input type="email" name="email" id="email" placeholder="email" required>
+                </label>
+                <label for="contraseña">
+                    <input type="password" name="contraseña" id="contraseña " placeholder="contraseña" required>
+                </label>
+                <label for="repetir_contraseña">
+                    <input type="password" name="repetir_contraseña" id="repetir_contraseña" placeholder="Repetircontreaseña" required>
+                </label>
+                <input type="submit" value="Registrarse ">
+            </form>
+        </div>
+    </div>
+    
 </body>
 
 </html>
