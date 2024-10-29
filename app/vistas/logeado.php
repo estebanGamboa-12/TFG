@@ -20,8 +20,8 @@
                 </div>
 
                 <div class="perfil">
-                    <div class="CrearPost">Crear Post</div>
-                    <div><?php echo $_SESSION["nombre"] ?></div>
+                    <a class="CrearPost" href="index.php?ctl=vistaPost" style="text-decoration: none;">Crear Post</a> 
+                    <div class="nombre-usuario"><?php echo $_SESSION["nombre"] ?></div>
                     <img src="public/img/<?php echo $_SESSION["imagen_logo_usuario"] ?>" alt="">
                 </div>
             </div>

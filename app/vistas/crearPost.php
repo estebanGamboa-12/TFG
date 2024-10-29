@@ -50,29 +50,31 @@
         </aside>
         <section>
             <div class="section">
-                <div class="CrearPublicaciones-titulo">
-                    <h2>Crear publicaciones</h2>
-                </div>
-                <div class="Crearpublicaciones-select">
-                    <label for="comunidad-crearPublicaciones">Elige una fruta:</label>
-                    <select id="select-comunidad" name="comunidad-crearPublicaciones">
-                        <option value="manzana">Manzana</option>
-                    </select>
-                </div>
-                <div class="CrearPublicaciones-opciones">
-                    <div>Text</div>
-                    <div>Imagenes/videos</div>
-                    <div>Link</div>
-                </div>
-                <div class="CrearPublicaciones-titulo">
-                    <input type="text" placeholder="Titulo" class="titulo-formulario">
-                </div>
-                <div class="CrearPublicaciones-contenido">
-                    <textarea id="editor" placeholder="Cuerpo"></textarea>
-                </div>
-                <div class="CrearPublicaciones-botonPost">
-                    <button>Post</button>
-                </div>
+                <form action="index.php?ctl=subirPost" method="post">
+                    <div class="CrearPublicaciones-titulo">
+                        <h2>Crear publicaciones</h2>
+                    </div>
+                    <div class="Crearpublicaciones-select">
+                        <label for="comunidad-crearPublicaciones">Elige una fruta:</label>
+                        <select id="select-comunidad" name="comunidad-crearPublicaciones">
+                            <option value="manzana">Manzana</option>
+                        </select>
+                    </div>
+                    <div class="CrearPublicaciones-opciones">
+                        <div>Text</div>
+                        <div>Imagenes/videos</div>
+                        <div>Link</div>
+                    </div>
+                    <div class="CrearPublicaciones-titulo">
+                        <input type="text" placeholder="Titulo" class="titulo-formulario">
+                    </div>
+                    <div class="CrearPublicaciones-contenido">
+                        <textarea id="editor" placeholder="Cuerpo"></textarea>
+                    </div>
+                    <div class="CrearPublicaciones-botonPost">
+                        <input type="submit" value="Post">
+                    </div>
+                </form>
 
             </div>
         </section>

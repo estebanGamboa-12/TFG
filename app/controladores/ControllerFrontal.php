@@ -27,6 +27,15 @@ $map=array(
         'controller'=>'ControllerUsuario',
         'action'=> 'registrarUsuarios',
     ),
+    'vistaPost'=>array(
+        'controller'=>'ControllerPost',
+        'action'=> 'mostrarForm',
+    ),
+    'subirPost'=>array(
+        'controller'=>'ControllerPost',
+        'action'=> 'subirPost',
+    ),
+    
 );
 
 if (isset($_REQUEST['ctl'])) {

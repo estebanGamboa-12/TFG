@@ -96,13 +96,16 @@ footer {
     padding: 2%;
 
 }
+.nombre-usuario{
+    margin-right: 1rem;
+}
 
 .perfil {
     grid-column: 5;
     grid-row: 1;
     color: rgb(215, 212, 212);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 

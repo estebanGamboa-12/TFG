@@ -114,9 +114,6 @@
             </div>
         </aside>
         <footer> 
-            <?php if($_REQUEST['error']==1){
-                echo "Usuario o contraseña incorrecta";
-            } ?>
         </footer>
     </div>
     <!-- Ventana modal iniciar sesion .------------------------------------------------------ -->

@@ -3,18 +3,29 @@
 class ControllerPost
 {
     private $conexion;
+    private $mostrar;
 
     public function __construct()
     {
         $this->conexion = Conectar::conexion(); // Asegúrate de que la clase Post esté definida correctamente
+        
     }
 
-    public function mostrarPostAleatorios()// la parte del home
+    public function mostrarForm()// 
     {
-        $m = new Post();
-        $posts = $m->obtenerPostAleatorios();
+    require "app/vistas/crearPost.php";
+    exit;
+
+    }
+    public function subirPost() {
         
-        echo json_encode($posts);
+        $postModel=new Post();
+        $post=$postModel->subirPost();
+        $postModel->cerrar_conexion();
+       
+        header('location:index.php');
+        exit;
+        
 
     }
     public function mostrarPostPopulares()// inicio y la parte populares logeado es la misma
@@ -24,4 +35,5 @@ class ControllerPost
         $post->cerrar_conexion();
         include 'app/vistas/main.php';
     }
+
 }
