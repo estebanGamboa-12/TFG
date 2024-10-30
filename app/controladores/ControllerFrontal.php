@@ -35,6 +35,10 @@ $map=array(
         'controller'=>'ControllerPost',
         'action'=> 'subirPost',
     ),
+    'mostrarExplorar'=>array(
+        'controller'=>'ControllerComunidades',
+        'action'=> 'mostrarExplorar',
+    )
     
 );
 

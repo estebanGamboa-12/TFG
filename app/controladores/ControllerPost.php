@@ -35,5 +35,6 @@ class ControllerPost
         $post->cerrar_conexion();
         include 'app/vistas/main.php';
     }
+  
 
 }
