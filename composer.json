@@ -1,0 +1,20 @@
+{
+    "name": "admin/foro",
+    "description": "Foro",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "admin\\foro\\Controllers\\": "src/controllers/",
+            "admin\\foro\\Models\\": "src/models/",
+            "admin\\foro\\Config\\": "src/config/",
+            "admin\\foro\\Database\\": "src/database/",
+            "admin\\foro\\Helpers\\": "src/helpers/",
+            "admin\\foro\\Entities\\": "src/entities/"
+        }
+    },
+    "require": {
+        "stefangabos/zebra_pagination": "^2.4",
+        "monolog/monolog": "^3.5"
+    }
+}
