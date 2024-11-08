@@ -1,32 +1,24 @@
 <?php
+namespace admin\foro\Models;
 
-class Post
+class PostModel extends Model
 {
-    private $conexion;
-    private $posts;
-    private $comunidades;
-    private $temas;
 
     public function __construct()
     {
-        $this->conexion = Conectar::conexion(); // Conecta a la base de datos
-        $this->posts = array();
-        $this->comunidades = array();
-        $this->temas = array();
+        parent::__construct();
+        $this->tabla="post";
     }
 
     public function obtenerPostAleatorios()
     { //modificar la sql , de momento de prueba 
         $sql = "SELECT u.nombre,u.imagen,p.titulo,p.fecha_creacion,p.contenido,p.imagen,p.video ,p.tipo_post FROM post p JOIN usuarios u ON p.id_usuario=u.id;  ";
         try {
-            $consulta = $this->conexion->prepare($sql);
+            $consulta = $this->conn->prepare($sql);
             $consulta->execute();
-
-            while ($dato = $consulta->fetch(PDO::FETCH_ASSOC)) {
-                $this->posts[] = $dato;
-            }
-            return $this->posts;
-        } catch (PDOException $e) {
+             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $dato;
+        } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
@@ -50,36 +42,38 @@ class Post
         FROM temas t; ";
         try {
             //consulta1
-            $consulta1 = $this->conexion->prepare($sql1);
+            $consulta1 = $this->conn->prepare($sql1);
             $consulta1->execute();
 
-            while ($dato = $consulta1->fetch(PDO::FETCH_ASSOC)) {
-                $this->posts[] = $dato;
-            }
+            $dato = $consulta1->fetchAll(\PDO::FETCH_ASSOC);
+            return $dato;
+            exit;
+                
+            
             //consulta 2
-            $consulta2 = $this->conexion->prepare($sql2);
-            $consulta2->execute();
+            // $consulta2 = $this->conn->prepare($sql2);
+            // $consulta2->execute();
 
-            while ($dato = $consulta2->fetch(PDO::FETCH_ASSOC)) {
-                $this->comunidades[] = $dato;
-            }
+            // while ($dato = $consulta2->fetch(\PDO::FETCH_ASSOC)) {
+            //     $this->comunidades[] = $dato;
+            // }
             // consulta3
-            $consulta3 = $this->conexion->prepare($sql3);
-            $consulta3->execute();
+            // $consulta3 = $this->conn->prepare($sql3);
+            // $consulta3->execute();
 
-            while ($dato = $consulta3->fetch(PDO::FETCH_ASSOC)) {
-                $this->temas[] = $dato;
-            }
+            // while ($dato = $consulta3->fetch(\PDO::FETCH_ASSOC)) {
+            //     $this->temas[] = $dato;
+            // }
             $datos = [
-                'post' => $this->posts,
-                'comunidades' => $this->comunidades,
-                'temas' => $this->temas
+                'post' => $dato,
+                // 'comunidades' => $this->comunidades,
+                // 'temas' => $this->temas
             ];
             //Retornar todos los datos.
             /* var_dump($datos);
             exit;*/
             return $datos;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
@@ -100,7 +94,7 @@ class Post
         $sql = "INSERT INTO `post` (id, titulo, contenido, fecha_creacion, imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
         VALUES (NULL, :titulo, :contenido, CURRENT_TIMESTAMP(), NULL, NULL, :id_usuario, NULL, :id_tema, :tipo_post);";
 
-        $consulta = $this->conexion->prepare($sql);
+        $consulta = $this->conn->prepare($sql);
 
         // Bind de los parámetros
         $consulta->bindParam(':titulo', $titulo);
@@ -118,6 +112,6 @@ class Post
     }
     public function cerrar_conexion()
     {
-        $this->conexion = NULL;
+        $this->conn = NULL;
     }
 }

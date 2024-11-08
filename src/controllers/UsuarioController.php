@@ -1,6 +1,6 @@
 <?php
-
-class ControllerUsuario
+namespace admin\foro\Controllers;
+class UsuarioController
 {
     private $conexion;
 

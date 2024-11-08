@@ -1,6 +1,5 @@
 <?php
-	namespace admin\gestionColaboradores\Helpers;
-    use admin\gestionColaboradores\Config\Parameters;
+	namespace admin\foro\Helpers;
 
 	class Authentication {
 

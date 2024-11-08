@@ -1,6 +1,6 @@
 <?php
-	namespace admin\gestionColaboradores\Database;
-	use admin\gestionColaboradores\Config\ConfigBD;
+	namespace admin\foro\Database;
+	use admin\foro\Config\ConfigBD;
 
 	class Conexion{
 		public static function conectar(){

@@ -1,5 +1,5 @@
 <?php
-namespace admin\gestionColaboradores\Helpers;
+namespace admin\foro\Helpers;
 
 class DateConversions{
     public static function formatearFechaDesdeMysql($fecha){

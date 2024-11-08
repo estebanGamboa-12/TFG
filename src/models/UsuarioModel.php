@@ -1,6 +1,7 @@
 <?php
+namespace admin\foro\Models;
 
-class Usuario
+class UsuarioModel extends Model
 {
     private $conexion;
     private $usuario;
@@ -8,9 +9,8 @@ class Usuario
 
     public function __construct()
     {
-        $this->conexion = Conectar::conexion();
-        $this->usuario = array();
-        $this->post = array();
+        parent::__construct();
+        $this->tabla="post";
     }
 
     public function iniciarSesion()
@@ -30,7 +30,7 @@ class Usuario
             $consulta->bindParam(':contrasena', $contrasena);
 
             $consulta->execute();
-            while ($dato = $consulta->fetch(PDO::FETCH_ASSOC)) {
+            while ($dato = $consulta->fetch(\PDO::FETCH_ASSOC)) {
                 $this->usuario = $dato;
             }
 
@@ -46,7 +46,7 @@ class Usuario
                 $consulta1 = $this->conexion->prepare($sql1);
                 $consulta1->execute();
 
-                while ($dato = $consulta1->fetch(PDO::FETCH_ASSOC)) {
+                while ($dato = $consulta1->fetch(\PDO::FETCH_ASSOC)) {
                     $this->post[] = $dato;
                 }
                 /*var_dump($this->post);
@@ -56,7 +56,7 @@ class Usuario
                 header("Location: index.php?ctl=home&error=1");
                 exit;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
@@ -92,7 +92,7 @@ class Usuario
                 header("location:index.php");
                 exit;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());

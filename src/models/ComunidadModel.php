@@ -1,20 +1,21 @@
 <?php
+namespace admin\foro\Models;
 
-class Comunidades {
+class ComunidadesModel extends Model {
 
     private $conexion;
     private $comunidades;
 
     public function __construct()
     {
-        $this->conexion=Conectar::conexion();
-        $this->comunidades=array();
+        parent::__construct();
+        $this->tabla="post";
     }
     public function getAll(){
         $sql="SELECT * FROM comunidades";
         $consulta=$this->conexion->prepare($sql);
         $consulta->execute();
-        while ($dato = $consulta->fetch(PDO::FETCH_ASSOC)) {
+        while ($dato = $consulta->fetch(\PDO::FETCH_ASSOC)) {
             $this->comunidades[] = $dato;
         }
         return $this->comunidades;

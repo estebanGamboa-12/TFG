@@ -1,6 +1,7 @@
 <?php 
 
-class ControllerComunidades{
+namespace admin\foro\Controllers;
+class ComunidadesController{
 
     private $comunidades;
     private $conexion;

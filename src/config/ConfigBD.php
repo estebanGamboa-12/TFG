@@ -1,5 +1,5 @@
 <?php
-namespace admin\foro\
+namespace admin\foro\Config;
 
 class ConfigBD{
     public static $SERVER_NAME_BD = "localhost";

@@ -1,5 +1,5 @@
 <?php
-	namespace admin\gestionColaboradores\Helpers;
+namespace admin\foro\Helpers;
 
     use Monolog\Handler\StreamHandler;
     use Monolog\Logger;

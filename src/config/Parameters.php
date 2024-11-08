@@ -1,12 +1,12 @@
 <?php
-namespace admin\gestionColaboradores\Config;
+namespace admin\foro\Config;
 
 class Parameters{
-    public static $CONTROLLER_DEFAULT = "Usuario";
-    public static $ACTION_DEFAULT = "login";
+    public static $CONTROLLER_DEFAULT = "Post";
+    public static $ACTION_DEFAULT = "index";
 
     public static $PASSWORD_MIN_LENGTH = 6;
 
     
-    public static $BASE_URL = "http://localhost/gestionColaboradores/";
+    public static $BASE_URL = "http://localhost/proyectos/TFG/";
 }

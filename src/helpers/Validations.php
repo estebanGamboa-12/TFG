@@ -1,7 +1,7 @@
 <?php
-namespace admin\gestionColaboradores\Helpers;
+namespace admin\foro\Helpers;
 
-use admin\gestionColaboradores\Config\Parameters;
+use admin\foro\Config\Parameters;
 
 class Validations {
     public static function validateName($nombre): bool {

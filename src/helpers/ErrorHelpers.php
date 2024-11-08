@@ -1,5 +1,5 @@
 <?php
-namespace admin\gestionColaboradores\Helpers;
+namespace admin\foro\Helpers;
 
 class ErrorHelpers{
 	public static function showError($errores, $campo){

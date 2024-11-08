@@ -1,56 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php 
+use admin\foro\Config\Parameters;
+use admin\foro\Helpers\Authentication;
+$post=$data['post']?? NULL;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="public/css/estilos.css">
-    <script src="public/js/script.js"></script>
-    <title>Inicio</title>
-</head>
+var_dump($post);
+exit;
 
-<body>
+?>
+
+
     <div class="grid">
-        <header>
-            <div class="header">
-                <div class="logo">
-                    <div class="bars">☰</div>
-                    <img src="public/img/logo1.jpg" alt="" class="logo-header">
-                </div>
-                <div class="tresPuntos">
-                    <div class="iniciarSesion">Iniciar Sesion</div>
-                    <i class="fa fa-ellipsis-h"></i>
-                </div>
-            </div>
-        </header>
-        <aside class="contenido-aside first-aside">
-            <div class="aside1">
-                <div class="popular">Popular <i class="fa fa-sort-down"></i></div>
-                <div class="recientes">Recientes <i class="fa fa-sort-down"></i></div>
-                <div class="logo-texto">
-                    <img src="public/img/administrador2.png" alt="foto">
-                    <div id="textoAside1">esteban</div>
-                </div>
-                <div class="logo-texto">
-                    <img src="public/img/administrador4.png" alt="foto">
-                    <div id="textoAside1">123</div>
-                </div>
-                <div class="temas">Temas <i class="fa fa-sort-down"></i></div>
-                <?php
-                 foreach($datos['temas'] as $indice=>$contenido){ ?>
-                <div class="logo-texto">
-                    <img src="public/img/administrador.png" alt="foto">
-                    <div id="textoAside1"><?= $contenido['nombre_tema']?></div>
-                </div>
-                <?php }?>
-                
-                <div class="logo-texto comunidades">
-                    <img src="public/img/administrador3.png" alt="foto">
-                    <div id="textoAside1">Comunidades</div>
-                </div>
-            </div>
-        </aside>
         <section>
             <div class="section">
     <?php foreach($datos['post'] as $indice => $contenido) {
@@ -97,24 +56,7 @@
                 <?php } ?>
             </div>
         </section>
-        <aside class="second-aside">
-            <div class="aside2">
-                <div class="comunidades-aside">Comunidades Populares</div>
-                <?php foreach($datos['comunidades'] as $indice=>$contenido) {?>
-                <div class="card-aside2">
-                    <div class="titulo-aside">
-                        <img src="public/img/<?= $contenido['comunidad_imagen'] ?>" alt="" class="imagenLogo-section">
-                        <div class="nombre-aside">
-                            <div class="nombre-aside"> <?= $contenido['comunidad_nombre'] ?></div>
-                            <div class="miembros-aside"><?= $contenido['total_miembros'] ?> miembros</div>
-                        </div>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-        </aside>
-        <footer> 
-        </footer>
+        
     </div>
     <!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
     <div class="modalIniciarSesion" id="modal-IniciarSesion">
@@ -160,6 +102,3 @@
         </div>
     </div>
     
-</body>
-
-</html>
