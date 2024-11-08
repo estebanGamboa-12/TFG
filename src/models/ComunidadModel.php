@@ -9,20 +9,8 @@ class ComunidadesModel extends Model {
     public function __construct()
     {
         parent::__construct();
-        $this->tabla="post";
+        $this->tabla="comunidades";
     }
-    public function getAll(){
-        $sql="SELECT * FROM comunidades";
-        $consulta=$this->conexion->prepare($sql);
-        $consulta->execute();
-        while ($dato = $consulta->fetch(\PDO::FETCH_ASSOC)) {
-            $this->comunidades[] = $dato;
-        }
-        return $this->comunidades;
-
-    }
-
-
     public function cerrar_conexion()
     {
         $this->conexion = NULL;

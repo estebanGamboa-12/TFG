@@ -8,7 +8,6 @@ $post = $data['post'] ?? NULL;
 
 ?>
 
-<div class="grid">
     <section>
         <div class="section">
             <?php foreach ($post as $indice => $contenido) {
@@ -56,7 +55,6 @@ $post = $data['post'] ?? NULL;
         </div>
     </section>
 
-</div>
 <!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
 <div class="modalIniciarSesion" id="modal-IniciarSesion">
     <div class="modal-content-sesion">

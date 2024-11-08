@@ -33,6 +33,13 @@ class Model{
             return NULL;
         }
     }
+    public function getAll(){
+        $sql="SELECT * FROM {$this->tabla}";
+        $consulta=$this->conn->prepare($sql);
+        $consulta->execute();
+        $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
     
 
   

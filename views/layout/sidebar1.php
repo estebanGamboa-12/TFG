@@ -17,7 +17,7 @@ use admin\foro\Config\Parameters;
                 </div>
                 <div class="temas">Temas <i class="fa fa-sort-down"></i></div>
                 <?php
-                 foreach($datos['temas'] as $indice=>$contenido){ ?>
+                 foreach($temas as $indice=>$contenido){ ?>
                 <div class="logo-texto">
                     <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
                     <div id="textoAside1"><?= $contenido['nombre_tema']?></div>
