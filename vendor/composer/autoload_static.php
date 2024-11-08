@@ -9,12 +9,12 @@ class ComposerStaticInite87ad7546fc701f32dde8f94f8ac089a
     public static $prefixLengthsPsr4 = array (
         'a' => 
         array (
-            'admin\\gestionColaboradores\\Models\\' => 34,
-            'admin\\gestionColaboradores\\Helpers\\' => 35,
-            'admin\\gestionColaboradores\\Entities\\' => 36,
-            'admin\\gestionColaboradores\\Database\\' => 36,
-            'admin\\gestionColaboradores\\Controllers\\' => 39,
-            'admin\\gestionColaboradores\\Config\\' => 34,
+            'admin\\foro\\Models\\' => 18,
+            'admin\\foro\\Helpers\\' => 19,
+            'admin\\foro\\Entities\\' => 20,
+            'admin\\foro\\Database\\' => 20,
+            'admin\\foro\\Controllers\\' => 23,
+            'admin\\foro\\Config\\' => 18,
         ),
         'P' => 
         array (
@@ -27,27 +27,27 @@ class ComposerStaticInite87ad7546fc701f32dde8f94f8ac089a
     );
 
     public static $prefixDirsPsr4 = array (
-        'admin\\gestionColaboradores\\Models\\' => 
+        'admin\\foro\\Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/models',
         ),
-        'admin\\gestionColaboradores\\Helpers\\' => 
+        'admin\\foro\\Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/helpers',
         ),
-        'admin\\gestionColaboradores\\Entities\\' => 
+        'admin\\foro\\Entities\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/entities',
         ),
-        'admin\\gestionColaboradores\\Database\\' => 
+        'admin\\foro\\Database\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/database',
         ),
-        'admin\\gestionColaboradores\\Controllers\\' => 
+        'admin\\foro\\Controllers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/controllers',
         ),
-        'admin\\gestionColaboradores\\Config\\' => 
+        'admin\\foro\\Config\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/config',
         ),

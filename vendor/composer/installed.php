@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'admin/gestion-colaboradores',
+        'name' => 'admin/foro',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '61086b2611bd8b037e789ae2e028fdd18a0e0bd5',
+        'reference' => '384cbb24acac608cb24351afb93dc8e21933782c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'admin/gestion-colaboradores' => array(
+        'admin/foro' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '61086b2611bd8b037e789ae2e028fdd18a0e0bd5',
+            'reference' => '384cbb24acac608cb24351afb93dc8e21933782c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

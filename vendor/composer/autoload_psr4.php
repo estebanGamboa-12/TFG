@@ -6,12 +6,12 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'admin\\gestionColaboradores\\Models\\' => array($baseDir . '/src/models'),
-    'admin\\gestionColaboradores\\Helpers\\' => array($baseDir . '/src/helpers'),
-    'admin\\gestionColaboradores\\Entities\\' => array($baseDir . '/src/entities'),
-    'admin\\gestionColaboradores\\Database\\' => array($baseDir . '/src/database'),
-    'admin\\gestionColaboradores\\Controllers\\' => array($baseDir . '/src/controllers'),
-    'admin\\gestionColaboradores\\Config\\' => array($baseDir . '/src/config'),
+    'admin\\foro\\Models\\' => array($baseDir . '/src/models'),
+    'admin\\foro\\Helpers\\' => array($baseDir . '/src/helpers'),
+    'admin\\foro\\Entities\\' => array($baseDir . '/src/entities'),
+    'admin\\foro\\Database\\' => array($baseDir . '/src/database'),
+    'admin\\foro\\Controllers\\' => array($baseDir . '/src/controllers'),
+    'admin\\foro\\Config\\' => array($baseDir . '/src/config'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );

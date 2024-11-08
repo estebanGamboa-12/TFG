@@ -1,5 +1,5 @@
 <?php
-namespace admin\gestionColaboradores\Config;
+namespace admin\foro\
 
 class ConfigBD{
     public static $SERVER_NAME_BD = "localhost";
