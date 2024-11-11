@@ -40,7 +40,10 @@ class Model{
         $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
         return $resultado;
     }
-    
+    public function cerrar_conexion()
+    {
+        $this->conn = NULL;
+    }
 
   
 

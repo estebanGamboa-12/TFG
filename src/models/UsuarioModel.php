@@ -3,10 +3,9 @@ namespace admin\foro\Models;
 
 class UsuarioModel extends Model
 {
-    private $conexion;
-    private $usuario;
-    private $post;
 
+     private $usuario;
+     private $post;
     public function __construct()
     {
         parent::__construct();
@@ -23,7 +22,7 @@ class UsuarioModel extends Model
             $sql = "SELECT id, nombre,contraseña, imagen_logo_usuario FROM usuarios WHERE nombre=:nombre and contraseña=:contrasena";
 
 
-            $consulta = $this->conexion->prepare($sql);
+            $consulta = $this->conn->prepare($sql);
 
             // Vincula los parámetros
             $consulta->bindParam(':nombre', $nombre);
@@ -43,7 +42,7 @@ class UsuarioModel extends Model
                 $sql1 = "SELECT u.nombre,u.imagen_logo_usuario,p.titulo,p.fecha_creacion,p.contenido,p.imagen,p.video ,p.tipo_post
             FROM post p
              JOIN usuarios u ON p.id_usuario=u.id; ";
-                $consulta1 = $this->conexion->prepare($sql1);
+                $consulta1 = $this->conn->prepare($sql1);
                 $consulta1->execute();
 
                 while ($dato = $consulta1->fetch(\PDO::FETCH_ASSOC)) {
@@ -69,7 +68,7 @@ class UsuarioModel extends Model
         try {
 
             $sql = "SELECT correo from usuarios where correo=:correo";
-            $consula = $this->conexion->prepare($sql);
+            $consula = $this->conn->prepare($sql);
             $consula->bindParam(":correo", $_POST['email']);
             $consula->execute();
             $resultado = $consula->fetchAll();
@@ -79,7 +78,7 @@ class UsuarioModel extends Model
                 $contrasena = password_hash($_POST['contraseña'], PASSWORD_BCRYPT); //contraseña hasheada
                 $sql2 = "INSERT INTO usuarios (nombre, apellido, correo, contraseña, imagen_logo_usuario) 
         VALUES (:nombre, :apellido, :correo, :contrasena, :imagen_logo_usuario)";
-                $consulta = $this->conexion->prepare($sql2);
+                $consulta = $this->conn->prepare($sql2);
                 $consulta->bindParam(":nombre", $_POST['nombre']);
                 $consulta->bindParam(":apellido", $_POST['apellido']);
                 $consulta->bindParam(":correo", $_POST['email']);
@@ -97,9 +96,5 @@ class UsuarioModel extends Model
             echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
         }
-    }
-    public function cerrar_conexion()
-    {
-        $this->conexion = NULL;
     }
 }

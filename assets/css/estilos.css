@@ -449,21 +449,14 @@ footer {
 
 .card-aside2 {
     margin: 5% 0%;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-
-}
-
-.titulo-aside {
-    grid-column: 1/3;
-    grid-row: 1;
     display: flex;
-    text-align: center;
-    justify-content: flex-start;
-
+    flex-direction: row;
 }
-
+.contenido-aside2{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
 .imagenLogo-aside {
     width: 3rem;
     height: 3rem;
@@ -471,19 +464,8 @@ footer {
 
 }
 
-.nombre-aside {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 5%;
-}
-
 .miembros-aside {
-    grid-column: 1/3;
-    grid-row: 2;
     color: rgb(120, 120, 120);
-    display: flex;
-    justify-content: flex-start;
 }
 
 /* Ventana modal de iniciar sesion  */
