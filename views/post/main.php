@@ -58,19 +58,18 @@ $post = $data['post'] ?? NULL;
 <!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
 <div class="modalIniciarSesion" id="modal-IniciarSesion">
     <div class="modal-content-sesion">
-        <div class=" cerrar">x</div>
+        <div class="cerrar">x</div>
         <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-        <form action="index.php?ctl=iniciarSesion" method="post">
+        <form action="<?php Parameters::$BASE_URL ?>Usuario/iniciarSesion"method="post">
             <label for="nombre">
                 <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
             </label>
             <label for="contreaseña">
                 <input type="password" name="contrasena" id="contraseña" placeholder="Contraseña" required>
             </label>
-
             <input type="submit" value="Iniciar Sesion">
         </form>
-        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse" href="#">Registrarse</a></div>
+        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse" >Registrarse</a></div>
     </div>
 </div>
 <!-- ventana modal registrarse ----------------------------------------------------------------- -->
@@ -78,7 +77,7 @@ $post = $data['post'] ?? NULL;
     <div class="modal-content-registrarse">
         <div class="cerrar">x</div>
         <div class="titulo-registrarse">Registrarse</div>
-        <form action="index.php?ctl=registrar" method="post">
+        <form action="<?php Parameters::$BASE_URL?> Usuario/registrarUsuarios" method="post">
             <label for="nombre">
                 <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
             </label>

@@ -44,13 +44,13 @@ class ViewController
     private static function showSidebar2()
     {
         $comunidadesModel = new ComunidadModel();
-        $comunidades = $comunidadesModel->getComunidaes();
+        $comunidades = $comunidadesModel->getComunidades();
 
         $membresias = [];  
 
         $membresiasModel = new MembresiaModel();
         foreach ($comunidades as $indice => $contenido) {
-            $membresiasComunidad = $membresiasModel->getMembresias($contenido['id']);
+            $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id']);
             // Guardamos el resultado en el array $membresias
             $membresias[$contenido['id']] = $membresiasComunidad; // Usamos el id de la comunidad como clave
         }

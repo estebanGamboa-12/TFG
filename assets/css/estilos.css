@@ -5,7 +5,37 @@
     color: rgb(0, 0, 0);
 
 }
+/* crear post , perfil */
+.perfil {
+    grid-column: 5;
+    grid-row: 1;
+    color: rgb(215, 212, 212);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.perfil img {
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+.CrearPost {
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 150, 136);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: black;
+    margin-right: 8%;
+    font-size: 100%;
+    width: 8rem;
+    padding: 2%;
 
+}
+.nombre-usuario{
+    margin-right: 1rem;
+}
 /* crearPublicaciones */
 .CrearPublicaciones-titulo {
     display: flex;
@@ -30,6 +60,7 @@
     justify-content: flex-start;
     padding: 2%;
     margin: 3% 0% 0% 5%;
+    cursor: pointer;
 }
 
 .CrearPublicaciones-opciones div {
@@ -43,7 +74,7 @@
 }
 
 .CrearPublicaciones-titulo input {
-    width: 34rem;
+    width: 40rem;
     border-radius: 1rem;
     border: 1px solid black;
     color: black;
@@ -58,9 +89,15 @@
 .CrearPublicaciones-contenido textarea {
     border-radius: 1rem;
     border: 1px solid black;
-    width: 34rem;
+    width: 40rem;
     padding: 2%;
     height: 4rem;
+}
+.CrearPublicaciones-contenido input {
+    border-radius: 1rem;
+    border: 1px solid black;
+    width: 40rem;
+    padding: 2%;
 }
 
 .CrearPublicaciones-botonPost {
@@ -438,7 +475,7 @@ footer {
     overflow-x: hidden;
     margin-top: 5%;
     background-color: #8080800d;
-    margin-left: -15%;
+
 }
 
 .comunidades-aside {

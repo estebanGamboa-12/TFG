@@ -7,7 +7,10 @@ use admin\foro\Config\Parameters;
 
 <aside class="contenido-aside first-aside">
     <div class="aside1">
-        <div class="popular">Popular <i class="fa fa-sort-down"></i></div>
+    <a href="<?= Parameters::$BASE_URL?>Post/home" class="popular">Home <i class="fa fa-sort-down"></i></a>
+        <a href="<?= Parameters::$BASE_URL?>Post/index" class="popular">Popular <i class="fa fa-sort-down"></i></a>
+        <a href="<?= Parameters::$BASE_URL?>Comunidades/explorar" class="popular">Explorar <i class="fa fa-sort-down"></i></a>
+        <a href="<?= Parameters::$BASE_URL?>Post/index" class="popular">All <i class="fa fa-sort-down"></i></a>
         <div class="recientes">Recientes <i class="fa fa-sort-down"></i></div>
         <div class="logo-texto">
             <img src=" <?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">

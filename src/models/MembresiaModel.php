@@ -11,7 +11,7 @@ class MembresiaModel extends Model
         parent::__construct();
         $this->tabla = "membresias";
     }
-    public function getMembresias($idComunidad)
+    public function getNumeroMiembros($idComunidad)
     {
         $sql = "SELECT * 
         FROM membresias m 

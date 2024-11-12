@@ -1,25 +1,23 @@
 <?php
 namespace admin\foro\Models;
 
+use admin\foro\Config\Parameters;
+
 class UsuarioModel extends Model
 {
-
-     private $usuario;
-     private $post;
     public function __construct()
     {
         parent::__construct();
-        $this->tabla="post";
+        $this->tabla="usuarios";
     }
 
-    public function iniciarSesion()
+    public function iniciarSesion($nombre,$contrasena)
     {
         $nombre = $_REQUEST["nombre"];
         $contrasena = $_REQUEST["contrasena"];
         try {
 
-
-            $sql = "SELECT id, nombre,contraseña, imagen_logo_usuario FROM usuarios WHERE nombre=:nombre and contraseña=:contrasena";
+            $sql = "SELECT id, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
 
 
             $consulta = $this->conn->prepare($sql);
@@ -29,31 +27,20 @@ class UsuarioModel extends Model
             $consulta->bindParam(':contrasena', $contrasena);
 
             $consulta->execute();
+            $resultado=null;
             while ($dato = $consulta->fetch(\PDO::FETCH_ASSOC)) {
-                $this->usuario = $dato;
+                $resultado = $dato;
             }
 
             if ($consulta->rowCount() > 0) {
-                $_SESSION['nombre'] = $_REQUEST['nombre'];
-                $_SESSION["imagen_logo_usuario"] = $this->usuario['imagen_logo_usuario'];
-                $_SESSION["id"] = $this->usuario['id'];
-                //1º sql= saca todos los post para logeado.php
-
-                $sql1 = "SELECT u.nombre,u.imagen_logo_usuario,p.titulo,p.fecha_creacion,p.contenido,p.imagen,p.video ,p.tipo_post
-            FROM post p
-             JOIN usuarios u ON p.id_usuario=u.id; ";
-                $consulta1 = $this->conn->prepare($sql1);
-                $consulta1->execute();
-
-                while ($dato = $consulta1->fetch(\PDO::FETCH_ASSOC)) {
-                    $this->post[] = $dato;
-                }
-                /*var_dump($this->post);
-             exit;*/
-                return $this->post;
+                $_SESSION['user'] = [
+                    'nombre' => $_REQUEST['nombre'], // O de cualquier otro origen, como $resultado['nombre']
+                    'imagen_logo_usuario' => $resultado['imagen_logo_usuario'],
+                    'id' => $resultado['id']
+                ];
+                  return $resultado;
             } else {
-                header("Location: index.php?ctl=home&error=1");
-                exit;
+                return $consulta->rowCount();
             }
         } catch (\Exception $e) {
             echo "<h1><br>Fichero: " . $e->getFile();

@@ -2,6 +2,7 @@
 
 namespace admin\foro\Controllers;
 
+use admin\foro\Config\Parameters;
 use admin\foro\Models\PostModel;
 
 class PostController
@@ -15,19 +16,18 @@ class PostController
         
        ViewController::show("views/post/main.php", ['post'=>$post]);
     }
-    public function mostrarForm() // 
+    public function mostrarForm() //vista formulario para subir post 
     {
-        require "app/vistas/crearPost.php";
+        ViewController::show( "views/post/crearPost.php");
         exit;
     }
-    public function subirPost()
+    public function subirPost()//subir un post desde el formulario crearPost.php
     {
-
         $postModel = new PostModel();
+        var_dump($_POST);
+        exit;
         $post = $postModel->subirPost();
-        $postModel->cerrar_conexion();
-
-        header('location:index.php');
+        header('Location:' . Parameters::$BASE_URL ."Post/index");
         exit;
     }
 }
