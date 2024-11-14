@@ -75,9 +75,7 @@ use admin\foro\Config\Parameters;
 $comunidades = $data['comunidades'] ?? NULL;
 $membresias=$data['membresias']??NULL;
 
-if (!Authentication::isUserLogged()) {
-    header("Location:" . Parameters::$BASE_URL);
-}
+
 ?>
 <section>
     <div class="section">
@@ -102,4 +100,4 @@ if (!Authentication::isUserLogged()) {
         </div>
     </div>
     </div>
-</section>
+    </section>

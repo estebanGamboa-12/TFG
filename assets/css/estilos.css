@@ -291,6 +291,7 @@ footer {
     justify-items: center;
     align-items: center;
     margin-top: 2%;
+    cursor: pointer;
 }
 
 /* section */
@@ -369,6 +370,7 @@ footer {
     width: 5rem;
     padding: 1%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    cursor: pointer;
 }
 
 .section-card {

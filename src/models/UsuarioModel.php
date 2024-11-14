@@ -34,7 +34,8 @@ class UsuarioModel extends Model
 
             if ($consulta->rowCount() > 0) {
                 $_SESSION['user'] = [
-                    'nombre' => $_REQUEST['nombre'], // O de cualquier otro origen, como $resultado['nombre']
+                    "idUsuario"=>$resultado['id'],
+                    'nombre' => $resultado['nombre'], // O de cualquier otro origen, como $resultado['nombre']
                     'imagen_logo_usuario' => $resultado['imagen_logo_usuario'],
                     'id' => $resultado['id']
                 ];

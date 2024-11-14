@@ -8,7 +8,7 @@ use admin\foro\Models\PostModel;
 class PostController
 {
 
-    public function index() // inicio y la parte populares logeado es la misma
+    public function popular() // populares 
     {
         $postModel = new PostModel();
 
@@ -24,10 +24,19 @@ class PostController
     public function subirPost()//subir un post desde el formulario crearPost.php
     {
         $postModel = new PostModel();
-        var_dump($_POST);
+        var_dump($_POST);//aqui debeoms 
         exit;
         $post = $postModel->subirPost();
-        header('Location:' . Parameters::$BASE_URL ."Post/index");
+        header('Location:' . Parameters::$BASE_URL ."Post/home");
         exit;
+    }
+    public function home() // home 
+    {
+        $postModel = new PostModel();
+
+        $idUsuario=$_SESSION['user']['idUsuario'];
+        $post = $postModel->getPostHome($idUsuario);
+        
+       ViewController::show("views/post/home.php", ['post'=>$post]);
     }
 }

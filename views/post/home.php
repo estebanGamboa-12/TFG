@@ -5,7 +5,6 @@ use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
 
-
 ?>
 
     <section>
@@ -25,7 +24,11 @@ $post = $data['post'] ?? NULL;
                                                     ?>
                         </div>
                         <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
+                        <?php if($contenido['esta_unido']==0){?>
                         <div class="unirseBoton-section">Unirse</div>
+                        <?php } else{ ?>
+
+                        <?php } ?>
                     </div>
                     <div class="section-card">
                         <div class="titulo-section"><?= $contenido['titulo'] ?></div>

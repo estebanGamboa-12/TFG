@@ -1,4 +1,5 @@
 <?php
+
 namespace admin\foro\Models;
 
 class PostModel extends Model
@@ -7,7 +8,7 @@ class PostModel extends Model
     public function __construct()
     {
         parent::__construct();
-        $this->tabla="post";
+        $this->tabla = "post";
     }
 
     public function obtenerPostAleatorios()
@@ -16,7 +17,7 @@ class PostModel extends Model
         try {
             $consulta = $this->conn->prepare($sql);
             $consulta->execute();
-             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
@@ -24,22 +25,13 @@ class PostModel extends Model
             die($e->getMessage());
         }
     }
-    public function getPostPopular()
+    public function getPostPopular()//parte popular
     {
-        //1º consulta: saca todos los post
-        //2º nombre imagen de cada comunidad y saber cuantos miembros tiene cada comunidad.
-        //3º sacar todos los nombres de los temas.
-
+        // saca todos los post
         $sql1 = "SELECT u.nombre,u.imagen_logo_usuario,p.titulo,p.fecha_creacion,p.contenido,p.imagen,p.video ,p.tipo_post
          FROM post p
           JOIN usuarios u ON p.id_usuario=u.id; ";
 
-        $sql2 = "SELECT c.nombre AS comunidad_nombre, c.imagen AS comunidad_imagen, COUNT(m.id_usuario) AS total_miembros 
-        FROM comunidades c 
-        LEFT JOIN membresias m ON c.id = m.id_comunidad 
-        GROUP BY c.id, c.nombre, c.imagen;";
-        $sql3 = "SELECT t.nombre AS nombre_tema 
-        FROM temas t; ";
         try {
             //consulta1
             $consulta1 = $this->conn->prepare($sql1);
@@ -48,48 +40,58 @@ class PostModel extends Model
             $dato = $consulta1->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
             exit;
-                
-            
-            //consulta 2
-            // $consulta2 = $this->conn->prepare($sql2);
-            // $consulta2->execute();
-
-            // while ($dato = $consulta2->fetch(\PDO::FETCH_ASSOC)) {
-            //     $this->comunidades[] = $dato;
-            // }
-            // consulta3
-            // $consulta3 = $this->conn->prepare($sql3);
-            // $consulta3->execute();
-
-            // while ($dato = $consulta3->fetch(\PDO::FETCH_ASSOC)) {
-            //     $this->temas[] = $dato;
-            // }
-            $datos = [
-                'post' => $dato,
-                // 'comunidades' => $this->comunidades,
-                // 'temas' => $this->temas
-            ];
-            //Retornar todos los datos.
-            /* var_dump($datos);
-            exit;*/
-            return $datos;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
         }
     }
-    public function subirPost()
+    public function getPostHome($id_usuario)//parte home
     {
+        try {
+        // saca todos los 
+        //1ºPosts de las comunidades a las que el usuario está unido
+        //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
+        $sql = "
+        (
+            SELECT u.nombre, u.imagen_logo_usuario, p.id, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
+                   c.id AS comunidad_id, c.nombre AS comunidad_nombre, 1 AS esta_unido
+            FROM post p
+            JOIN comunidades c ON p.id_comunidad = c.id
+            JOIN usuarios u ON u.id = p.id_usuario
+            JOIN membresias m ON c.id = m.id_comunidad
+            WHERE m.id_usuario = :idUsuario
+        )
+        UNION ALL
+        (
+            SELECT u.nombre, u.imagen_logo_usuario, p.id, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
+                   c.id AS comunidad_id, c.nombre AS comunidad_nombre, 0 AS esta_unido
+            FROM post p
+            JOIN comunidades c ON p.id_comunidad = c.id
+            JOIN usuarios u ON u.id = p.id_usuario
+            WHERE c.id NOT IN (SELECT id_comunidad FROM membresias m WHERE m.id_usuario = :idUsuario)
+            LIMIT 5
+        )
+        ORDER BY fecha_creacion DESC;
+    ";
+    
 
+       
+            //consulta1
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":idUsuario",$id_usuario);
+            $consulta->execute();
 
-        // Valores ficticios
-        $titulo = "Título del Post Ejemplo";
-        $contenido = "Este es el contenido del post. Aquí puedes hablar sobre cualquier tema que desees.";
-        $id_usuario = 1; // Supongamos que el ID del usuario es 1
-        $id_tema = 2; // Supongamos que el ID del tema es 2
-        $tipo_post = "normal"; // Tipo de post, puede ser "publicación", "noticia", etc.
-
+            $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $dato;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
+    public function subirPost($titulo,$contenido,$id_usuario,$id_tema,$tipo_post)
+    {
         // Preparar la consulta SQL
         $sql = "INSERT INTO `post` (id, titulo, contenido, fecha_creacion, imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
         VALUES (NULL, :titulo, :contenido, CURRENT_TIMESTAMP(), NULL, NULL, :id_usuario, NULL, :id_tema, :tipo_post);";

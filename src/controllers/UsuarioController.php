@@ -15,7 +15,7 @@ class UsuarioController
         $datos = $usuarioModel->iniciarSesion($nombre,$contrasena);
         var_dump($_SESSION);
 
-        header('Location: ' . Parameters::$BASE_URL . 'Post/index');
+        header('Location: ' . Parameters::$BASE_URL . 'Post/popular');
 
     }
     public function registrarUsuarios()
