@@ -50,9 +50,9 @@ class ViewController
 
         $membresiasModel = new MembresiaModel();
         foreach ($comunidades as $indice => $contenido) {
-            $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id']);
+            $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
             // Guardamos el resultado en el array $membresias
-            $membresias[$contenido['id']] = $membresiasComunidad; // Usamos el id de la comunidad como clave
+            $membresias[$contenido['id_comunidad']] = $membresiasComunidad; // Usamos el id de la comunidad como clave
         }
 
         include 'views/layout/sidebar2.php';

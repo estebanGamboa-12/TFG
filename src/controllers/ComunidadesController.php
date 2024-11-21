@@ -14,8 +14,8 @@ class ComunidadesController{
         $comunidades= $comunidadesModel->getComunidades();
         $membresias=[];
         foreach($comunidades as  $indice=>$contenido){
-            $membresiasComunidad=$membresiasModel->getNumeroMiembros($contenido['id']);
-            $membresias[$contenido['id']]=$membresiasComunidad;
+            $membresiasComunidad=$membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
+            $membresias[$contenido['id_comunidad']]=$membresiasComunidad;
         }
 
         ViewController::show("views/comunidades/explorarComunidades.php",['comunidades'=>$comunidades,"membresias"=>$membresias]);

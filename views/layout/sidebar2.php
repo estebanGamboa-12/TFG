@@ -2,6 +2,7 @@
 use admin\foro\Config\Parameters;
 ?>
 
+
 <aside class="second-aside ">
     <div class="aside2">
         <div class="comunidades-aside">Comunidades Populares</div>
@@ -10,7 +11,7 @@ use admin\foro\Config\Parameters;
             <img class="imagenLogo-aside" src="<?= Parameters::$BASE_URL . "assets/img/".$contenido['imagen']?>" alt="foto">
             <div class="contenido-aside2">
             <div class="nombre-aside"><?= $contenido['nombre']?></div>
-            <div class="miembros-aside"><?=$membresias[$contenido['id']]?> miembros</div>
+            <div class="miembros-aside"><?=$membresias[$contenido['id_comunidad']]?> miembros</div>
             </div>
         </div>
         <?php }?>

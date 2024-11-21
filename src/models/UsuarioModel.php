@@ -13,11 +13,9 @@ class UsuarioModel extends Model
 
     public function iniciarSesion($nombre,$contrasena)
     {
-        $nombre = $_REQUEST["nombre"];
-        $contrasena = $_REQUEST["contrasena"];
         try {
 
-            $sql = "SELECT id, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
+            $sql = "SELECT id_usuario, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
 
 
             $consulta = $this->conn->prepare($sql);
@@ -34,10 +32,9 @@ class UsuarioModel extends Model
 
             if ($consulta->rowCount() > 0) {
                 $_SESSION['user'] = [
-                    "idUsuario"=>$resultado['id'],
+                    "idUsuario"=>$resultado['id_usuario'],
                     'nombre' => $resultado['nombre'], // O de cualquier otro origen, como $resultado['nombre']
                     'imagen_logo_usuario' => $resultado['imagen_logo_usuario'],
-                    'id' => $resultado['id']
                 ];
                   return $resultado;
             } else {

@@ -3,7 +3,7 @@
         'name' => 'admin/foro',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '384cbb24acac608cb24351afb93dc8e21933782c',
+        'reference' => 'ae5fcefc84bd6a1726fb34ae9b2958d731c4fc37',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,16 +13,16 @@
         'admin/foro' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '384cbb24acac608cb24351afb93dc8e21933782c',
+            'reference' => 'ae5fcefc84bd6a1726fb34ae9b2958d731c4fc37',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '3.7.0',
-            'version' => '3.7.0.0',
-            'reference' => 'f4393b648b78a5408747de94fca38beb5f7e9ef8',
+            'pretty_version' => '2.10.0',
+            'version' => '2.10.0.0',
+            'reference' => '5cf826f2991858b54d5c3809bee745560a1042a7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -40,17 +40,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
-        ),
-        'stefangabos/zebra_pagination' => array(
-            'pretty_version' => '2.4.8',
-            'version' => '2.4.8.0',
-            'reference' => '2067a9e395b2c9de2a1454fe0fa9cad81a1ecf46',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../stefangabos/zebra_pagination',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
     ),
 );
