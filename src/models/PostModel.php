@@ -25,16 +25,26 @@ class PostModel extends Model
             die($e->getMessage());
         }
     }
-    public function getPostPopular()//parte popular
+    public function getPostPopular($usuario)//parte popular
     {
-        // saca todos los post
-        $sql1 = "SELECT u.nombre,u.imagen_logo_usuario,p.titulo,p.fecha_creacion,p.contenido,p.imagen,p.video ,p.tipo_post
-         FROM post p
-          JOIN usuarios u ON p.id_usuario=u.id; ";
+        // saca todos los post en orden segun los votos 
+        $sql1 = "SELECT u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video,
+         p.tipo_post, COUNT(v.id_post) AS votos,
+          CASE 
+          WHEN m.id_usuario IS NOT NULL THEN 'Unido' 
+          ELSE 'No Unido' 
+          END AS esta_unido 
+          FROM post p JOIN usuarios u ON p.id_usuario = u.id
+           LEFT JOIN votos v ON p.id = v.id_post
+            LEFT JOIN membresias m ON m.id_usuario =:idUsuario AND
+             m.id_comunidad = p.id_comunidad 
+             GROUP BY p.id 
+             ORDER BY votos DESC;  ";
 
         try {
             //consulta1
             $consulta1 = $this->conn->prepare($sql1);
+            $consulta1->bindParam(":idUsuario",$usuario);
             $consulta1->execute();
 
             $dato = $consulta1->fetchAll(\PDO::FETCH_ASSOC);
@@ -46,10 +56,43 @@ class PostModel extends Model
             die($e->getMessage());
         }
     }
+    public function getAllPost($usuario)//parte popular
+    {
+        // saca todos los post
+        $sql1 = "SELECT u.nombre,
+       u.imagen_logo_usuario,
+       p.titulo,
+       p.fecha_creacion,
+       p.contenido,
+       p.imagen,
+       p.video,
+       p.tipo_post,
+       CASE 
+           WHEN m.id_comunidad IS NOT NULL THEN 1  -- Si el usuario está en la comunidad
+           ELSE 0  -- Si el usuario no está en la comunidad
+       END AS esta_unido
+FROM post p
+JOIN usuarios u ON p.id_usuario = u.id
+LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_comunidad; ";
+
+        try {
+            //consulta1
+            $consulta = $this->conn->prepare($sql1);
+            $consulta->bindParam(":idUsuario",$usuario);
+            $consulta->execute();
+
+            $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $dato;
+            exit;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
     public function getPostHome($id_usuario)//parte home
     {
         try {
-        // saca todos los 
         //1ºPosts de las comunidades a las que el usuario está unido
         //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
         $sql = "
@@ -110,6 +153,30 @@ class PostModel extends Model
             echo "Post insertado correctamente.";
         } else {
             echo "Error al insertar el post.";
+        }
+    }
+    public function getPostPopularNoLogeado()//parte popular no logeado
+    {
+        // saca todos los post en orden segun los votos 
+        $sql1 = "SELECT u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video,
+         p.tipo_post, COUNT(v.id_post) AS votos
+          FROM post p JOIN usuarios u ON p.id_usuario = u.id
+           LEFT JOIN votos v ON p.id = v.id_post
+             GROUP BY p.id 
+             ORDER BY votos DESC;  ";
+
+        try {
+            //consulta1
+            $consulta1 = $this->conn->prepare($sql1);
+            $consulta1->execute();
+
+            $dato = $consulta1->fetchAll(\PDO::FETCH_ASSOC);
+            return $dato;
+            exit;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
         }
     }
     public function cerrar_conexion()

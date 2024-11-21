@@ -20,12 +20,6 @@ class ComunidadesController{
 
         ViewController::show("views/comunidades/explorarComunidades.php",['comunidades'=>$comunidades,"membresias"=>$membresias]);
     }
-    public function home(){
-        $comunidadesModel=new ComunidadModel();
-        $comunidades= $comunidadesModel->getComunidadesHome();
-
-        //ViewController::show("views/comunidades/.php",['comunidades'=>$comunidades,"membresias"=>$membresias]);
-    }
 }
 
 ?>

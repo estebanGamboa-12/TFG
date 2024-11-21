@@ -12,9 +12,10 @@ class PostController
     {
         $postModel = new PostModel();
 
-        $post = $postModel->getPostPopular();
+        $idUsuario=$_SESSION['user']['idUsuario'];
+        $post = $postModel->getPostPopular($idUsuario);
         
-       ViewController::show("views/post/main.php", ['post'=>$post]);
+       ViewController::show("views/post/verPost.php", ['post'=>$post]);
     }
     public function mostrarForm() //vista formulario para subir post 
     {
@@ -23,6 +24,7 @@ class PostController
     }
     public function subirPost()//subir un post desde el formulario crearPost.php
     {
+        //tengo que acabar estooo.
         $postModel = new PostModel();
         var_dump($_POST);//aqui debeoms 
         exit;
@@ -37,6 +39,20 @@ class PostController
         $idUsuario=$_SESSION['user']['idUsuario'];
         $post = $postModel->getPostHome($idUsuario);
         
-       ViewController::show("views/post/home.php", ['post'=>$post]);
+       ViewController::show("views/post/verPost.php", ['post'=>$post]);
     }
+    public function All() // All 
+    {
+        $postModel = new PostModel();
+        $idUsuario=$_SESSION['user']['idUsuario'];
+        $post = $postModel->getAllPost($idUsuario);
+       ViewController::show("views/post/verPost.php", ['post'=>$post]);
+    }
+    public function popularNoLogeado() // popular cuando no esta logeado 
+    {
+        $postModel = new PostModel();
+        $post = $postModel->getPostPopularNoLogeado();
+       ViewController::show("views/post/popular.php", ['post'=>$post]);
+    }
+
 }

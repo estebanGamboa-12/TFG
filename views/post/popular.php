@@ -5,7 +5,6 @@ use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
 
-
 ?>
 
     <section>
