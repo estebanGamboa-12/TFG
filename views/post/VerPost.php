@@ -11,33 +11,6 @@ $idUsuario = $_SESSION['user']['idUsuario']?? NULL;
     <?php //var_dump($_SESSION['user']['idUsuario']);exit; 
     ?>
 </pre>
-<style>
-     .contenido {
-        height: 50px;
-        background-color: blue;
-        z-index: 1000;
-        position: sticky;
-        top: 0;
-        width: 100%;
-        justify-content: center;
-        display: none;
-        justify-content: center;
-        align-content: flex-start;
-        align-items: center;
-        font-size: 1.5rem;
-    }
-
-    .verde {
-        background-color: #009688;
-        color: black;
-    }
-
-    .rojo {
-        background-color: red;
-        color: black;
-    }
-</style>
-
 <section>
     <div class="section">
     <div class="contenido"></div>

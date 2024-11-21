@@ -3,6 +3,7 @@
 namespace admin\foro\Controllers;
 
 use admin\foro\Controllers\ErrorController;
+use admin\foro\Helpers\Authentication;
 use admin\foro\Models\ComunidadesModel;
 use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\MembresiaModel;
@@ -39,6 +40,12 @@ class ViewController
     {
         $temasModel = new TemaModel();
         $temas = $temasModel->getTemas();
+        $comunidades=NULL;
+        if(Authentication::isUserLogged()){
+            $idUsuario=$_SESSION['user']['idUsuario'];
+            $comunidadesModel= new ComunidadModel();
+            $comunidades=$comunidadesModel->getComunidadesUnido($idUsuario);
+        }
         include 'views/layout/sidebar1.php';
     }
     private static function showSidebar2()

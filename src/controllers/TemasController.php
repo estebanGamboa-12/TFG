@@ -2,6 +2,7 @@
 
 namespace admin\foro\Controllers;
 
+use admin\foro\Models\TemaModel;
 use admin\foro\Models\TemasModel;
 
 class TemasController
@@ -9,10 +10,8 @@ class TemasController
 
     public function mostrarTemas() // inicio y la parte populares logeado es la misma
     {
-        $temasModel = new TemasModel();
-
+        $temasModel = new TemaModel();
         $temas = $temasModel->getTemas();
-        
     }
     public function mostrarForm() // 
     {

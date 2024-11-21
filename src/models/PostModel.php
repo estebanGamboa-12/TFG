@@ -12,20 +12,20 @@ class PostModel extends Model
     }
     public function getPostPopular($usuario) //parte popular
     {
-        // saca todos los post en orden segun los votos 
-            $sql1 = "SELECT p.id_comunidad,u.id_usuario, u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video, p.tipo_post, COUNT(v.id_post) AS votos,
+        // saca todos los post en orden segun los votos, saber si esta unido o no y no mostrar sus post 
+            $sql1 = "SELECT p.id_comunidad, u.id_usuario, u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video, p.tipo_post, COUNT(v.id_post) 
+            AS votos, 
             CASE 
             WHEN m.id_usuario IS NOT NULL THEN '1' 
-            ELSE '0' 
-            END AS esta_unido
-            FROM post p 
-            JOIN usuarios u ON p.id_usuario = u.id_usuario 
-            LEFT JOIN votos v ON p.id_post = v.id_post 
-            LEFT JOIN membresias m ON m.id_usuario =:idUsuario 
-            AND 
-            m.id_comunidad = p.id_comunidad 
-            GROUP BY p.id_post 
-            ORDER BY votos DESC;   ";
+            ELSE '0'
+             END AS esta_unido 
+             FROM post p JOIN usuarios u ON p.id_usuario = u.id_usuario 
+             LEFT JOIN votos v ON p.id_post = v.id_post 
+             LEFT JOIN membresias m ON m.id_usuario = :idUsuario
+              AND m.id_comunidad = p.id_comunidad
+               WHERE p.id_usuario != :idUsuario 
+               GROUP BY p.id_post 
+               ORDER BY votos DESC;   ";
 
         try {
             //consulta1
