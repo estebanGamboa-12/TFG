@@ -337,9 +337,8 @@ footer {
     justify-content: center;
     align-items: center;
 }
-.contenido {
+.contenidoMensajes {
     height: 50px;
-    background-color: blue;
     z-index: 1000;
     position: sticky;
     top: 0;

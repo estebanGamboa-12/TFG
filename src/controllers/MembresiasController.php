@@ -12,8 +12,6 @@ class MembresiasController
     public function unirseComunidad()
     {
         if (Authentication::isUserLogged()) {
-
-
             header('Content-Type: application/json');
             $membresiasModel = new MembresiaModel();
             // Obtener los datos enviados en el body (en formato JSON)

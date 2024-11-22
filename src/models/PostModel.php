@@ -13,23 +13,43 @@ class PostModel extends Model
     public function getPostPopular($usuario) //parte popular
     {
         // saca todos los post en orden segun los votos, saber si esta unido o no y no mostrar sus post 
-            $sql1 = "SELECT p.id_comunidad, u.id_usuario, u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video, p.tipo_post, COUNT(v.id_post) 
-            AS votos, 
-            CASE 
-            WHEN m.id_usuario IS NOT NULL THEN '1' 
-            ELSE '0'
-             END AS esta_unido 
-             FROM post p JOIN usuarios u ON p.id_usuario = u.id_usuario 
-             LEFT JOIN votos v ON p.id_post = v.id_post 
-             LEFT JOIN membresias m ON m.id_usuario = :idUsuario
-              AND m.id_comunidad = p.id_comunidad
-               WHERE p.id_usuario != :idUsuario 
-               GROUP BY p.id_post 
-               ORDER BY votos DESC;   ";
-
+        $sql="SELECT 
+    p.id_comunidad, 
+    u.id_usuario, 
+    u.nombre,
+    u.imagen_logo_usuario,
+    c.imagen AS image_comunidad, 
+    p.titulo,
+    p.fecha_creacion, 
+    p.contenido,
+    p.imagen, 
+    p.video, 
+    p.tipo_post, 
+    COUNT(v.id_post) AS votos, 
+    CASE 
+        WHEN m.id_usuario IS NOT NULL THEN '1' 
+        ELSE '0' 
+    END AS esta_unido 
+FROM 
+    post p
+JOIN 
+    usuarios u ON p.id_usuario = u.id_usuario 
+LEFT JOIN 
+    votos v ON p.id_post = v.id_post 
+LEFT JOIN 
+    membresias m ON m.id_usuario =:idUsuario AND m.id_comunidad = p.id_comunidad
+JOIN 
+    comunidades c ON c.id_comunidad = p.id_comunidad 
+WHERE 
+    p.id_usuario !=:idUsuario
+GROUP BY 
+    p.id_post 
+ORDER BY 
+    votos DESC;
+        ";
         try {
             //consulta1
-            $consulta1 = $this->conn->prepare($sql1);
+            $consulta1 = $this->conn->prepare($sql);
             $consulta1->bindParam(":idUsuario", $usuario);
             $consulta1->execute();
 
@@ -53,6 +73,7 @@ class PostModel extends Model
        p.imagen,
        p.video,
        p.tipo_post,
+      c.imagen As image_comunidad,
        CASE 
            WHEN m.id_comunidad IS NOT NULL THEN 1  -- Si el usuario está en la comunidad
            ELSE 0  -- Si el usuario no está en la comunidad
@@ -82,7 +103,7 @@ LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_co
             //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
             $sql = "
         (
-            SELECT p.id_comunidad, u.id_usuario ,u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
+            SELECT p.id_comunidad,c.imagen As image_comunidad, u.id_usuario ,u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
                    c.id_comunidad , c.nombre AS comunidad_nombre, 1 AS esta_unido
             FROM post p
             JOIN comunidades c ON p.id_comunidad = c.id_comunidad
@@ -92,7 +113,7 @@ LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_co
         )
         UNION ALL
         (
-            SELECT p.id_comunidad,u.id_usuario, u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
+            SELECT p.id_comunidad,c.imagen As image_comunidad,u.id_usuario, u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
                    c.id_comunidad , c.nombre AS comunidad_nombre, 0 AS esta_unido
             FROM post p
             JOIN comunidades c ON p.id_comunidad = c.id_comunidad

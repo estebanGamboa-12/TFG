@@ -5,64 +5,73 @@ use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
 
-$idUsuario = $_SESSION['user']['idUsuario']?? NULL;
+$idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
 <pre>
-    <?php //var_dump($_SESSION['user']['idUsuario']);exit; 
+    <?php //var_dump($post);exit; 
     ?>
 </pre>
 <section>
     <div class="section">
-    <div class="contenido"></div>
-        <?php foreach ($post as $indice => $contenido) {
-        ?>
-            <div class="card-section">
-                <div class="encabezado-section">
-                    <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen_logo_usuario'] ?>" alt="imagen " class="imagenLogo-section">
-                    <div class="nombre-section"><?php
-                                                if ($contenido['tipo_post'] === 'normal') {
-                                                    echo 'n/' . $contenido['nombre'];
-                                                } elseif ($contenido['tipo_post'] === 'comunidad') {
-                                                    echo 'c/' . $contenido['nombre'];
-                                                }
-                                                ?>
-                    </div>
-                    <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
-                    <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad") { ?>
-                        <div class="unirseBoton-section unirse"
-                            data-id-comunidad="<?= $contenido['id_comunidad'] ?>"
-                            data-id-usuario="<?= $idUsuario ?>">Unirse</div>
-                    <?php } else { ?>
+        <div class="contenidoMensajes"></div>
+            <?php foreach ($post as $indice => $contenido): ?>
+                <div class="card-section">
+                    <?php
+                    // Determina el prefijo basado en el tipo de post
+                    $prefijo = ($contenido['tipo_post'] === 'normal') ? 'n/' : 'c/';
+                    
+                    // Determina la imagen según el tipo de post
+                    $imagen = ($contenido['tipo_post'] === 'normal') 
+                        ? Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen_logo_usuario'] 
+                        : Parameters::$BASE_URL . 'assets/img/' . $contenido['image_comunidad']
+                    ?>
 
-                    <?php } ?>
-                </div>
-                <div class="section-card">
-                    <div class="titulo-section"><?= $contenido['titulo'] ?></div>
-                    <div class="contenido-section"><?= $contenido['contenido'] ?> </div>
-                    <?php if (!empty($contenido['video'])) { ?>
-                        <!-- si existe video -->
-                        <div class="videos-fotos-section">
-                            <video class="video-section " controls>
-                                <source src="<?= Parameters::$BASE_URL . 'assets/videos/' . $contenido['video'] ?>" type="video/mp4">
-                                Tu navegador no soporta la etiqueta de video.
-                            </video>
+                    <div class="encabezado-section">
+                        <img src="<?= $imagen ?>" alt="imagen" class="imagenLogo-section">
+                        <div class="nombre-section">
+                            <?= $prefijo . $contenido['nombre']; ?>
                         </div>
-                    <?php } elseif (!empty($contenido['imagen'])) { ?>
-                        <!-- si existe video -->
-                        <div class="videos-fotos-section">
-                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
+                        <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
+                        <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad"){ ?>
+                        <div class="unirseBoton-section unirse"
+                             data-id-comunidad="<?= $contenido['id_comunidad'] ?>"
+                             data-id-usuario="<?= $idUsuario ?>">
+                            Unirse
                         </div>
-                    <?php } ?>
+                    <?php }else{ ?>
+
+                        <?php } ?>
+                    </div>
+                    <div class="section-card">
+                        <div class="titulo-section"><?= $contenido['titulo'] ?></div>
+                        <div class="contenido-section"><?= $contenido['contenido'] ?></div>
+
+                        <?php if (!empty($contenido['video'])): ?>
+                            <!-- si existe video -->
+                            <div class="videos-fotos-section">
+                                <video class="video-section" controls>
+                                    <source src="<?= Parameters::$BASE_URL . 'assets/videos/' . $contenido['video'] ?>" type="video/mp4">
+                                    Tu navegador no soporta la etiqueta de video.
+                                </video>
+                            </div>
+                        <?php elseif (!empty($contenido['imagen'])): ?>
+                            <!-- si existe imagen -->
+                            <div class="videos-fotos-section">
+                                <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="pie-section">
+                        <div class="votos-seccion">Votos</div>
+                        <div class="comentarios-section">Comentarios</div>
+                        <div class="compartir-section">Compartir</div>
+                    </div>
                 </div>
-                <div class="pie-section">
-                    <div class="votos-seccion">votos</div>
-                    <div class="comentarios-section">Comentarios</div>
-                    <div class="compartir-section">Compartir</div>
-                </div>
-            </div>
-        <?php } ?>
+            <?php endforeach; ?>
     </div>
 </section>
+
 <script>
     function actualizarCamposGenericos(url, idComunidad, idUsuario, valor) {
         fetch(url, {
@@ -80,7 +89,7 @@ $idUsuario = $_SESSION['user']['idUsuario']?? NULL;
                 try {
 
                     let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
-                    document.querySelector('.contenido').style.display = "flex";
+                    document.querySelector('.contenidoMensajes').style.display = "flex";
                     // Comprobamos la respuesta completa
                     console.log("Valor de success:" + jsonData.success);
                     if (jsonData.success === true) {
@@ -89,25 +98,25 @@ $idUsuario = $_SESSION['user']['idUsuario']?? NULL;
                             numeroMiembros.innerHTML = `${jsonData.miembros} miembros`;
                         }
                         //success
-                        document.querySelector('.contenido').innerHTML = jsonData.message;
-                        document.querySelector('.contenido').classList.add("verde");
+                        document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
+                        document.querySelector('.contenidoMensajes').classList.add("verde");
                         setTimeout(() => {
-                            document.querySelector('.contenido').classList.remove("verde");
-                            document.querySelector('.contenido').style.display = "none";
+                            document.querySelector('.contenidoMensajes').classList.remove("verde");
+                            document.querySelector('.contenidoMensajes').style.display = "none";
                             mensaje.remove();
                         }, 2000);
                     } else {
                         //error
-                        document.querySelector('.contenido').innerHTML = jsonData.message;
-                        document.querySelector('.contenido').classList.add("rojo");
+                        document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
+                        document.querySelector('.contenidoMensajes').classList.add("rojo");
                         setTimeout(() => {
-                            document.querySelector('.contenido').classList.remove("rojo");
-                            document.querySelector('.contenido').style.display = "none";
+                            document.querySelector('.contenidoMensajes').classList.remove("rojo");
+                            document.querySelector('.contenidoMensajes').style.display = "none";
                         }, 2000);
 
                     }
                 } catch (error) {
-                    alert('Error al procesar la respuesta del servidor.', 'error');
+                    alert('Error al procesar la respuesta del servidor.' + error);
                 }
             })
             .catch(error => {
@@ -127,7 +136,6 @@ $idUsuario = $_SESSION['user']['idUsuario']?? NULL;
                 console.log("Usuario " + usuario + " se unirá a la comunidad " + comunidad);
                 actualizarCamposGenericos(url, comunidad, usuario); // Llamar a la función con los valores seleccionados
             } else {
-                console.log("Usuario " + usuario + " se unirá a la comunidad " + comunidad);
                 alert('¡Algo salió mal! No se pudo procesar la solicitud.');
             }
         });
