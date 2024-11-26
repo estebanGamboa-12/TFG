@@ -53,7 +53,7 @@ class PostController
         $idUsuario=$_SESSION['user']['idUsuario'];
         $post = $postModel->getPostHome($idUsuario);
         
-       ViewController::show("views/post/verPost.php", ['post'=>$post]);
+       ViewController::show("views/post/home.php", ['post'=>$post]);
     } else {
         ViewController::showError(403);
     }
@@ -63,8 +63,10 @@ class PostController
         if (Authentication::isUserLogged()) {
         $postModel = new PostModel();
         $idUsuario=$_SESSION['user']['idUsuario'];
-        $post = $postModel->getAllPost($idUsuario);
-       ViewController::show("views/post/verPost.php", ['post'=>$post]);
+        $pagina=isset($_GET['pagina']) ? (int)$_GET['pagina']:1;
+        $postPorPagina=15;
+        $post = $postModel->getAllPost($idUsuario,$pagina,$postPorPagina);
+       ViewController::show("views/post/all.php", ['post'=>$post]);
     } else {
         ViewController::showError(403);
     }
@@ -73,7 +75,32 @@ class PostController
     {
         $postModel = new PostModel();
         $post = $postModel->getPostPopularNoLogeado();
-       ViewController::show("views/post/popular.php", ['post'=>$post]);
+       ViewController::show("views/post/popularNoLogeado.php", ['post'=>$post]);
     }
+    public function loadMorePosts() 
+{
+    if (Authentication::isUserLogged()) {
+        $postModel = new PostModel();
+        $idUsuario = $_SESSION['user']['idUsuario'];
+        
+        // Obtener el número de la página
+        $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;  // Por defecto, cargamos la página 1
+        $postsPorPagina = 15; // Número de posts por página
+
+        // Obtener los posts para esa página
+        $posts = $postModel->getAllPost($idUsuario, $pagina, $postsPorPagina);
+
+        // Devolver los posts como JSON
+        echo json_encode([
+            'success' => true,
+            'posts' => $posts
+        ]);
+        exit;
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
+        exit;
+    }
+}
+
 
 }

@@ -13,7 +13,8 @@ class PostModel extends Model
     public function getPostPopular($usuario) //parte popular
     {
         // saca todos los post en orden segun los votos, saber si esta unido o no y no mostrar sus post 
-        $sql="SELECT 
+        $sql = "SELECT 
+    p.id_post,
     p.id_comunidad, 
     u.id_usuario, 
     u.nombre,
@@ -62,35 +63,68 @@ ORDER BY
             die($e->getMessage());
         }
     }
-    public function getAllPost($usuario) //parte popular
+    public function getAllPost($usuario, $pagina = 1, $postPorPagina = 15) 
     {
-        // saca todos los post
-        $sql1 = "SELECT p.id_comunidad, u.id_usuario, u.nombre,
-       u.imagen_logo_usuario,
-       p.titulo,
-       p.fecha_creacion,
-       p.contenido,
-       p.imagen,
-       p.video,
-       p.tipo_post,
-      c.imagen As image_comunidad,
-       CASE 
-           WHEN m.id_comunidad IS NOT NULL THEN 1  -- Si el usuario está en la comunidad
-           ELSE 0  -- Si el usuario no está en la comunidad
-       END AS esta_unido
-FROM post p
-JOIN usuarios u ON p.id_usuario = u.id_usuario
-LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_comunidad; ";
-
+        // Calcular el OFFSET (desplazamiento)
+        $offset = ($pagina - 1) * $postPorPagina;
+        
+        // Consulta SQL con LIMIT y OFFSET
+        $sql1 = "SELECT 
+                    p.id_post,
+                    p.id_comunidad, 
+                    u.id_usuario, 
+                    u.nombre, 
+                    u.imagen_logo_usuario, 
+                    p.titulo, 
+                    p.fecha_creacion, 
+                    p.contenido, 
+                    p.imagen, 
+                    p.video, 
+                    p.tipo_post, 
+                    c.imagen AS image_comunidad, 
+                    CASE 
+                        WHEN m.id_comunidad IS NOT NULL THEN 1 
+                        ELSE 0 
+                    END AS esta_unido, 
+                    COUNT(v.id_voto) AS votos  
+                FROM post p
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_comunidad
+                LEFT JOIN comunidades c ON c.id_comunidad = p.id_comunidad
+                LEFT JOIN votos v ON v.id_post = p.id_post  
+                GROUP BY 
+                    p.id_post,  
+                    p.id_comunidad, 
+                    u.id_usuario, 
+                    u.nombre, 
+                    u.imagen_logo_usuario, 
+                    p.titulo, 
+                    p.fecha_creacion, 
+                    p.contenido, 
+                    p.imagen, 
+                    p.video, 
+                    p.tipo_post, 
+                    c.imagen
+                LIMIT :offset, :limit";  // Corregido el nombre de :limit1 a :limit
+    
         try {
+            // Preparar la consulta
             $consulta = $this->conn->prepare($sql1);
+            
+            // Vincular los parámetros
             $consulta->bindParam(":idUsuario", $usuario);
+            $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); // Corregido aquí: :limit en lugar de :limit1
+            
+            // Ejecutar la consulta
             $consulta->execute();
-
+    
+            // Obtener los resultados
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-            exit;
+    
         } catch (\PDOException $e) {
+            // Manejo de errores
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
             die($e->getMessage());
@@ -102,26 +136,72 @@ LEFT JOIN membresias m ON m.id_usuario = :idUsuario AND m.id_comunidad = p.id_co
             //1ºPosts de las comunidades a las que el usuario está unido
             //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
             $sql = "
-        (
-            SELECT p.id_comunidad,c.imagen As image_comunidad, u.id_usuario ,u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
-                   c.id_comunidad , c.nombre AS comunidad_nombre, 1 AS esta_unido
-            FROM post p
-            JOIN comunidades c ON p.id_comunidad = c.id_comunidad
-            JOIN usuarios u ON u.id_usuario = p.id_usuario
-            JOIN membresias m ON c.id_comunidad = m.id_comunidad
-            WHERE m.id_usuario = :idUsuario
-        )
-        UNION ALL
-        (
-            SELECT p.id_comunidad,c.imagen As image_comunidad,u.id_usuario, u.nombre, u.imagen_logo_usuario, p.id_post, p.titulo, p.contenido, p.fecha_creacion, p.tipo_post, 
-                   c.id_comunidad , c.nombre AS comunidad_nombre, 0 AS esta_unido
-            FROM post p
-            JOIN comunidades c ON p.id_comunidad = c.id_comunidad
-            JOIN usuarios u ON u.id_usuario = p.id_usuario
-            WHERE c.id_comunidad NOT IN (SELECT id_comunidad FROM membresias m WHERE m.id_usuario = :idUsuario)
-            LIMIT 5
-        )
-        ORDER BY fecha_creacion DESC;
+      (
+    SELECT 
+        p.id_post,
+        p.id_comunidad, 
+        c.imagen AS image_comunidad, 
+        u.id_usuario, 
+        u.nombre, 
+        u.imagen_logo_usuario, 
+        p.id_post, 
+        p.titulo, 
+        p.contenido, 
+        p.fecha_creacion, 
+        p.tipo_post, 
+        c.id_comunidad, 
+        c.nombre AS comunidad_nombre, 
+        1 AS esta_unido,
+        COUNT(v.id_voto) AS votos  
+    FROM 
+        post p
+    JOIN 
+        comunidades c ON p.id_comunidad = c.id_comunidad
+    JOIN 
+        usuarios u ON u.id_usuario = p.id_usuario
+    JOIN 
+        membresias m ON c.id_comunidad = m.id_comunidad
+    LEFT JOIN 
+        votos v ON v.id_post = p.id_post  
+    WHERE 
+        m.id_usuario = :idUsuario
+    GROUP BY 
+        p.id_post
+)
+UNION ALL
+(
+    SELECT 
+        p.id_post,
+        p.id_comunidad, 
+        c.imagen AS image_comunidad, 
+        u.id_usuario, 
+        u.nombre, 
+        u.imagen_logo_usuario, 
+        p.id_post, 
+        p.titulo, 
+        p.contenido, 
+        p.fecha_creacion, 
+        p.tipo_post, 
+        c.id_comunidad, 
+        c.nombre AS comunidad_nombre, 
+        0 AS esta_unido,
+        COUNT(v.id_voto) AS votos  
+    FROM 
+        post p
+    JOIN 
+        comunidades c ON p.id_comunidad = c.id_comunidad
+    JOIN 
+        usuarios u ON u.id_usuario = p.id_usuario
+    LEFT JOIN 
+        votos v ON v.id_post = p.id_post  
+    WHERE 
+        c.id_comunidad NOT IN (SELECT id_comunidad FROM membresias m WHERE m.id_usuario = :idUsuario)
+    GROUP BY 
+        p.id_post
+)
+ORDER BY 
+    fecha_creacion DESC 
+
     ";
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idUsuario", $id_usuario);

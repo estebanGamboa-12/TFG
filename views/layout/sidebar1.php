@@ -64,6 +64,7 @@ use admin\foro\Helpers\Authentication;
     </div>
 
     <!-- Temas--------------------------------------------------------------------- -->
+    <?php if ($temas != NULL) { ?>
     <div class="temas">Temas <i class="fa fa-sort-up icono"></i></div>
     <div class="temas-lista contenido1">
       <?php
@@ -75,10 +76,11 @@ use admin\foro\Helpers\Authentication;
           <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
           <div id="textoAside1"><?= $contenido['nombre'] ?></div>
         </div>
-      <?php } ?>
+      <?php }?>
     </div>
     <button id="verMasTemas" class="ver-mas">Ver más</button>
     <button id="verMenosTemas" class="ver-menos" style="display: none;">Ver Menos</button>
+    <?php } ?>
 
     <!-- Comunidades --------------------------------------------------------------------- -->
     <?php if ($comunidades != NULL) { ?>
@@ -95,17 +97,17 @@ use admin\foro\Helpers\Authentication;
           </div>
         <?php } ?>
       </div>
+      <button id="verMasComunidades" class="ver-mas">Ver más</button>
+      <button id="verMenosComunidades" class="ver-menos" style="display: none;">Ver Menos</button>
     <?php } ?>
-    <button id="verMasComunidades" class="ver-mas">Ver más</button>
-    <button id="verMenosComunidades" class="ver-menos" style="display: none;">Ver Menos</button>
   </div>
 </aside>
 <script>
   // Inicialización de variables
-  let temasMostrados = 6; // Número inicial de temas mostrados
-  let comunidadesMostradas = 6; // Número inicial de comunidades mostradas
-  let temasPorPagina = 6; // Número de temas a cargar por clic
-  let comunidadesPorPagina = 6; // Número de comunidades a cargar por clic
+  let temasMostrados = 6; 
+  let comunidadesMostradas = 6; 
+  let temasPorPagina = 6; 
+  let comunidadesPorPagina = 6; 
 
   let totalTemas = <?= json_encode(count($temas)); ?>; // Total de temas disponibles
   let totalComunidades = <?= json_encode(count($comunidades)); ?>; // Total de comunidades disponibles
