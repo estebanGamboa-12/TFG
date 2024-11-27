@@ -4,7 +4,7 @@ use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
-$token=$data['token'] ?? NULL;
+$token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
@@ -17,7 +17,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     }
 </style>
 <pre>
-    <?php //var_dump($post);exit; 
+    <?php //var_dump($token);exit; 
     ?>
 </pre>
 <section>
@@ -43,8 +43,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                     <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad") { ?>
                         <div class="unirseBoton-section unirse"
-                            data-id-comunidad="<?= $contenido['id_comunidad'] ?>"
-                            data-id-usuario="<?= $idUsuario ?>">
+                            data-token-unirse="<?= $token[$contenido['id_post']] ?>">
                             Unirse
                         </div>
                     <?php } else { ?>
@@ -72,8 +71,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 </div>
                 <div class="pie-section">
                     <div class="votos-seccion" id="votar"
-                        data-id-post="<?= $contenido['id_post'] ?>"
-                        data-id-usuario="<?= $idUsuario ?>">
+                        data-token-votar="<?= $token[$contenido['id_post']] ?>">
                         Votos(<?= $contenido['votos'] ?>)
                     </div>
                     <div class="comentarios-section">Comentarios</div>
@@ -139,8 +137,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     // ------------------UNIRSE---------------------------------- 
     document.querySelectorAll('.unirse').forEach(botonUnirse => {
         botonUnirse.addEventListener('click', function() {
-            let comunidad = botonUnirse.getAttribute('data-id-comunidad'); // Obtener el id de la comunidad
-            let usuario = botonUnirse.getAttribute('data-id-usuario'); // Obtener el id del usuario
+            let token = botonUnirse.getAttribute('data-token-unirse'); // Obtener  token del boton unirse
+            console.log(token);
 
             // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
             const url = '<?= Parameters::$BASE_URL ?>Membresias/unirseComunidad';
@@ -156,8 +154,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     // ------------------VOTAR---------------------------------- 
     document.querySelectorAll('#votar').forEach(botonUnirse => {
         botonUnirse.addEventListener('click', function() {
-            let post = botonUnirse.getAttribute('data-id-post'); // Obtener el id de la comunidad
-            let usuario = botonUnirse.getAttribute('data-id-usuario'); // Obtener el id del usuario
+            let token = botonUnirse.getAttribute('data-token-votar'); // Obtener el id de la comunidad
+            console.log(token);
 
             // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
             const url = '<?= Parameters::$BASE_URL ?>Votos/votar';
