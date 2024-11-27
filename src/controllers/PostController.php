@@ -6,6 +6,7 @@ use admin\foro\Config\Parameters;
 use  admin\foro\Helpers\Authentication;
 use admin\foro\Models\PostModel;
 use \Firebase\JWT\JWT;
+use stdClass;
 
 class PostController
 {
@@ -69,15 +70,15 @@ class PostController
             $token = [];
             $posts = $postModel->getAllPost($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
+                $idUsuario=$_SESSION['user']['idUsuario'];
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($post['id_usuario'], $post['id_comunidad'], $post['id_post']);
-                    $post['token'] = self::generarToken($post['id_usuario'], $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
             }
             ViewController::show("views/post/all.php", [
-                'post' => $post, 
+                'post' => $posts, 
                 "token" => $token]);
         } else {
             ViewController::showError(403);
@@ -92,6 +93,8 @@ class PostController
         );
         $key = "123"; //clave secreta
         $alg = 'HS256';
+        $_SESSION['key']=$key;
+        $_SESSION['alg']=$alg;
         $jwt = JWT::encode($token_data, $key, $alg);
         return $jwt;
         // Generar el token JWT
@@ -102,7 +105,7 @@ class PostController
         $post = $postModel->getPostPopularNoLogeado();
         ViewController::show("views/post/popularNoLogeado.php", ['post' => $post]);
     }
-    public function loadMorePosts()
+    public function loadMorePostsAll()
     {
         header('Content-Type: application/json');
         if (Authentication::isUserLogged()) {
@@ -121,13 +124,21 @@ class PostController
             $pagina = $data['pagina'];
 
             $postsPorPagina = 15;
-
+            $token=[];
             $posts = $postModel->getAllPost($idUsuario, $pagina, $postsPorPagina);
-
+            foreach ($posts as $post) {
+                $idUsuario=$_SESSION['user']['idUsuario'];
+                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                } else {
+                    $post['jwt_token'] = null;
+                }
+            }
             if ($posts) {
                 echo json_encode([
                     'success' => true,
-                    'posts' => $posts
+                    'posts' => $posts,
+                    'token'=>$token,
                 ]);
             } else {
                 echo json_encode([

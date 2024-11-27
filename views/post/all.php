@@ -15,6 +15,9 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         font-size: 16px;
         color: #888;
     }
+    .votar{
+        cursor: pointer;
+    }
 </style>
 <pre>
     <?php //var_dump($token);exit; 
@@ -70,7 +73,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <?php endif; ?>
                 </div>
                 <div class="pie-section">
-                    <div class="votos-seccion" id="votar"
+                    <div class="votos-seccion votar"
                         data-token-votar="<?= $token[$contenido['id_post']] ?>">
                         Votos(<?= $contenido['votos'] ?>)
                     </div>
@@ -84,15 +87,14 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 <div id="loading"></div>
 
 <script>
-    function actualizarCamposGenericos(url, campo, idUsuario, valor) {
+    function actualizarCamposGenericos(url, token) {
         fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    [valor]: campo,
-                    idUsuario: idUsuario
+                    token: token,
                 })
             })
             .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
@@ -103,11 +105,13 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
                     document.querySelector('.contenidoMensajes').style.display = "flex";
                     // Comprobamos la respuesta completa
-                    console.log("Valor de success:" + jsonData);
                     if (jsonData.success === true) {
-                        let numeroVotos = document.querySelector(`#votar[data-id-post='${campo}']`);
+                        let numeroVotos = document.querySelector(`[data-token-votar='${encodeURIComponent(token)}']`);//por los caracteres especiales del token
+                        console.log(numeroVotos);
                         if (numeroVotos) {
                             numeroVotos.innerHTML = `votos(${jsonData.votos}) `;
+                        }else{
+                            console.error("no se encontro el boton numero de votos ");
                         }
                         //success
                         document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
@@ -134,40 +138,33 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 console.error('Error en la solicitud fetch:', error);
             });
     }
-    // ------------------UNIRSE---------------------------------- 
-    document.querySelectorAll('.unirse').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
-            let token = botonUnirse.getAttribute('data-token-unirse'); // Obtener  token del boton unirse
-            console.log(token);
+   
+    document.querySelector('.section').addEventListener('click', function(event) {
+       // ------------------UNIRSE-------------------------------
+        if (event.target && event.target.classList.contains('unirse')) { // ------------------UNIRSE---------------------------------- 
+            let token = event.target.getAttribute('data-token-unirse'); // Obtener token
 
-            // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
             const url = '<?= Parameters::$BASE_URL ?>Membresias/unirseComunidad';
 
-            if (comunidad) {
-                console.log("Usuario " + usuario + " se unirá a la comunidad " + comunidad);
-                actualizarCamposGenericos(url, comunidad, usuario, "idComunidad"); // Llamar a la función con los valores seleccionados
+            if (token) {
+                actualizarCamposGenericos(url, token); 
             } else {
                 alert('¡Algo salió mal! No se pudo procesar la solicitud.');
             }
-        });
-    });
-    // ------------------VOTAR---------------------------------- 
-    document.querySelectorAll('#votar').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
-            let token = botonUnirse.getAttribute('data-token-votar'); // Obtener el id de la comunidad
-            console.log(token);
+            // ------------------VOTAR---------------------------------- 
+        } else if (event.target && event.target.classList.contains('votar')) {  // ------------------VOTAR---------------------------------- 
+            let token = event.target.getAttribute('data-token-votar'); // Obtener token
 
-            // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
             const url = '<?= Parameters::$BASE_URL ?>Votos/votar';
 
-            if (post) {
-                console.log("Usuario " + usuario + " vota al post " + post);
-                actualizarCamposGenericos(url, post, usuario, "idPost"); // Llamar a la función con los valores seleccionados
+            if (token) {
+                actualizarCamposGenericos(url, token); 
             } else {
                 alert('¡Algo salió mal! No se pudo procesar la solicitud.');
             }
-        });
+        };
     });
+
     let loading = false;
     let pagina = 2;
 
@@ -188,7 +185,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     // Función para cargar más posts
     function loadMorePosts(page) {
 
-        fetch('<?= Parameters::$BASE_URL ?>Post/loadMorePosts', {
+        fetch('<?= Parameters::$BASE_URL ?>Post/loadMorePostsAll', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -208,10 +205,10 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             })
             .then(responseText => {
                 try {
-                    console.log('Respuesta del servidor:', responseText);
+                    //console.log('Respuesta del servidor:', responseText);
                     const data = JSON.parse(responseText);
                     if (data.success) {
-                        appendPosts(data.posts);
+                        appendPosts(data.posts, data.token);
                         loading = false; // Restablecer el estado de carga
                         document.getElementById('loading').style.display = 'none'; // Ocultar el cargador
 
@@ -252,7 +249,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             });
     }
 
-    function appendPosts(posts) {
+    function appendPosts(posts, tokens) {
         const Parameters = {
             BASE_URL: '<?= Parameters::$BASE_URL ?>'
         };
@@ -270,8 +267,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         <div class="fecha-section">${post.fecha_creacion}</div>
         ${post.esta_unido === 0 && post.tipo_post === 'comunidad' ? `
             <div class="unirseBoton-section unirse"
-                data-id-comunidad="${post.id_comunidad}"
-                data-id-usuario="${post.id_usuario}">
+                data-token-unirse="${tokens[post.id_post]}">
                 Unirse
             </div>
         ` : ''}
@@ -296,9 +292,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         ` : ''}
     </div>
     <div class="pie-section">
-        <div class="votos-seccion" id="votar"
-            data-id-post="${post.id_post}"
-            data-id-usuario="${post.id_usuario}">
+        <div class="votos-seccion votar" "
+            data-token-votar="${tokens[post.id_post]}">
             Votos(${post.votos})
         </div>
         <div class="comentarios-section">Comentarios</div>
