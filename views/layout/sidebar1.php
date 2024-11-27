@@ -237,7 +237,7 @@ use admin\foro\Helpers\Authentication;
   const flechaIconos = document.querySelectorAll('.icono');
   const contenidos = document.querySelectorAll('.contenido1');
   const verMasButtons = document.querySelectorAll('.ver-mas');
-  console.log(verMasButtons);
+  //console.log(verMasButtons);
 
   // Recorremos cada uno de los íconos de la flecha
   flechaIconos.forEach((flechaIcono, index) => {

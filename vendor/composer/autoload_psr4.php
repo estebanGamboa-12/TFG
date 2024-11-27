@@ -14,4 +14,5 @@ return array(
     'admin\\foro\\Config\\' => array($baseDir . '/src/config'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
 );

@@ -168,7 +168,6 @@ section {
 footer {
     grid-column: 1 / 4;
     grid-row: 4;
-    background-color: rgb(43, 147, 113);
 }
 
 /* header */

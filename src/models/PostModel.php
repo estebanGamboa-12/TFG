@@ -63,7 +63,7 @@ ORDER BY
             die($e->getMessage());
         }
     }
-    public function getAllPost($usuario, $pagina = 1, $postPorPagina = 15) 
+    public function getAllPost($usuario, $pagina, $postPorPagina) 
     {
         // Calcular el OFFSET (desplazamiento)
         $offset = ($pagina - 1) * $postPorPagina;
