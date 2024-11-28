@@ -42,6 +42,7 @@ class UsuarioController
     public function verUsuario()
     {
         $usuarioModel = new UsuarioModel();
+        echo "verusuario";
         ViewController::show("views/usuario/verUsuario.php");
 
     }
