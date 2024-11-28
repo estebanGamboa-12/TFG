@@ -5,7 +5,37 @@
     color: rgb(0, 0, 0);
 
 }
+/* crear post , perfil */
+.perfil {
+    grid-column: 5;
+    grid-row: 1;
+    color: rgb(215, 212, 212);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.perfil img {
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+.CrearPost {
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 150, 136);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: black;
+    margin-right: 8%;
+    font-size: 100%;
+    width: 8rem;
+    padding: 2%;
 
+}
+.nombre-usuario{
+    margin-right: 1rem;
+}
 /* crearPublicaciones */
 .CrearPublicaciones-titulo {
     display: flex;
@@ -30,6 +60,7 @@
     justify-content: flex-start;
     padding: 2%;
     margin: 3% 0% 0% 5%;
+    cursor: pointer;
 }
 
 .CrearPublicaciones-opciones div {
@@ -43,7 +74,7 @@
 }
 
 .CrearPublicaciones-titulo input {
-    width: 34rem;
+    width: 40rem;
     border-radius: 1rem;
     border: 1px solid black;
     color: black;
@@ -58,9 +89,15 @@
 .CrearPublicaciones-contenido textarea {
     border-radius: 1rem;
     border: 1px solid black;
-    width: 34rem;
+    width: 40rem;
     padding: 2%;
     height: 4rem;
+}
+.CrearPublicaciones-contenido input {
+    border-radius: 1rem;
+    border: 1px solid black;
+    width: 40rem;
+    padding: 2%;
 }
 
 .CrearPublicaciones-botonPost {
@@ -131,7 +168,6 @@ section {
 footer {
     grid-column: 1 / 4;
     grid-row: 4;
-    background-color: rgb(43, 147, 113);
 }
 
 /* header */
@@ -254,6 +290,7 @@ footer {
     justify-items: center;
     align-items: center;
     margin-top: 2%;
+    cursor: pointer;
 }
 
 /* section */
@@ -332,6 +369,7 @@ footer {
     width: 5rem;
     padding: 1%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    cursor: pointer;
 }
 
 .section-card {
@@ -438,7 +476,7 @@ footer {
     overflow-x: hidden;
     margin-top: 5%;
     background-color: #8080800d;
-    margin-left: -15%;
+
 }
 
 .comunidades-aside {
@@ -449,21 +487,14 @@ footer {
 
 .card-aside2 {
     margin: 5% 0%;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-
-}
-
-.titulo-aside {
-    grid-column: 1/3;
-    grid-row: 1;
     display: flex;
-    text-align: center;
-    justify-content: flex-start;
-
+    flex-direction: row;
 }
-
+.contenido-aside2{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
 .imagenLogo-aside {
     width: 3rem;
     height: 3rem;
@@ -471,19 +502,8 @@ footer {
 
 }
 
-.nombre-aside {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 5%;
-}
-
 .miembros-aside {
-    grid-column: 1/3;
-    grid-row: 2;
     color: rgb(120, 120, 120);
-    display: flex;
-    justify-content: flex-start;
 }
 
 /* Ventana modal de iniciar sesion  */
@@ -648,6 +668,30 @@ footer {
 .modal-content-registrarse input:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.5); /* Resalta los campos seleccionados */
+}
+.contenido {
+    height: 50px;
+    background-color: blue;
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    justify-content: center;
+    display: none;
+    justify-content: center;
+    align-content: flex-start;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.verde {
+    background-color: #009688;
+    color: black;
+}
+
+.rojo {
+    background-color: red;
+    color: black;
 }
 
 

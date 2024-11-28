@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'Zebra_Pagination' => $vendorDir . '/stefangabos/zebra_pagination/Zebra_Pagination.php',
 );

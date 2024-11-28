@@ -2,32 +2,214 @@
 
 namespace admin\foro\Controllers;
 
+use admin\foro\Config\Parameters;
+use  admin\foro\Helpers\Authentication;
 use admin\foro\Models\PostModel;
+use \Firebase\JWT\JWT;
+use stdClass;
 
 class PostController
 {
 
-    public function index() // inicio y la parte populares logeado es la misma
+    public function popular() // populares 
+    {
+        if (Authentication::isUserLogged()) {
+            $postModel = new PostModel();
+
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $pagina = 1;
+            $postPorPagina = 15;
+            $token = [];
+            $posts = $postModel->getPostPopular($idUsuario, $pagina, $postPorPagina);
+            foreach ($posts as $post) {
+                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                } else {
+                    $post['jwt_token'] = null;
+                }
+            }
+
+            ViewController::show("views/post/popular.php", ['post' => $posts, "token" => $token]);
+        } else {
+            ViewController::showError(403);
+        }
+    }
+    public function mostrarForm() //vista formulario para subir post 
+    {
+        if (Authentication::isUserLogged()) {
+            ViewController::show("views/post/crearPost.php");
+            exit;
+        } else {
+            ViewController::showError(403);
+        }
+    }
+    public function subirPost() //subir un post desde el formulario crearPost.php
+    {
+        if (Authentication::isUserLogged()) {
+            //tengo que acabar estooo.
+            $postModel = new PostModel();
+            var_dump($_POST); //aqui debeoms 
+            exit;
+            $post = $postModel->subirPost();
+            header('Location:' . Parameters::$BASE_URL . "Post/home");
+            exit;
+        } else {
+            ViewController::showError(403);
+        }
+    }
+    public function home() // home 
+    {
+        if (Authentication::isUserLogged()) {
+            $postModel = new PostModel();
+
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $pagina = 1;
+            $postPorPagina = 15;
+            $token = [];
+            $posts = $postModel->getPostHome($idUsuario, $pagina, $postPorPagina);
+            foreach ($posts as $post) {
+                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                } else {
+                    $post['jwt_token'] = null;
+                }
+            }
+
+
+            ViewController::show("views/post/home.php", ['post' => $posts, "token" => $token]);
+        } else {
+            ViewController::showError(403);
+        }
+    }
+    public function All() // All 
+    {
+        if (Authentication::isUserLogged()) {
+            $postModel = new PostModel();
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $pagina = 1;
+            $postPorPagina = 15;
+            $token = [];
+            $posts = $postModel->getAllPost($idUsuario, $pagina, $postPorPagina);
+            foreach ($posts as $post) {
+                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                } else {
+                    $post['jwt_token'] = null;
+                }
+            }
+            ViewController::show("views/post/all.php", [
+                'post' => $posts,
+                "token" => $token
+            ]);
+        } else {
+            ViewController::showError(403);
+        }
+    }
+
+    public function popularNoLogeado() // popular cuando no esta logeado 
     {
         $postModel = new PostModel();
-
-        $post = $postModel->getPostPopular();
-        
-       ViewController::show("views/post/main.php", ['post'=>$post]);
+        $pagina = 1;
+        $postPorPagina = 15;
+        $post = $postModel->getPostPopularNoLogeado($pagina, $postPorPagina);
+        ViewController::show("views/post/popularNoLogeado.php", ['post' => $post]);
     }
-    public function mostrarForm() // 
+    public function loadMorePosts() //cargar mas post de las vistas (all,home,popular);
     {
-        require "app/vistas/crearPost.php";
-        exit;
+        header('Content-Type: application/json');
+        if (Authentication::isUserLogged()) {
+
+            $postModel = new PostModel();
+
+            $data = json_decode(file_get_contents('php://input'), true);
+            //variables
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $pagina = $data['pagina'];
+            $postsPorPagina = 15;
+            $token = [];
+            $vista=$data['vista'];
+
+            if (!isset($data['pagina'])) {
+                echo json_encode(['success' => false, 'message' => 'Falta el parámetro de la página']);
+                exit;
+            }
+            if (!isset($data['vista'])) {
+                echo json_encode(['success' => false, 'message' => 'Ocurrio un erro (132 post controller)']);
+                exit;
+            }
+           /*var_dump($vista);
+            exit;*/
+            switch ($vista) {
+                case 'all':
+                    $posts = $postModel->getAllPost($idUsuario, $pagina, $postsPorPagina);
+                    foreach ($posts as $post) {
+                        $idUsuario = $_SESSION['user']['idUsuario'];
+                        if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                        } else {
+                            $post['jwt_token'] = null;
+                        }
+                    }
+                    break;
+                case 'home':
+                    $posts = $postModel->getPostHome($idUsuario, $pagina, $postsPorPagina);
+                    foreach ($posts as $post) {
+                        $idUsuario = $_SESSION['user']['idUsuario'];
+                        if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                        } else {
+                            $post['jwt_token'] = null;
+                        }
+                    }
+                    break;
+                case 'popular':
+                    $posts = $postModel->getPostPopular($idUsuario, $pagina, $postsPorPagina);
+                    foreach ($posts as $post) {
+                        $idUsuario = $_SESSION['user']['idUsuario'];
+                        if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                        } else {
+                            $post['jwt_token'] = null;
+                        }
+                    }
+                    break;
+
+                default:
+                    echo json_encode(['success' => false, 'message' => 'Ocurrio un error inesperado (145 postContr)']);
+                    exit;
+                    break;
+            }
+            if ($posts) {
+                echo json_encode([
+                    'success' => true,
+                    'posts' => $posts,
+                    'token' => $token,
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No se encontraron más posts'
+                ]);
+            }
+            exit;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
+            exit;
+        }
     }
-    public function subirPost()
+    public static function generarToken($idUsuario, $idComunidad, $idpost)
     {
-
-        $postModel = new PostModel();
-        $post = $postModel->subirPost();
-        $postModel->cerrar_conexion();
-
-        header('location:index.php');
-        exit;
+        $token_data = array(
+            "id_usuario" => $idUsuario,
+            "id_comunidad" => $idComunidad,
+            "id_post" => $idpost,
+        );
+        $key = "123"; //clave secreta
+        $alg = 'HS256';
+        $_SESSION['key'] = $key;
+        $_SESSION['alg'] = $alg;
+        $jwt = JWT::encode($token_data, $key, $alg);
+        return $jwt;
+        // Generar el token JWT
     }
 }

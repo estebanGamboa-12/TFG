@@ -37,12 +37,13 @@ class Model{
         $sql="SELECT * FROM {$this->tabla}";
         $consulta=$this->conn->prepare($sql);
         $consulta->execute();
-        $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
+        $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
         return $resultado;
     }
-    
-
-  
+    public function cerrar_conexion()
+    {
+        $this->conn = NULL;
+    }
 
 }
 

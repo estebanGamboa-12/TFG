@@ -1,18 +1,46 @@
 <?php
 namespace admin\foro\Models;
 
-class ComunidadesModel extends Model {
-
-    private $conexion;
-    private $comunidades;
+class ComunidadModel extends Model {
 
     public function __construct()
     {
         parent::__construct();
         $this->tabla="comunidades";
     }
-    public function cerrar_conexion()
-    {
-        $this->conexion = NULL;
+    public function getComunidades(){
+        $sql="SELECT *  from  {$this->tabla}";
+        $consulta=$this->conn->prepare($sql);
+        $consulta->execute();
+        $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
+    public function getComunidadesHome(){
+        $sql="SELECT *  from  {$this->tabla}";
+        $consulta=$this->conn->prepare($sql);
+        $consulta->execute();
+        $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
+    public function getComunidadesUnido($idUsuario){
+        $sql="SELECT c.* 
+        FROM comunidades c 
+        JOIN membresias m ON c.id_comunidad = m.id_comunidad
+         WHERE m.id_usuario = :idUsuario;"; 
+        $consulta=$this->conn->prepare($sql);
+        $consulta->bindParam(":idUsuario", $idUsuario);
+        $consulta->execute();
+        $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
+    public function comunidadesPorNombre($idComunidad){
+        $sql="SELECT c.* 
+        FROM comunidades c 
+         WHERE id_comunidad = :idComunidad;"; 
+        $consulta=$this->conn->prepare($sql);
+        $consulta->bindParam(":idComunidad", $idComunidad);
+        $consulta->execute();
+        $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
+        return $resultado;
     }
 }

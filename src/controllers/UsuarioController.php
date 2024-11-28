@@ -1,30 +1,31 @@
 <?php
 namespace admin\foro\Controllers;
+
+use admin\foro\Config\Parameters;
+use admin\foro\Models\UsuarioModel;
+
 class UsuarioController
 {
-    private $conexion;
 
-    public function __construct()
-    {
-        $this->conexion = Conectar::conexion();
-    }
     public function iniciarSesion()
     {
-        $m = new Usuario();
-        $datos = $m->iniciarSesion();
-        $m->cerrar_conexion();
+        $usuarioModel = new UsuarioModel();
+        $nombre=$_REQUEST['nombre'];
+        $contrasena=$_REQUEST['contrasena'];
+        $datos = $usuarioModel->iniciarSesion($nombre,$contrasena);
 
-        require_once "app/vistas/logeado.php";
+        header('Location: ' . Parameters::$BASE_URL . 'Post/home');
+
     }
     public function registrarUsuarios()
     {
-        $m = new Usuario();
-        //var_dump($_POST);
+        $usuarioModel = new UsuarioModel();
+        var_dump($_POST);
+        exit;
 
         if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['email']) && !empty($_POST['contraseña']) && !empty($_POST['repetir_contraseña'])) {
             if ($_POST['contraseña'] === $_POST['repetir_contraseña']) {
-                $datos = $m->registrarUsuario();
-                $m->cerrar_conexion();
+                $datos = $usuarioModel->registrarUsuario();
                 header("location:index.php");
                 exit;
             } else {
@@ -37,5 +38,11 @@ class UsuarioController
             header("location:index.php");
             exit;
         }
+    }
+    public function verUsuario()
+    {
+        $usuarioModel = new UsuarioModel();
+        ViewController::show("views/usuario/verUsuario.php");
+
     }
 }
