@@ -39,4 +39,10 @@ class UsuarioController
             exit;
         }
     }
+    public function verUsuario()
+    {
+        $usuarioModel = new UsuarioModel();
+        ViewController::show("views/usuario/verUsuario.php");
+
+    }
 }

@@ -26,6 +26,20 @@ class ComunidadesController{
             ViewController::showError(403);
         }
         }
+        
+    public function verComunidad(){
+        if(Authentication::isUserLogged()){
+            $comunidadesModel=new ComunidadModel();
+            
+            $_SESSION['comunidadesRecientes']['nombre']=$_GET['idComunidad'];
+            $comunidades=$comunidadesModel->comunidadesPorNombre($_GET['idComunidad']);
+            var_dump($comunidades);exit;
+            ViewController::show( "views/comunidades/verComunidad.php");
+        }else{
+            ViewController::showError(403);
+        }
     }
+}
+    
 
 ?>

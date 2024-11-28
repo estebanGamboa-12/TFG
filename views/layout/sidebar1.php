@@ -3,7 +3,8 @@
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 
-$comunidadesRecientes = $_SESSION['comunidadesRecientes'] ?? NULL;
+$comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
+
 ?>
 <style>
   a {
@@ -59,7 +60,9 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'] ?? NULL;
         <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
         <div id="textoAside1">comunidad1</div>
       </div>
-   <?php } ?>
+   <?php }else { ?>
+          <div> no hay nah</div>
+    <?php } ?>
     </div>
 
     <!-- Temas--------------------------------------------------------------------- -->

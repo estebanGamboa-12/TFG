@@ -33,4 +33,14 @@ class ComunidadModel extends Model {
         $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
         return $resultado;
     }
+    public function comunidadesPorNombre($idComunidad){
+        $sql="SELECT c.* 
+        FROM comunidades c 
+         WHERE id_comunidad = :idComunidad;"; 
+        $consulta=$this->conn->prepare($sql);
+        $consulta->bindParam(":idComunidad", $idComunidad);
+        $consulta->execute();
+        $resultado=$consulta->fetchAll(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
 }

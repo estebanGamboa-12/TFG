@@ -6,6 +6,7 @@ use admin\foro\Helpers\Authentication;
 $post = $data['post'] ?? NULL;
 $token = $data['token'] ?? NULL;
 
+
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
 <style>
@@ -46,7 +47,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     }
 </style>
 <pre>
-    <?php //var_dump($token);exit; 
+    <?php //var_dump($post);exit; 
     ?>
 </pre>
 <section id="sectionAll">
@@ -54,21 +55,22 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
             <div class="card-section">
-                <?php
-                // Determina el prefijo basado en el tipo de post
-                $prefijo = ($contenido['tipo_post'] === 'normal') ? 'n/' : 'c/';
-
-                // Determina la imagen según el tipo de post
-                $imagen = ($contenido['tipo_post'] === 'normal')
-                    ? Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen_logo_usuario']
-                    : Parameters::$BASE_URL . 'assets/img/' . $contenido['image_comunidad']
-                ?>
-
                 <div class="encabezado-section">
-                    <img src="<?= $imagen ?>" alt="imagen" class="imagenLogo-section">
-                    <div class="nombre-section">
-                        <?= $prefijo . $contenido['nombre']; ?>
-                    </div>
+                    <?php if($contenido['tipo_post']==="normal"){?>
+                        <a href="<?= Parameters::$BASE_URL?>Usuario/verUsuario?nombre=<?= $contenido['nombre']?>">
+                        <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen_logo_usuario'] ?>" alt="imagen" class="imagenLogo-section">
+                        </a>
+                        <div class="nombre-section">
+                            <?= "n/" . $contenido['nombre']; ?>
+                        </div>
+                    <?php }else{?>
+                        <a href="<?= Parameters::$BASE_URL?>Comunidades/verComunidad?idComunidad=<?= $contenido['id_comunidad']?>">
+                        <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['image_comunidad'] ?>" alt="imagen" class="imagenLogo-section">
+                        </a>
+                        <div class="nombre-section">
+                            <?= "c/" . $contenido['nombre']; ?>
+                        </div>
+                    <?php }?>
                     <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                     <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad") { ?>
                         <div class="unirseBoton-section unirse"
