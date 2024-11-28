@@ -9,21 +9,47 @@ $token = $data['token'] ?? NULL;
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
 <style>
-    #loading {
-        text-align: center;
-        padding: 20px;
-        font-size: 16px;
-        color: #888;
-    }
-    .votar{
+    .votar {
         cursor: pointer;
+    }
+
+    /* Estilo para el contenedor del cargador */
+    #loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+    }
+
+    /* Animación de giro para el spinner */
+    .spinner {
+        border: 4px solid #f3f3f3;
+        /* Gris claro */
+        border-top: 4px solid #3498db;
+        /* Azul */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 2s linear infinite;
+        margin-bottom: 10px;
+    }
+
+    /* Definición de la animación de giro */
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 </style>
 <pre>
     <?php //var_dump($token);exit; 
     ?>
 </pre>
-<section>
+<section id="sectionAll">
     <div class="section">
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
@@ -83,6 +109,5 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             </div>
         <?php endforeach; ?>
     </div>
+    <div id="loading"></div>
 </section>
-<div id="loading"></div>
-

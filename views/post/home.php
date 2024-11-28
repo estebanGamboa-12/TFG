@@ -4,14 +4,52 @@ use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
+$token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
+<style>
+    .votar {
+        cursor: pointer;
+    }
+
+    /* Estilo para el contenedor del cargador */
+    #loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+    }
+
+    /* Animación de giro para el spinner */
+    .spinner {
+        border: 4px solid #f3f3f3;
+        /* Gris claro */
+        border-top: 4px solid #3498db;
+        /* Azul */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 2s linear infinite;
+        margin-bottom: 10px;
+    }
+
+    /* Definición de la animación de giro */
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <pre>
-    <?php //var_dump($post);exit; 
+    <?php //var_dump($token);exit; 
     ?>
 </pre>
-<section>
+<section id="sectionAll">
     <div class="section">
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
@@ -34,8 +72,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                     <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad") { ?>
                         <div class="unirseBoton-section unirse"
-                            data-id-comunidad="<?= $contenido['id_comunidad'] ?>"
-                            data-id-usuario="<?= $idUsuario ?>">
+                            data-token-unirse="<?= $token[$contenido['id_post']] ?>">
                             Unirse
                         </div>
                     <?php } else { ?>
@@ -62,9 +99,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <?php endif; ?>
                 </div>
                 <div class="pie-section">
-                    <div class="votos-seccion" id="votar" 
-                        data-id-post="<?= $contenido['id_post'] ?>"
-                        data-id-usuario="<?= $idUsuario ?>">
+                    <div class="votos-seccion votar"
+                        data-token-votar="<?= $token[$contenido['id_post']] ?>">
                         Votos(<?= $contenido['votos'] ?>)
                     </div>
                     <div class="comentarios-section">Comentarios</div>
@@ -73,91 +109,5 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             </div>
         <?php endforeach; ?>
     </div>
+    <div id="loading"></div>
 </section>
-
-<script>
-    function actualizarCamposGenericos(url, campo, idUsuario,valor) {
-        fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    [valor]: campo,
-                    idUsuario: idUsuario
-                })
-            })
-            .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
-            .then(data => {
-                try {
-                    console.log(data);
-
-                    let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
-                    document.querySelector('.contenidoMensajes').style.display = "flex";
-                    // Comprobamos la respuesta completa
-                    console.log("Valor de success:" + jsonData);
-                    if (jsonData.success === true) {
-                        let numeroVotos = document.querySelector(`#votar[data-id-post='${campo}']`);
-                         if (numeroVotos ) {
-                            numeroVotos.innerHTML = `votos(${jsonData.votos}) `;
-                        }
-                        //success
-                        document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
-                        document.querySelector('.contenidoMensajes').classList.add("verde");
-                        setTimeout(() => {
-                            document.querySelector('.contenidoMensajes').classList.remove("verde");
-                            document.querySelector('.contenidoMensajes').style.display = "none";
-                        }, 2000);
-                    } else {
-                        //error
-                        document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
-                        document.querySelector('.contenidoMensajes').classList.add("rojo");
-                        setTimeout(() => {
-                            document.querySelector('.contenidoMensajes').classList.remove("rojo");
-                            document.querySelector('.contenidoMensajes').style.display = "none";
-                        }, 2000);
-
-                    }
-                } catch (error) {
-                    alert('Error al procesar la respuesta del servidor.' + error);
-                }
-            })
-            .catch(error => {
-                console.error('Error en la solicitud fetch:', error);
-            });
-    }
-    // ------------------UNIRSE---------------------------------- 
-    document.querySelectorAll('.unirse').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
-            let comunidad = botonUnirse.getAttribute('data-id-comunidad'); // Obtener el id de la comunidad
-            let usuario = botonUnirse.getAttribute('data-id-usuario'); // Obtener el id del usuario
-
-            // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
-            const url = '<?= Parameters::$BASE_URL ?>Membresias/unirseComunidad';
-
-            if (comunidad) {
-                console.log("Usuario " + usuario + " se unirá a la comunidad " + comunidad);
-                actualizarCamposGenericos(url, comunidad, usuario, "idComunidad"); // Llamar a la función con los valores seleccionados
-            } else {
-                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
-            }
-        });
-    });
-    // ------------------VOTAR---------------------------------- 
-    document.querySelectorAll('#votar').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
-            let post = botonUnirse.getAttribute('data-id-post'); // Obtener el id de la comunidad
-            let usuario = botonUnirse.getAttribute('data-id-usuario'); // Obtener el id del usuario
-
-            // Aquí puedes ajustar la URL de la solicitud si la necesitas, por ejemplo:
-            const url = '<?= Parameters::$BASE_URL ?>Votos/votar';
-
-            if (post) {
-                console.log("Usuario " + usuario + " vota al post " + post);
-                 actualizarCamposGenericos(url, post, usuario,"idPost"); // Llamar a la función con los valores seleccionados
-            } else {
-                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
-            }
-        });
-    });
-</script>

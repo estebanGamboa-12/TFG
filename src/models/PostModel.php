@@ -10,8 +10,10 @@ class PostModel extends Model
         parent::__construct();
         $this->tabla = "post";
     }
-    public function getPostPopular($usuario) //parte popular
+    public function getPostPopular($usuario,$pagina, $postPorPagina) //parte popular
     {
+        // Calcular el OFFSET (desplazamiento)
+        $offset = ($pagina - 1) * $postPorPagina;
         // saca todos los post en orden segun los votos, saber si esta unido o no y no mostrar sus post 
         $sql = "SELECT 
     p.id_post,
@@ -46,15 +48,18 @@ WHERE
 GROUP BY 
     p.id_post 
 ORDER BY 
-    votos DESC;
+    votos DESC
+LIMIT :offset, :limit;
         ";
         try {
             //consulta1
-            $consulta1 = $this->conn->prepare($sql);
-            $consulta1->bindParam(":idUsuario", $usuario);
-            $consulta1->execute();
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":idUsuario", $usuario);
+            $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
+            $consulta->execute();
 
-            $dato = $consulta1->fetchAll(\PDO::FETCH_ASSOC);
+            $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
             exit;
         } catch (\PDOException $e) {
@@ -105,7 +110,7 @@ ORDER BY
                     p.video, 
                     p.tipo_post, 
                     c.imagen
-                LIMIT :offset, :limit";  // Corregido el nombre de :limit1 a :limit
+                LIMIT :offset, :limit";  
     
         try {
             // Preparar la consulta
@@ -114,7 +119,7 @@ ORDER BY
             // Vincular los parámetros
             $consulta->bindParam(":idUsuario", $usuario);
             $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
-            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); // Corregido aquí: :limit en lugar de :limit1
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
             
             // Ejecutar la consulta
             $consulta->execute();
@@ -130,9 +135,12 @@ ORDER BY
             die($e->getMessage());
         }
     }
-    public function getPostHome($id_usuario) //parte home
+    public function getPostHome($id_usuario,$pagina,$postPorPagina) //parte home
     {
         try {
+
+              // Calcular el OFFSET (desplazamiento)
+        $offset = ($pagina - 1) * $postPorPagina;
             //1ºPosts de las comunidades a las que el usuario está unido
             //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
             $sql = "
@@ -199,12 +207,13 @@ UNION ALL
     GROUP BY 
         p.id_post
 )
-ORDER BY 
-    fecha_creacion DESC 
+    LIMIT :offset, :limit;
 
     ";
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idUsuario", $id_usuario);
+            $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
             $consulta->execute();
 
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
@@ -237,20 +246,25 @@ ORDER BY
             echo "Error al insertar el post.";
         }
     }
-    public function getPostPopularNoLogeado() //parte popular no logeado
+    public function getPostPopularNoLogeado($pagina,$postPorPagina) //parte popular no logeado
     {
+                // Calcular el OFFSET (desplazamiento)
+                $offset = ($pagina - 1) * $postPorPagina;
         // saca todos los post en orden segun los votos 
         $sql = "SELECT p.id_comunidad, u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video,
          p.tipo_post, COUNT(v.id_post) AS votos
           FROM post p JOIN usuarios u ON p.id_usuario = u.id_usuario
            LEFT JOIN votos v ON p.id_post = v.id_post
              GROUP BY p.id_post 
-             ORDER BY votos DESC;  ";
+             ORDER BY votos DESC
+            LIMIT :offset, :limit; 
+             ";
 
         try {
             $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
             $consulta->execute();
-
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
             exit;

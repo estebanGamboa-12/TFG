@@ -8,7 +8,7 @@ var_dump($post);
 
 ?>
 
-    <section>
+    <section id="sectionPopularNoLogeado">
         <div class="section">
             <?php foreach ($post as $indice => $contenido) {
             ?>

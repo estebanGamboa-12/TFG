@@ -3,6 +3,7 @@
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 
+$comunidadesRecientes = $_SESSION['comunidadesRecientes'] ?? NULL;
 ?>
 <style>
   a {
@@ -53,33 +54,31 @@ use admin\foro\Helpers\Authentication;
       Recientes <i class="fa fa-sort-up icono"></i>
     </div>
     <div class="recientes-lista contenido1">
+    <?php if ($comunidadesRecientes!=NULL) { ?>
       <div class="logo-texto">
         <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-        <div id="textoAside1">Esteban</div>
+        <div id="textoAside1">comunidad1</div>
       </div>
-      <div class="logo-texto">
-        <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-        <div id="textoAside1">Juan</div>
-      </div>
+   <?php } ?>
     </div>
 
     <!-- Temas--------------------------------------------------------------------- -->
     <?php if ($temas != NULL) { ?>
-    <div class="temas">Temas <i class="fa fa-sort-up icono"></i></div>
-    <div class="temas-lista contenido1">
-      <?php
-      $temas_por_pagina = 6;
-      $total_temas = count($temas);
-      //mostrar los primeros
-      foreach (array_slice($temas, 0, $temas_por_pagina) as $indice => $contenido) { ?>
-        <div class="logo-texto">
-          <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-          <div id="textoAside1"><?= $contenido['nombre'] ?></div>
-        </div>
-      <?php }?>
-    </div>
-    <button id="verMasTemas" class="ver-mas">Ver más</button>
-    <button id="verMenosTemas" class="ver-menos" style="display: none;">Ver Menos</button>
+      <div class="temas">Temas <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas-lista contenido1">
+        <?php
+        $temas_por_pagina = 6;
+        $total_temas = count($temas);
+        //mostrar los primeros
+        foreach (array_slice($temas, 0, $temas_por_pagina) as $indice => $contenido) { ?>
+          <div class="logo-texto">
+            <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
+            <div id="textoAside1"><?= $contenido['nombre'] ?></div>
+          </div>
+        <?php } ?>
+      </div>
+      <button id="verMasTemas" class="ver-mas">Ver más</button>
+      <button id="verMenosTemas" class="ver-menos" style="display: none;">Ver Menos</button>
     <?php } ?>
 
     <!-- Comunidades --------------------------------------------------------------------- -->
@@ -104,10 +103,10 @@ use admin\foro\Helpers\Authentication;
 </aside>
 <script>
   // Inicialización de variables
-  let temasMostrados = 6; 
-  let comunidadesMostradas = 6; 
-  let temasPorPagina = 6; 
-  let comunidadesPorPagina = 6; 
+  let temasMostrados = 6;
+  let comunidadesMostradas = 6;
+  let temasPorPagina = 6;
+  let comunidadesPorPagina = 6;
 
   let totalTemas = <?= json_encode(count($temas)); ?>; // Total de temas disponibles
   let totalComunidades = <?= json_encode(count($comunidades)); ?>; // Total de comunidades disponibles
@@ -247,10 +246,11 @@ use admin\foro\Helpers\Authentication;
       flechaIcono.classList.toggle('rotado');
 
       if (contenidos[index].classList.contains('oculto')) {
-        index=index; console.log(index);
+        index = index;
+        console.log(index);
         verMasButtons[index].style.display = 'none ';
       } else {
-        index=index;
+        index = index;
         console.log(index);
         verMasButtons[index].style.display = 'block';
       }

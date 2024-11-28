@@ -22,49 +22,105 @@ window.onload = function () {
     if (botonRegistrarse) {
         botonRegistrarse.addEventListener("click", mostrarVentanaRegistrar);
     }
+    const section = document.querySelector('.section');
+    if (section) {
+        document.querySelector('.section').addEventListener('click', function (event) {
+            //----------------------------------------UNIRSE BOTON---------------------------------------------------------------------------------
+            if (event.target && event.target.classList.contains('unirse')) {
+                let token = event.target.getAttribute('data-token-unirse'); // Obtener token
 
-    document.querySelector('.section').addEventListener('click', function (event) {
-        // ------------------UNIRSE-------------------------------
-        if (event.target && event.target.classList.contains('unirse')) { // ------------------UNIRSE---------------------------------- 
-            let token = event.target.getAttribute('data-token-unirse'); // Obtener token
+                const url = `${parametersBaseUrl}Membresias/unirseComunidad`;
 
-            const url = `${parametersBaseUrl}Membresias/unirseComunidad`;
+                if (token) {
+                    actualizarCamposGenericos(url, token);
+                } else {
+                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                }
+                //--------------------------------------------BOTON VOTAR-----------------------------------------------------------------------------
+            } else if (event.target && event.target.classList.contains('votar')) {
+                let token = event.target.getAttribute('data-token-votar'); // Obtener token
 
-            if (token) {
-                actualizarCamposGenericos(url, token);
-            } else {
-                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                const url = `${parametersBaseUrl}Votos/votar`;
+
+                if (token) {
+                    actualizarCamposGenericos(url, token);
+                } else {
+                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                }
+            };
+        });
+    }
+    //---------------------------------------------------------- vista All---------------------------------------------------------------
+    const sectionElementAll = document.querySelector('#sectionAll');
+    if (sectionElementAll) {
+        sectionElementAll.addEventListener('scroll', function () {
+
+            if (sectionElementAll.scrollTop + sectionElementAll.clientHeight >= sectionElementAll.scrollHeight - 10) {
+                if (!loading) {
+                    loading = true;
+                    let url = `${parametersBaseUrl}Post/loadMorePosts`;
+                    document.getElementById('loading').style.display = 'flex'; // Mostrar el cargador
+                    document.getElementById('loading').innerHTML = `
+                    <div class="spinner"></div> 
+                    CARGANDO...
+                `;
+                    setTimeout(function () {
+                        loadMorePosts(url, pagina, "all");
+                        pagina++;
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                }
             }
-            // ------------------VOTAR---------------------------------- 
-        } else if (event.target && event.target.classList.contains('votar')) {  // ------------------VOTAR---------------------------------- 
-            let token = event.target.getAttribute('data-token-votar'); // Obtener token
+        });
+    }
+    //-------------------------------------------------------------VISTA HOME------------------------------------------------------------
+    const sectionElementHome = document.querySelector('#sectionHome');
+    if (sectionElementHome) {
+        sectionElementHome.addEventListener('scroll', function () {
 
-            const url = `${parametersBaseUrl}Votos/votar`;
-
-            if (token) {
-                actualizarCamposGenericos(url, token);
-            } else {
-                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+            if (sectionElementHome.scrollTop + sectionElementHome.clientHeight >= sectionElementHome.scrollHeight - 10) {
+                if (!loading) {
+                    loading = true;
+                    let url = `${parametersBaseUrl}Post/loadMorePosts`;
+                    document.getElementById('loading').style.display = 'flex'; // Mostrar el cargador
+                    document.getElementById('loading').innerHTML = `
+    <div class="spinner"></div> 
+    CARGANDO...
+`;
+                    setTimeout(function () {
+                        loadMorePosts(url, pagina, "home");
+                        pagina++;
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                }
             }
-        };
-    });
-    const sectionElement = document.querySelector('section');
-    sectionElement.addEventListener('scroll', function () {
+        });
+    }
+    //-------------------------------------------------------------VISTA POPULAR------------------------------------------------------------
+    const sectionElementPopular = document.querySelector('#sectionPopular');
+    if (sectionElementPopular) {
+        sectionElementPopular.addEventListener('scroll', function () {
 
-        if (sectionElement.scrollTop + sectionElement.clientHeight >= sectionElement.scrollHeight - 100) {
-            if (!loading) {
-                loading = true;
-                document.getElementById('loading').style.display = 'block'; // Mostrar el cargador
-                loadMorePosts(pagina);
-                pagina++;
+            if (sectionElementPopular.scrollTop + sectionElementPopular.clientHeight >= sectionElementPopular.scrollHeight - 10) {
+                if (!loading) {
+                    loading = true;
+                    let url = `${parametersBaseUrl}Post/loadMorePosts`;
+                    document.getElementById('loading').style.display = 'flex'; // Mostrar el cargador
+                    document.getElementById('loading').innerHTML = `
+    <div class="spinner"></div> 
+    CARGANDO...
+`;
+                    setTimeout(function () {
+                        loadMorePosts(url, pagina, "popular");
+                        pagina++; // Incrementar la página después de la carga
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                }
             }
-        }
-    });
-
+        });
+    }
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl="http://localhost/proyectos/TFG/";
+const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+
 function mostrarVentanaRegistrar() {
     let modalIniciarSesion = document.querySelector(".modalIniciarSesion");
     let modalRegistrar = document.querySelector(".modalRegistrar");
@@ -101,7 +157,7 @@ function cerrarAsideFuera(event) {
     }
 }
 
-// ---------------------------------------------------------------------------------VISTA ALL
+// ---------------------------------------------------------------------------------VISTAs
 
 function actualizarCamposGenericos(url, token) {
     fetch(url, {
@@ -116,10 +172,9 @@ function actualizarCamposGenericos(url, token) {
         .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
         .then(data => {
             try {
-                console.log(data);
-
+                //  console.log(data);
                 let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
-                console.log(jsonData);
+                //console.log(jsonData);
                 document.querySelector('.contenidoMensajes').style.display = "flex";
                 // Comprobamos la respuesta completa
                 if (jsonData.success === true) {
@@ -158,15 +213,16 @@ function actualizarCamposGenericos(url, token) {
 
 
 // Función para cargar más posts
-function loadMorePosts(page) {
+function loadMorePosts(url, page, campo) {
 
-    fetch(`${parametersBaseUrl}Post/loadMorePostsAll`, {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            pagina: page
+            pagina: page,
+            vista: campo
         })
     })
         .then(response => {
@@ -180,7 +236,6 @@ function loadMorePosts(page) {
         })
         .then(responseText => {
             try {
-                //console.log('Respuesta del servidor:', responseText);
                 const data = JSON.parse(responseText);
                 if (data.success) {
                     appendPosts(data.posts, data.token);
