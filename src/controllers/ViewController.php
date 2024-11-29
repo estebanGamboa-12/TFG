@@ -51,17 +51,7 @@ class ViewController
     private static function showSidebar2()
     {
         $comunidadesModel = new ComunidadModel();
-        $comunidades = $comunidadesModel->getComunidades();
-
-        $membresias = [];  
-
-        $membresiasModel = new MembresiaModel();
-        foreach ($comunidades as $indice => $contenido) {
-            $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
-            // Guardamos el resultado en el array $membresias
-            $membresias[$contenido['id_comunidad']] = $membresiasComunidad; // Usamos el id de la comunidad como clave
-        }
-
+        $comunidades = $comunidadesModel->getComunidadesPopulares();
         include 'views/layout/sidebar2.php';
     }
     private static function showFooter()
