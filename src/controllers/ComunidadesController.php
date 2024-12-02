@@ -6,6 +6,7 @@ use admin\foro\Helpers\Authentication;
 use admin\foro\Models\ComunidadesModel;
 use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\MembresiaModel;
+use Firebase\JWT\JWT;
 
 class ComunidadesController{
 
@@ -16,12 +17,19 @@ class ComunidadesController{
             $membresiasModel=new MembresiaModel();
             $comunidades= $comunidadesModel->getComunidades();
             $membresias=[];
+            $token=[];
+            $idUsuario=$_SESSION['user']['idUsuario'];
+
             foreach($comunidades as  $indice=>$contenido){
                 $membresiasComunidad=$membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
                 $membresias[$contenido['id_comunidad']]=$membresiasComunidad;
+                $token[$contenido['id_comunidad']]=self::generarToken($idUsuario,$contenido['id_comunidad'],NULL);
             }
             
-            ViewController::show("views/comunidades/explorarComunidades.php",['comunidades'=>$comunidades,"membresias"=>$membresias]);
+            ViewController::show("views/comunidades/explorarComunidades.php",[
+            'comunidades'=>$comunidades,
+            "membresias"=>$membresias,
+            "tokens"=>$token]);
         }else{
             ViewController::showError(403);
         }
@@ -38,6 +46,21 @@ class ComunidadesController{
         }else{
             ViewController::showError(403);
         }
+    }
+    public static function generarToken($idUsuario, $idComunidad, $idpost)
+    {
+        $token_data = array(
+            "id_usuario" => $idUsuario,
+            "id_comunidad" => $idComunidad,
+            "id_post" => $idpost,
+        );
+        $key = "123"; //clave secreta
+        $alg = 'HS256';
+        $_SESSION['key'] = $key;
+        $_SESSION['alg'] = $alg;
+        $jwt = JWT::encode($token_data, $key, $alg);
+        return $jwt;
+        // Generar el token JWT
     }
 }
     
