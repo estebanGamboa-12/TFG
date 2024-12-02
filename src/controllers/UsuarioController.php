@@ -50,6 +50,10 @@ class UsuarioController
         $usuario = $usuarioModel->usuarioPorNombre($nombre);
         $idUsuarioPerfil = $usuario['id_usuario'];
         $idUsuarioVisita= $_SESSION['user']['idUsuario'];
+        $_SESSION['cambioVista']=true;//para que cambie el sidebar2 y se vea los datos del usuario
+        $_SESSION['usuarioVer']=$usuario;
+
+
         $posts = $postModel->postPorUsuario($idUsuarioPerfil,$idUsuarioVisita);
         foreach ($posts as $post) {
             $idUsuario = $_SESSION['user']['idUsuario'];

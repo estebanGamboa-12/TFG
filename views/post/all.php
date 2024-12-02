@@ -5,6 +5,7 @@ use admin\foro\Helpers\Authentication;
 
 $post = $data['post'] ?? NULL;
 $token = $data['token'] ?? NULL;
+$_SESSION['cambioVista']=false;
 
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;

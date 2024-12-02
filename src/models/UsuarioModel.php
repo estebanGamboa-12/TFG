@@ -96,5 +96,21 @@ class UsuarioModel extends Model
             die($e->getMessage());
         }
     }
-    
+    public function datosUsuario($idUsuario){
+        try{
+            $sql="SELECT 
+    (SELECT COUNT(*) FROM `comentarios` WHERE id_usuario = :idUsuario) AS comentariosTotales,
+    (SELECT COUNT(*) FROM `post` WHERE id_usuario = :idUsuario) AS postsTotales;
+";
+            $consulta=$this->conn->prepare($sql);
+            $consulta->bindParam(":idUsuario",$idUsuario);
+            $consulta->execute();
+            $resultado=$consulta->fetch(\PDO::FETCH_ASSOC);
+            return $resultado;
+       } catch (\Exception $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
 }

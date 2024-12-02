@@ -14,7 +14,7 @@ class ComunidadesController{
 
             $comunidadesModel=new ComunidadModel();
             $membresiasModel=new MembresiaModel();
-            $comunidades= $comunidadesModel->getComunidades();
+            $comunidades= $comunidadesModel->getAll();
             $membresias=[];
             foreach($comunidades as  $indice=>$contenido){
                 $membresiasComunidad=$membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
