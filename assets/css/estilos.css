@@ -470,12 +470,13 @@ footer {
     justify-content: flex-start;
     border-radius: 1rem;
     padding: 0% 2%;
-    width: 15rem;
-    height: 50vh;
+    width: auto;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     margin-top: 5%;
     background-color: #8080800d;
+    margin-right: 3%;
 
 }
 

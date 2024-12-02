@@ -10,6 +10,7 @@ use admin\foro\Models\MembresiaModel;
 use admin\foro\Models\MembresiasModel;
 use admin\foro\Models\TemaModel;
 use admin\foro\Models\TemasModel;
+use admin\foro\Models\UsuarioModel;
 
 class ViewController
 {
@@ -44,24 +45,19 @@ class ViewController
         if(Authentication::isUserLogged()){
             $idUsuario=$_SESSION['user']['idUsuario'];
             $comunidadesModel= new ComunidadModel();
+            $usuariosModel=new UsuarioModel();
             $comunidades=$comunidadesModel->getComunidadesUnido($idUsuario);
+       
         }
         include 'views/layout/sidebar1.php';
     }
     private static function showSidebar2()
     {
         $comunidadesModel = new ComunidadModel();
-        $comunidades = $comunidadesModel->getComunidades();
-
-        $membresias = [];  
-
-        $membresiasModel = new MembresiaModel();
-        foreach ($comunidades as $indice => $contenido) {
-            $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
-            // Guardamos el resultado en el array $membresias
-            $membresias[$contenido['id_comunidad']] = $membresiasComunidad; // Usamos el id de la comunidad como clave
-        }
-
+        $usuariosModel=new UsuarioModel();
+        $comunidades = $comunidadesModel->getComunidadesPopulares();
+        $usuario=$_SESSION['usuarioVer'];
+        $datosUsuario=$usuariosModel->datosUsuario($usuario['id_usuario']);
         include 'views/layout/sidebar2.php';
     }
     private static function showFooter()
