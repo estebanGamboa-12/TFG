@@ -2,7 +2,6 @@
 
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
-$_SESSION['cambioVista']=false;
 $post = $data['post'] ?? NULL;
 
 ?>

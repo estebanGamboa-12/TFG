@@ -6,6 +6,7 @@ use admin\foro\Helpers\Authentication;
 use admin\foro\Models\ComunidadesModel;
 use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\MembresiaModel;
+use admin\foro\Models\PostModel;
 use Firebase\JWT\JWT;
 
 class ComunidadesController{
@@ -38,11 +39,28 @@ class ComunidadesController{
     public function verComunidad(){
         if(Authentication::isUserLogged()){
             $comunidadesModel=new ComunidadModel();
-            
-            $_SESSION['comunidadesRecientes']['nombre']=$_GET['idComunidad'];
-            $comunidades=$comunidadesModel->comunidadesPorNombre($_GET['idComunidad']);
-            var_dump($comunidades);exit;
-            ViewController::show( "views/comunidades/verComunidad.php");
+            $postModel= new PostModel();
+            $_SESSION['comunidadVer']=$_GET['nombreComunidad'];
+            $token=[];
+            $idUsuario=$_SESSION['user']['idUsuario'];
+            $nombreComunidad=$_GET['nombreComunidad'];
+            $_SESSION['cambioVista']=true;
+            $comunidad=$comunidadesModel->comunidadesPorNombre($nombreComunidad);
+            $idComunidad=$comunidad['id_comunidad'];
+            $posts=$postModel->postPorComunidad($idUsuario,$idComunidad);
+            foreach ($posts as $post) {
+                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                } else {
+                    $post['jwt_token'] = null;
+                }
+            }
+            ViewController::show( "views/comunidades/verComunidad.php",[
+                "post"=>$posts,
+                "comunidad"=>$comunidad,
+                "token"=>$token,
+                
+            ]);
         }else{
             ViewController::showError(403);
         }

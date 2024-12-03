@@ -58,8 +58,9 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     #nombreImagenVer {
         display: flex;
         flex-direction: row;
-        width: 25%;
+        width: 15%;
         justify-content: space-between;
+        align-items: center;
     }
 
     #nombreImagenVer img {
@@ -94,14 +95,14 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 <section id="section">
     <div class="containerEncabezadoVer">
         <div id="nombreImagenVer">
-            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?=$usuario['imagen_logo_usuario'] ?>" alt="foto culo">
-            <span>n/ <?= $usuario['nombre']?></span>
+            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $usuario['imagen_logo_usuario'] ?>" alt="foto">
+            <span>n/ <?= $usuario['nombre'] ?></span>
         </div>
         <div class="botonesVer">
             <span>Crear post</span>
         </div>
     </div>
-        <div class="section">
+    <div class="section">
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
             <div class="card-section">
@@ -114,7 +115,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                             <?= "n/" . $usuario['nombre']; ?>
                         </div>
                     <?php } else { ?>
-                        <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?idComunidad=<?= $contenido['id_comunidad'] ?>">
+                        <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre_comunidad'] ?>">
                             <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen_comunidad'] ?>" alt="imagen" class="imagenLogo-section">
                         </a>
                         <div class="nombre-section">
@@ -133,93 +134,29 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
                     <?php if (!empty($contenido['video'])): ?>
                         <!-- si existe video -->
-    <div class="videos-fotos-section">
-        <video class="video-section" controls>
-            <source src="<?= Parameters::$BASE_URL . 'assets/videos/' . $contenido['video'] ?>" type="video/mp4">
-            Tu navegador no soporta la etiqueta de video.
-        </video>
+                        <div class="videos-fotos-section">
+                            <video class="video-section" controls>
+                                <source src="<?= Parameters::$BASE_URL . 'assets/videos/' . $contenido['video'] ?>" type="video/mp4">
+                                Tu navegador no soporta la etiqueta de video.
+                            </video>
+                        </div>
+                    <?php elseif (!empty($contenido['imagen'])): ?>
+                        <!-- si existe imagen -->
+                        <div class="videos-fotos-section">
+                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="pie-section">
+                    <div class="votos-seccion votar"
+                        data-token-votar="<?= $token[$contenido['id_post']] ?>">
+                        Votos(<?= $contenido['votos'] ?>)
+                    </div>
+                    <div class="comentarios-section">Comentarios</div>
+                    <div class="compartir-section">Compartir</div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
-<?php elseif (!empty($contenido['imagen'])): ?>
-    <!-- si existe imagen -->
-    <div class="videos-fotos-section">
-        <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
-    </div>
-<?php endif; ?>
-</div>
-<div class="pie-section">
-    <div class="votos-seccion votar"
-        data-token-votar="<?= $token[$contenido['id_post']] ?>">
-        Votos(<?= $contenido['votos'] ?>)
-    </div>
-    <div class="comentarios-section">Comentarios</div>
-    <div class="compartir-section">Compartir</div>
-</div>
-</div>
-<?php endforeach; ?>
-</div>
-<div id="loading"></div>
+    <div id="loading"></div>
 </section>
-<!-- <aside class="second-aside ">
-    <div class="aside2">
-        <div class="containerNombreBotonVer">
-            <span class="nombreUsuarioVer">nombre usuario</span>
-            <div class="botonSeguirUsuario">
-                <span>seguir</span>
-            </div>
-        </div>
-        <div class="datosUsuarioVer">
-            <div id="datos">
-                <span>70</span>
-                <span>post</span>
-            </div>
-            <div id="datos">
-                <span>57</span>
-                <span>Comentarios</span>
-            </div>
-            <div id="datos">
-                <span>11/28/2024</span>
-                <span>Fecha unido</span>
-            </div>
-        </div>
-    </div>
-    <style>
-        .containerNombreBotonVer {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .nombreUsuarioVer {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            margin: 10% 0% 0% 5%;
-        }
-
-        .botonSeguirUsuario {
-            display: flex;
-            margin: 10% 5%;
-            margin-left: auto;
-        }
-
-        .botonSeguirUsuario span {
-            border-radius: 1rem;
-            padding: 1rem;
-            background-color: greenyellow;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2rem;
-            height: 0;
-        }
-
-        .datosUsuarioVer {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-
-        #datos {
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
-
-</aside> -->

@@ -65,11 +65,11 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                             <?= "n/" . $contenido['nombre']; ?>
                         </div>
                     <?php }else{?>
-                        <a href="<?= Parameters::$BASE_URL?>Comunidades/verComunidad?idComunidad=<?= $contenido['id_comunidad']?>">
+                        <a href="<?= Parameters::$BASE_URL?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre_comunidad']?>">
                         <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['image_comunidad'] ?>" alt="imagen" class="imagenLogo-section">
                         </a>
                         <div class="nombre-section">
-                            <?= "c/" . $contenido['nombre']; ?>
+                            <?= "c/" . $contenido['nombre_comunidad']; ?>
                         </div>
                     <?php }?>
                     <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>

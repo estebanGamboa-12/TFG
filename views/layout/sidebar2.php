@@ -1,8 +1,8 @@
 <?php 
 use admin\foro\Config\Parameters;
-$verUsuarios=$_SESSION['cambioVista'];
-
+$verUsuarios=false;
 ?>
+
 
 <?php if($verUsuarios==false){ ?>
  <aside class="second-aside ">
@@ -19,7 +19,7 @@ $verUsuarios=$_SESSION['cambioVista'];
         <?php }?>
     </div>
 </aside> 
-<?php }else if ($verUsuarios){ ?>
+<?php }else if (isset($_SESSION['usuarioVer']) && !($_SESSION['usuarioVer'])  ){ ?>
  <aside class="second-aside ">
     <div class="aside2">
         <div class="containerNombreBotonVer">
@@ -42,6 +42,57 @@ $verUsuarios=$_SESSION['cambioVista'];
                 <span>Fecha unido</span>
             </div>
         </div>
+    </div>
+    <style>
+        .containerNombreBotonVer {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .nombreUsuarioVer {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 10% 0% 0% 5%;
+        }
+
+        .botonSeguirUsuario {
+            display: flex;
+            margin: 10% 5%;
+            margin-left: auto;
+        }
+
+        .botonSeguirUsuario span {
+            border-radius: 1rem;
+            padding: 1rem;
+            background-color: rgb(0, 150, 136);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 0;
+        }
+
+        .datosUsuarioVer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        #datos {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
+</aside> 
+<?php } else if (isset($_SESSION['comunidadVer']) && !($_SESSION['comunidadVer'])  ){ ?>
+ <aside class="second-aside ">
+    <div class="aside2">
+        <div class="containerNombreBotonVer">
+            <div class="botonSeguirUsuario">
+                <span>unirse</span>
+            </div>
+        </div>
+       
     </div>
     <style>
         .containerNombreBotonVer {

@@ -17,7 +17,8 @@ class PostModel extends Model
         // saca todos los post en orden segun los votos, saber si esta unido o no y no mostrar sus post 
         $sql = "SELECT 
     p.id_post,
-    p.id_comunidad, 
+    p.id_comunidad,
+     c.nombre AS nombre_comunidad,
     u.id_usuario, 
     u.nombre,
     u.imagen_logo_usuario,
@@ -77,6 +78,7 @@ LIMIT :offset, :limit;
         $sql1 = "SELECT 
                     p.id_post,
                     p.id_comunidad, 
+                     c.nombre AS nombre_comunidad,
                     u.id_usuario, 
                     u.nombre, 
                     u.imagen_logo_usuario, 
@@ -100,6 +102,7 @@ LIMIT :offset, :limit;
                 GROUP BY 
                     p.id_post,  
                     p.id_comunidad, 
+                     c.nombre ,
                     u.id_usuario, 
                     u.nombre, 
                     u.imagen_logo_usuario, 
@@ -146,6 +149,7 @@ LIMIT :offset, :limit;
       (
     SELECT 
     	p.*,
+        c.nombre AS nombre_comunidad,
         c.imagen AS image_comunidad, 
         u.id_usuario, 
         u.nombre, 
@@ -173,6 +177,7 @@ UNION ALL
 (
     SELECT 
     	p.*,
+         c.nombre AS nombre_comunidad,
         c.imagen AS image_comunidad, 
         u.id_usuario, 
         u.nombre, 
@@ -264,7 +269,7 @@ UNION ALL
     {
         $this->conn = NULL;
     }
-    public function postPorUsuario($idUsuarioPerfil,$idUsuarioVisita)
+    public function postPorUsuario($idUsuarioPerfil, $idUsuarioVisita)
     {
         try {
             $sql = "
@@ -289,6 +294,39 @@ UNION ALL
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":usuarioPerfil", $idUsuarioPerfil);
             $consulta->bindParam(":usuarioVisita", $idUsuarioVisita);
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
+    public function postPorComunidad($idUsuario,$idComunidad)
+    {
+        try {
+            $sql = "
+        SELECT 
+p.*,
+COUNT(v.id_voto) AS votos,
+u.nombre AS nombre_usuario,
+u.imagen_logo_usuario ,
+CASE
+	WHEN m.id_usuario IS NOT NULL THEN 1
+    ELSE 0
+    END AS esta_unido
+FROM post p 
+JOIN usuarios u ON p.id_usuario=u.id_usuario
+LEFT JOIN votos v ON v.id_post=p.id_post
+LEFT JOIN comunidades c ON c.id_comunidad=p.id_comunidad
+LEFT JOIN membresias m ON m.id_usuario=:idUsuario AND m.id_comunidad=p.id_comunidad
+WHERE p.id_comunidad=:idComunidad
+GROUP BY p.id_post,c.id_comunidad;
+        ";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":idUsuario", $idUsuario);
+            $consulta->bindParam(":idComunidad", $idComunidad);
             $consulta->execute();
             $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $resultado;

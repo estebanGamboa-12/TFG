@@ -42,15 +42,30 @@ class ComunidadModel extends Model
         $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
         return $resultado;
     }
-    public function comunidadesPorNombre($idComunidad)
+    public function comunidadesPorNombre($nombre)
     {
         $sql = "SELECT c.* 
         FROM comunidades c 
-         WHERE id_comunidad = :idComunidad;";
+         WHERE c.nombre = :nombre;";
         $consulta = $this->conn->prepare($sql);
-        $consulta->bindParam(":idComunidad", $idComunidad);
+        $consulta->bindParam(":nombre", $nombre);
         $consulta->execute();
-        $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+        $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
+        return $resultado;
+    }
+    public function datosComunidad($nombre)
+    {
+        $sql = "SELECT 
+    c.*,
+    COUNT(m.id_membresia) AS usuarios
+FROM comunidades c
+LEFT JOIN membresias m ON m.id_comunidad = c.id_comunidad
+WHERE c.nombre = :nombre
+GROUP BY c.id_comunidad;";
+        $consulta = $this->conn->prepare($sql);
+        $consulta->bindParam(":nombre", $nombre);
+        $consulta->execute();
+        $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
         return $resultado;
     }
 }

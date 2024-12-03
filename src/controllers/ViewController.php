@@ -56,8 +56,14 @@ class ViewController
         $comunidadesModel = new ComunidadModel();
         $usuariosModel=new UsuarioModel();
         $comunidades = $comunidadesModel->getComunidadesPopulares();
-        $usuario=$_SESSION['usuarioVer'];
-        $datosUsuario=$usuariosModel->datosUsuario($usuario['id_usuario']);
+        if(isset($_SESSION['usuarioVer'])){
+            $usuario=$_SESSION['usuarioVer'];
+            $datosUsuario=$usuariosModel->datosUsuario($usuario['id_usuario']);
+        }
+        if(isset($_SESSION['comunidadVer'])){
+            $comunidad=$_SESSION['comunidadVer'];
+            $datosComunidad=$comunidadesModel->datosComunidad($comunidad);
+        }
         include 'views/layout/sidebar2.php';
     }
     private static function showFooter()
