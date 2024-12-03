@@ -146,17 +146,11 @@ LIMIT :offset, :limit;
             $sql = "
       (
     SELECT 
-        p.id_post,
-        p.id_comunidad, 
+    	p.*,
         c.imagen AS image_comunidad, 
         u.id_usuario, 
         u.nombre, 
         u.imagen_logo_usuario, 
-        p.id_post, 
-        p.titulo, 
-        p.contenido, 
-        p.fecha_creacion, 
-        p.tipo_post, 
         c.id_comunidad, 
         c.nombre AS comunidad_nombre, 
         1 AS esta_unido,
@@ -179,17 +173,11 @@ LIMIT :offset, :limit;
 UNION ALL
 (
     SELECT 
-        p.id_post,
-        p.id_comunidad, 
+    	p.*,
         c.imagen AS image_comunidad, 
         u.id_usuario, 
         u.nombre, 
         u.imagen_logo_usuario, 
-        p.id_post, 
-        p.titulo, 
-        p.contenido, 
-        p.fecha_creacion, 
-        p.tipo_post, 
         c.id_comunidad, 
         c.nombre AS comunidad_nombre, 
         0 AS esta_unido,
@@ -208,7 +196,6 @@ UNION ALL
         p.id_post
 )
     LIMIT :offset, :limit;
-
     ";
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idUsuario", $id_usuario);

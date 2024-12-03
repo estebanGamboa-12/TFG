@@ -125,7 +125,7 @@ class PostController
             //variables
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = $data['pagina'];
-            $postsPorPagina = 15;
+            $postsPorPagina = 10;
             $token = [];
             $vista=$data['vista'];
 

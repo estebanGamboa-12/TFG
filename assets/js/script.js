@@ -289,8 +289,14 @@ function appendPosts(posts, tokens) {
         postElement.classList.add('card-section');
         postElement.innerHTML = `
 <div class="encabezado-section">
-    <img src="${post.tipo_post === 'normal' ? Parameters.BASE_URL + 'assets/img/' + post.imagen_logo_usuario : Parameters.BASE_URL + 'assets/img/' + post.image_comunidad}" 
-        alt="imagen" class="imagenLogo-section">
+      <a href="${post.tipo_post === 'normal' 
+        ? Parameters.BASE_URL + 'Usuario/verUsuario?nombre=' + post.nombre 
+        : Parameters.BASE_URL + 'Comunidades/verComunidad?idComunidad=' + post.id_comunidad}">
+        <img src="${post.tipo_post === 'normal' 
+            ? Parameters.BASE_URL + 'assets/img/' + post.imagen_logo_usuario 
+            : Parameters.BASE_URL + 'assets/img/' + post.image_comunidad}" 
+            alt="imagen" class="imagenLogo-section">
+    </a>
     <div class="nombre-section">
         ${post.tipo_post === 'normal' ? 'n/' : 'c/'}${post.nombre}
     </div>
