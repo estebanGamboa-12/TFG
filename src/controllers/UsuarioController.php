@@ -1,8 +1,11 @@
 <?php
+
 namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
+use admin\foro\Models\PostModel;
 use admin\foro\Models\UsuarioModel;
+use Firebase\JWT\JWT;
 
 class UsuarioController
 {
@@ -10,12 +13,11 @@ class UsuarioController
     public function iniciarSesion()
     {
         $usuarioModel = new UsuarioModel();
-        $nombre=$_REQUEST['nombre'];
-        $contrasena=$_REQUEST['contrasena'];
-        $datos = $usuarioModel->iniciarSesion($nombre,$contrasena);
+        $nombre = $_REQUEST['nombre'];
+        $contrasena = $_REQUEST['contrasena'];
+        $datos = $usuarioModel->iniciarSesion($nombre, $contrasena);
 
         header('Location: ' . Parameters::$BASE_URL . 'Post/home');
-
     }
     public function registrarUsuarios()
     {
@@ -42,7 +44,40 @@ class UsuarioController
     public function verUsuario()
     {
         $usuarioModel = new UsuarioModel();
-        ViewController::show("views/usuario/verUsuario.php");
+        $postModel = new PostModel();
+        $nombre = $_GET['nombre'];
+        $token = [];
+        $usuario = $usuarioModel->usuarioPorNombre($nombre);
+        $idUsuarioPerfil = $usuario['id_usuario'];
+        $idUsuarioVisita= $_SESSION['user']['idUsuario'];
+        $_SESSION['cambioVista']=true;//para que cambie el sidebar2 y se vea los datos del usuario
+        $_SESSION['usuarioVer']=$usuario;
 
+
+        $posts = $postModel->postPorUsuario($idUsuarioPerfil,$idUsuarioVisita);
+        foreach ($posts as $post) {
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+            } else {
+                $post['jwt_token'] = null;
+            }
+        }
+        ViewController::show("views/usuario/verUsuario.php", ["post" => $posts,"token"=>$token,"usuario"=>$usuario]);
+    }
+    public static function generarToken($idUsuario, $idComunidad, $idpost)
+    {
+        $token_data = array(
+            "id_usuario" => $idUsuario,
+            "id_comunidad" => $idComunidad,
+            "id_post" => $idpost,
+        );
+        $key = "123"; //clave secreta
+        $alg = 'HS256';
+        $_SESSION['key'] = $key;
+        $_SESSION['alg'] = $alg;
+        $jwt = JWT::encode($token_data, $key, $alg);
+        return $jwt;
+        // Generar el token JWT
     }
 }

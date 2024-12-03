@@ -100,6 +100,7 @@
 use admin\foro\Helpers\Authentication;
 use admin\foro\Config\Parameters;
 
+$_SESSION['verUsuarios']=false;
 $comunidades = $data['comunidades'] ?? NULL;
 $membresias = $data['membresias'] ?? NULL;
 $token = $data['tokens'] ?? NULL;

@@ -15,7 +15,7 @@ class ComunidadesController{
 
             $comunidadesModel=new ComunidadModel();
             $membresiasModel=new MembresiaModel();
-            $comunidades= $comunidadesModel->getComunidades();
+            $comunidades= $comunidadesModel->getAll();
             $membresias=[];
             $token=[];
             $idUsuario=$_SESSION['user']['idUsuario'];

@@ -10,7 +10,7 @@ class PostModel extends Model
         parent::__construct();
         $this->tabla = "post";
     }
-    public function getPostPopular($usuario,$pagina, $postPorPagina) //parte popular
+    public function getPostPopular($usuario, $pagina, $postPorPagina) //parte popular
     {
         // Calcular el OFFSET (desplazamiento)
         $offset = ($pagina - 1) * $postPorPagina;
@@ -56,7 +56,7 @@ LIMIT :offset, :limit;
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idUsuario", $usuario);
             $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
-            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT);
             $consulta->execute();
 
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
@@ -68,11 +68,11 @@ LIMIT :offset, :limit;
             die($e->getMessage());
         }
     }
-    public function getAllPost($usuario, $pagina, $postPorPagina) 
+    public function getAllPost($usuario, $pagina, $postPorPagina)
     {
         // Calcular el OFFSET (desplazamiento)
         $offset = ($pagina - 1) * $postPorPagina;
-        
+
         // Consulta SQL con LIMIT y OFFSET
         $sql1 = "SELECT 
                     p.id_post,
@@ -110,24 +110,23 @@ LIMIT :offset, :limit;
                     p.video, 
                     p.tipo_post, 
                     c.imagen
-                LIMIT :offset, :limit";  
-    
+                LIMIT :offset, :limit";
+
         try {
             // Preparar la consulta
             $consulta = $this->conn->prepare($sql1);
-            
+
             // Vincular los parámetros
             $consulta->bindParam(":idUsuario", $usuario);
             $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
-            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
-            
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT);
+
             // Ejecutar la consulta
             $consulta->execute();
-    
+
             // Obtener los resultados
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-    
         } catch (\PDOException $e) {
             // Manejo de errores
             echo "<h1><br>Fichero: " . $e->getFile();
@@ -135,12 +134,12 @@ LIMIT :offset, :limit;
             die($e->getMessage());
         }
     }
-    public function getPostHome($id_usuario,$pagina,$postPorPagina) //parte home
+    public function getPostHome($id_usuario, $pagina, $postPorPagina) //parte home
     {
         try {
 
-              // Calcular el OFFSET (desplazamiento)
-        $offset = ($pagina - 1) * $postPorPagina;
+            // Calcular el OFFSET (desplazamiento)
+            $offset = ($pagina - 1) * $postPorPagina;
             //1ºPosts de las comunidades a las que el usuario está unido
             //2ºPosts de las comunidades a las que el usuario NO está unido(sacamos unas pocas para que salgan recomendadas)
             $sql = "
@@ -200,7 +199,7 @@ UNION ALL
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idUsuario", $id_usuario);
             $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
-            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT);
             $consulta->execute();
 
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
@@ -233,10 +232,10 @@ UNION ALL
             echo "Error al insertar el post.";
         }
     }
-    public function getPostPopularNoLogeado($pagina,$postPorPagina) //parte popular no logeado
+    public function getPostPopularNoLogeado($pagina, $postPorPagina) //parte popular no logeado
     {
-                // Calcular el OFFSET (desplazamiento)
-                $offset = ($pagina - 1) * $postPorPagina;
+        // Calcular el OFFSET (desplazamiento)
+        $offset = ($pagina - 1) * $postPorPagina;
         // saca todos los post en orden segun los votos 
         $sql = "SELECT p.id_comunidad, u.nombre, u.imagen_logo_usuario, p.titulo, p.fecha_creacion, p.contenido, p.imagen, p.video,
          p.tipo_post, COUNT(v.id_post) AS votos
@@ -250,7 +249,7 @@ UNION ALL
         try {
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":offset", $offset, \PDO::PARAM_INT);
-            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT); 
+            $consulta->bindParam(":limit", $postPorPagina, \PDO::PARAM_INT);
             $consulta->execute();
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
@@ -264,5 +263,39 @@ UNION ALL
     public function cerrar_conexion()
     {
         $this->conn = NULL;
+    }
+    public function postPorUsuario($idUsuarioPerfil,$idUsuarioVisita)
+    {
+        try {
+            $sql = "
+            SELECT p.*, 
+                   COUNT(v.id_voto) AS votos, 
+                   C.nombre AS nombre_comunidad, 
+                   C.imagen AS imagen_comunidad,
+                   CASE 
+                       WHEN m.id_usuario IS NOT NULL THEN 1 
+                       ELSE 0
+                   END AS esta_unido
+            FROM post p
+            JOIN usuarios u ON p.id_usuario = u.id_usuario
+            LEFT JOIN votos v ON v.id_post = p.id_post
+            LEFT JOIN comunidades c ON c.id_comunidad = p.id_comunidad
+            LEFT JOIN membresias m ON m.id_usuario = :usuarioVisita AND m.id_comunidad = p.id_comunidad
+            WHERE p.id_usuario = :usuarioPerfil
+            GROUP BY p.id_post, c.id_comunidad
+            ORDER BY p.id_post DESC
+            LIMIT 1, 15;
+            ";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":usuarioPerfil", $idUsuarioPerfil);
+            $consulta->bindParam(":usuarioVisita", $idUsuarioVisita);
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
     }
 }
