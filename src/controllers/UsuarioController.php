@@ -43,6 +43,7 @@ class UsuarioController
     }
     public function verUsuario()
     {
+        $_SESSION['cambioVista']="perfilUsuario";
         $usuarioModel = new UsuarioModel();
         $postModel = new PostModel();
         $nombre = $_GET['nombre'];
@@ -50,7 +51,6 @@ class UsuarioController
         $usuario = $usuarioModel->usuarioPorNombre($nombre);
         $idUsuarioPerfil = $usuario['id_usuario'];
         $idUsuarioVisita= $_SESSION['user']['idUsuario'];
-        $_SESSION['cambioVista']=true;//para que cambie el sidebar2 y se vea los datos del usuario
         $_SESSION['usuarioVer']=$usuario;
 
 

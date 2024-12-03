@@ -38,13 +38,13 @@ class ComunidadesController{
         
     public function verComunidad(){
         if(Authentication::isUserLogged()){
+            $_SESSION['cambioVista']="perfilComunidades";
             $comunidadesModel=new ComunidadModel();
             $postModel= new PostModel();
             $_SESSION['comunidadVer']=$_GET['nombreComunidad'];
             $token=[];
             $idUsuario=$_SESSION['user']['idUsuario'];
             $nombreComunidad=$_GET['nombreComunidad'];
-            $_SESSION['cambioVista']=true;
             $comunidad=$comunidadesModel->comunidadesPorNombre($nombreComunidad);
             $idComunidad=$comunidad['id_comunidad'];
             $posts=$postModel->postPorComunidad($idUsuario,$idComunidad);

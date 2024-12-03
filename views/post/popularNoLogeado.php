@@ -3,7 +3,6 @@
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 $post = $data['post'] ?? NULL;
-
 ?>
 
     <section id="sectionPopularNoLogeado">

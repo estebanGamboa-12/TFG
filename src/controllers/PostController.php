@@ -15,7 +15,7 @@ class PostController
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
-
+            $_SESSION['cambioVista']="";
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
             $postPorPagina = 15;
@@ -47,6 +47,7 @@ class PostController
     {
         if (Authentication::isUserLogged()) {
             //tengo que acabar estooo.
+            $_SESSION['cambioVista']="";
             $postModel = new PostModel();
             var_dump($_POST); //aqui debeoms 
             exit;
@@ -61,6 +62,7 @@ class PostController
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
+            $_SESSION['cambioVista']="";
 
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
@@ -84,6 +86,7 @@ class PostController
     public function All() // All 
     {
         if (Authentication::isUserLogged()) {
+            $_SESSION['cambioVista']="";
             $postModel = new PostModel();
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
@@ -108,6 +111,7 @@ class PostController
 
     public function popularNoLogeado() // popular cuando no esta logeado 
     {
+        $_SESSION['cambioVista']="todasComunidades";
         $postModel = new PostModel();
         $pagina = 1;
         $postPorPagina = 15;
@@ -118,6 +122,7 @@ class PostController
     {
         header('Content-Type: application/json');
         if (Authentication::isUserLogged()) {
+            $_SESSION['cambioVista']="";
 
             $postModel = new PostModel();
 

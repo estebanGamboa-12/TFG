@@ -336,4 +336,11 @@ GROUP BY p.id_post,c.id_comunidad;
             die($e->getMessage());
         }
     }
+    public function postPorId($idPost){
+        $sql="SELECT * FROM post WHERE id_post=:idPost;";
+        $consulta=$this->conn->prepare($sql);
+        $consulta->bindParam(":idPost",$idPost);
+        $consulta->execute();
+        return $consulta->fetch(\PDO::FETCH_ASSOC);
+    }
 }

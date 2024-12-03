@@ -57,7 +57,7 @@ class ComunidadModel extends Model
     {
         $sql = "SELECT 
     c.*,
-    COUNT(m.id_membresia) AS usuarios
+    COUNT(m.id_membresia) AS numero_usuarios
 FROM comunidades c
 LEFT JOIN membresias m ON m.id_comunidad = c.id_comunidad
 WHERE c.nombre = :nombre
