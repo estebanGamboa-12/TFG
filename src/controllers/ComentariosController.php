@@ -21,11 +21,13 @@ class ComentariosController
             $idPost=$decoded->id_post;
             $postModel=new PostModel();
             $posts=$postModel->postPorId($idPost);
-            var_dump($posts);
-            //echo json_decode($posts);
+            echo json_encode(["success"=>true,"post"=>$posts]);
         }catch(\PDOException $e){
-            echo json_encode("Hubo un error inesperado.Intene más tarde");
+            echo json_encode(["success"=>false, "mensaje"=>"Hubo un error inesperado.Intene más tarde"]);
         }
+    }
+    public function ver(){
+        ViewController::show("views/comentarios/vistaComentarios.php");
     }
 
 }

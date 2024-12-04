@@ -161,16 +161,10 @@ use admin\foro\Config\Parameters;
     </aside>
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
     <aside class="second-aside ">
-        <div>asdasd</div>
         <div class="aside2">
             <h2>
-                asdasddfff
+                los post que ya ha entrado 
             </h2>
-            <div class="containerNombreBotonVer">
-                <div class="botonSeguirUsuario">
-                    <span>unirse</span>
-                </div>
-            </div>
 
         </div>
     </aside>
