@@ -120,36 +120,3 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         cursor: pointer;
     }
 </style>
-<script>
-    let cards = document.querySelectorAll(".card-section");
-    cards.forEach(card => {
-        let token = card.getAttribute("data-token-comentar");
-        card.addEventListener("click", () => {
-            fetch("<?= Parameters::$BASE_URL ?>Comentarios/verVistaComentarios", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        token: token,
-                    }),
-                })
-                .then(response => {
-                    // Verificamos si la respuesta tiene el tipo 'application/json'
-                    const contentType = response.headers.get('Content-Type');
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json(); // Si es JSON, lo convertimos
-                    } else {
-                        return response.text(); // Si no es JSON, la devolvemos como texto
-                    }
-                })
-                .then(data => {
-                    console.log(data);
-                    data=JSON.parse(data);
-                    console.log(data);
-                    console.log(data.post);
-                })
-                .catch(error => console.log("Error:", error));
-        });
-    });
-</script>

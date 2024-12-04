@@ -337,7 +337,9 @@ GROUP BY p.id_post,c.id_comunidad;
         }
     }
     public function postPorId($idPost){
-        $sql="SELECT * FROM post WHERE id_post=:idPost;";
+        $sql="SELECT p.*,COUNT(v.id_voto) AS votos_totales 
+        FROM post p 
+        LEFT JOIN votos v ON v.id_post=p.id_post WHERE p.id_post=:idPost; ";
         $consulta=$this->conn->prepare($sql);
         $consulta->bindParam(":idPost",$idPost);
         $consulta->execute();
