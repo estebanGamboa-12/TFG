@@ -4,6 +4,7 @@ namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
 use  admin\foro\Helpers\Authentication;
+use admin\foro\Models\ComentariosModel;
 use admin\foro\Models\PostModel;
 use Exception;
 use \Firebase\JWT\JWT;
@@ -16,9 +17,14 @@ class PostController
     {
         if (isset($_GET['titulo'])) {
             $postModel = new PostModel();
+            $comentariosModel=new ComentariosModel();
             $idPost = $_GET['titulo'];
             $posts = $postModel->postPorId($idPost);
-            ViewController::show("views/comentarios/vistaComentarios.php");
+            $comentarios=$comentariosModel->comentariosDeUnPost($idPost);
+            ViewController::show("views/comentarios/vistaComentarios.php",[
+                "post"=>$posts,
+                "comentarios"=>$comentarios,
+            ]);
         } else {
 
             header('Content-Type: application/json');

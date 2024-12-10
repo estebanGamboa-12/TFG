@@ -303,7 +303,7 @@ UNION ALL
             die($e->getMessage());
         }
     }
-    public function postPorComunidad($idUsuario,$idComunidad)
+    public function postPorComunidad($idUsuario, $idComunidad)
     {
         try {
             $sql = "
@@ -336,13 +336,22 @@ GROUP BY p.id_post,c.id_comunidad;
             die($e->getMessage());
         }
     }
-    public function postPorId($idPost){
-        $sql="SELECT p.*,COUNT(v.id_voto) AS votos_totales 
+    public function postPorId($idPost)
+    {
+        try {
+            $sql = "SELECT p.*,u.*,COUNT(v.id_voto) AS votos_totales 
         FROM post p 
-        LEFT JOIN votos v ON v.id_post=p.id_post WHERE p.id_post=:idPost; ";
-        $consulta=$this->conn->prepare($sql);
-        $consulta->bindParam(":idPost",$idPost);
-        $consulta->execute();
-        return $consulta->fetch(\PDO::FETCH_ASSOC);
+        LEFT JOIN votos v ON v.id_post=p.id_post 
+        JOIN usuarios u ON u.id_usuario=p.id_usuario
+        WHERE p.id_post=:idPost; ";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":idPost", $idPost);
+            $consulta->execute();
+            return $consulta->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
     }
 }
