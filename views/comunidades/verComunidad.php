@@ -95,6 +95,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 <section id="section">
     <div class="containerEncabezadoVer">
         <div id="nombreImagenVer">
+                    <i class="material-icons back" onclick="back()">arrow_back</i>
             <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $comunidad['imagen'] ?>" alt="foto">
             <span>c/ <?= $comunidad['nombre'] ?></span>
         </div>
@@ -154,3 +155,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     </div>
     <div id="loading"></div>
 </section>
+<script>
+    function back(){
+        window.history.back();
+    }
+</script>

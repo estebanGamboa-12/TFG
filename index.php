@@ -9,12 +9,19 @@ use admin\foro\Controllers\ViewController;
 // CONTROLADOR FRONTAL:
 $nameController = "admin\\foro\Controllers\\";
 
-// Obtener el controlador desde el parámetro GET o usar el valor por defecto
-$controllerName = $_GET['controller'] ?? Parameters::$CONTROLLER_DEFAULT;
-$nameController .= ucfirst(strtolower($controllerName)) . "Controller"; // Capitaliza el controlador
+// Obtener el controlador desde el parámetro GET o usar la función para obtener valores por defecto
+$controllerName = $_GET['controller'] ?? null;
+$action = $_GET['action'] ?? null;
 
-// Obtener la acción desde el parámetro GET o usar el valor por defecto
-$action = $_GET['action'] ?? Parameters::$ACTION_DEFAULT;
+// Si no se proporciona el controlador o la acción, usar los valores por defecto
+if (is_null($controllerName) || is_null($action)) {
+    $controllerAndAction = Parameters::getControllerAndAction();
+    $controllerName = $controllerAndAction['controller'];
+    $action = $controllerAndAction['action'];
+}
+
+// Construir el nombre completo del controlador
+$nameController .= ucfirst(strtolower($controllerName)) . "Controller"; // Capitaliza el controlador
 
 // Verificar si la clase existe
 if (class_exists($nameController)) {

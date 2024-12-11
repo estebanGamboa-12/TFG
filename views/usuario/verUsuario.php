@@ -87,6 +87,9 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         align-items: center;
         margin: 0% 2%;
     }
+    .back{
+        cursor: pointer;
+    }
 </style>
 <pre>
     <?php //var_dump($post);exit; 
@@ -95,6 +98,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 <section id="section">
     <div class="containerEncabezadoVer">
         <div id="nombreImagenVer">
+            <i class="material-icons back" onclick="back()">arrow_back</i>
             <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $usuario['imagen_logo_usuario'] ?>" alt="foto">
             <span>n/ <?= $usuario['nombre'] ?></span>
         </div>
@@ -160,3 +164,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     </div>
     <div id="loading"></div>
 </section>
+<script>
+    function back(){
+        window.history.back();
+    }
+</script>

@@ -10,11 +10,7 @@ $token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<pre>
-    <?php
-    //var_dump($comentarios);
-    ?>
-</pre>
+
 <style>
     #card-comentarios {
         display: flex;
@@ -83,62 +79,133 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     .card-caja-comentarios {
         display: flex;
         flex-direction: column;
+        gap: 20px;
     }
 
     .comentario {
         margin: 20px 0;
-        padding: 10px;
-        background-color: #f1f1f1;
+        padding: 15px;
+        background-color: #f9f9f9;
         border-radius: 10px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .containerComentarios {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column;
     }
 
     .comentario-sub {
         margin: 10px 0;
-        padding: 10px;
+        padding: 15px;
         border-radius: 10px;
-        margin-left: 20px;
+        margin-left: 40px;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        width: 80%;
     }
 
     .subcomentarios {
         margin-top: 15px;
+        padding-left: 20px;
+        border-left: 2px solid #e0e0e0;
     }
 
     .contenido-comentario {
         margin: 10px 0;
+        font-size: 0.95rem;
+        color: #333;
     }
-
 
     .comentar-comentarios {
         margin-left: 20px;
+        font-size: 0.85rem;
+        color: #555;
+        cursor: pointer;
     }
 
     .boton-enviar-comentario {
         border-radius: 1rem;
-        padding: 5px 10px;
+        padding: 5px 15px;
         display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: #00796b;
-        width: 5rem;
-        margin-left: auto;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: bold;
+        border: none;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 6rem;
+        margin-left: auto;
+    }
+
+    .boton-enviar-comentario:hover {
+        background-color: #005b54;
+    }
+
+    /* Nuevos estilos opcionales */
+    .nombre-comentario {
+        font-weight: bold;
+        font-size: 1rem;
+        color: #00796b;
+    }
+
+    .fecha-comentario {
+        font-size: 0.85rem;
+        color: #999;
+    }
+
+    .imagen-comentarios img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .contenedorComentarioNombre {
+        display: flex;
+    }
+
+    .comentarios {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 3%;
+    }
+
+    .subcomentarios .comentario-sub {
+        margin-left: calc(var(--nivel) * 20px);
+        /* Ejemplo: Desplazar según el nivel */
     }
 </style>
+<pre>
+    <?php
+    // var_dump($comentarios['subcomentarios']);
+    ?>
+</pre>
 <section id="section">
     <div class="sectionAll">
         <div class="card-section" id="card-comentarios">
             <!-- Título y contenido del post -->
             <div class="conteinerEncabezado-comentarios">
-                <div class="flecha-comentarios">
+                <div class="flecha-comentarios back" onclick="goBack()">
                     <i class="material-icons">arrow_back</i>
                 </div>
-                <div class="imagen-comentarios">
-                    <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
-                </div>
-                <div class="nombre-comentarios"><?= $post['nombre'] ?></div>
+                <?php if ($post['tipo_post'] == "normal") { ?>
+                    <div class="imagen-comentarios">
+                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Usuario">
+                    </div>
+                    <div class="nombre-comentarios"><?= $post['nombre_usuario'] ?></div>
+                <?php } else { ?>
+                    <div class="imagen-comentarios">
+                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Usuario">
+                    </div>
+                    <div class="nombre-comentarios"><?= $post['nombre_comunidad'] ?></div>
+                <?php } ?>
                 <div class="fecha-comentarios"><?= $post['fecha_creacion'] ?></div>
             </div>
             <h2 class="titulo-post-comentarios"><?= $post['titulo'] ?></h2>
@@ -147,83 +214,80 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="imagen">
             </div>
             <div class="containerBotones-comentarios">
-                <div class="votar-comentarios boton">Votos (<?= $post['votos_totales'] ?>)</div>
-                <div class="comentar-comentarios boton">Comentar</div>
+                <div class="votar-comentarios boton votar">Votos (<?= $post['votos_totales'] ?>)</div>
                 <div class="compartir-comentarios boton">Compartir</div>
             </div>
             <div class="inputComentar">
-                <input type="texto" placeholder="Comentar">
+                <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">
                 <span class="boton-enviar-comentario">Comentar</span>
             </div>
             <!-- Lista de comentarios -->
-            <div class="card-caja-comentarios">
+            <div class="containerComentarios">
                 <?php
-                // Comprobamos si hay comentarios disponibles
-                if (isset($comentarios) && count($comentarios) > 0) {
-                    foreach ($comentarios as $comentario) {
-                        foreach($comentario as $contenido){
-                            var_dump($contenido);
-                            // Mostrar el comentario principal
-                            echo '<div class="comentario">';
-                            echo '<div class="containerComentarios">';
-                            echo '<div class="imagen-comentarios">';
-                            echo '<img src="' . Parameters::$BASE_URL . 'assets/img/1.jpg" alt="Usuario">';
-                            echo '</div>';
-                            echo '<div class="nombre-comentarios">' . htmlspecialchars($contenido['nombre_usuario_comentario']) . '</div>';
-                            echo '<div class="fecha-comentarios">' . $contenido['fecha_creacion'] . '</div>';
-                            echo '</div>';
-                            echo '<div class="contenido-comentario">' . htmlspecialchars($contenido['contenido']) . '</div>';
-                            echo '<div class="containerBotones-comentarios">';
-                            echo '<div class="votar-comentarios boton">Votar</div>';
-                            echo '<div class="comentar-comentarios boton">Comentar</div>';
-                            echo '</div>';
-                            
-                            // Mostrar subcomentarios si existen
-                            mostrarSubcomentarios($contenido['id_comentario'], $subcomentarios);
-                            echo '</div>'; // Cerrar comentario principal
-                        }
-                    }
-                } else {
-                    echo '<p>No hay comentarios disponibles para este post.</p>';
-                }
-
-                /**
-                 * Función recursiva para mostrar subcomentarios
-                 */
-                function mostrarSubcomentarios($idComentarioPadre, $subcomentarios)
-                {
-                    // Filtramos los subcomentarios que corresponden a este comentario padre
-                    $subcomentariosFiltrados = array_filter($subcomentarios, function ($subcomentario) use ($idComentarioPadre) {
-                        return $subcomentario['subcomentario_padre'] == $idComentarioPadre;
-                    });
-
-                    // Si hay subcomentarios, los mostramos
-                    if (count($subcomentariosFiltrados) > 0) {
-                        echo '<div class="subcomentarios">';
-                        foreach ($subcomentariosFiltrados as $subcomentario) {
-                            echo '<div class="comentario-sub">';
-                            echo '<div class="containerComentarios">';
-                            echo '<div class="imagen-comentarios">';
-                            echo '<img src="' . Parameters::$BASE_URL . 'assets/img/1.jpg" alt="Usuario">';
-                            echo '</div>';
-                            echo '<div class="nombre-comentarios">' . htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) . '</div>';
-                            echo '<div class="fecha-comentarios">' . $subcomentario['subcomentario_fecha'] . '</div>';
-                            echo '</div>';
-                            echo '<div class="contenido-comentario">' . htmlspecialchars($subcomentario['subcomentario_contenido']) . '</div>';
-                            echo '<div class="containerBotones-comentarios">';
-                            echo '<div class="votar-comentarios boton">Votar</div>';
-                            echo '<div class="comentar-comentarios boton">Comentar</div>';
-                            echo '</div>';
-
-                            // Llamada recursiva para mostrar subsubcomentarios si los hay
-                            mostrarSubcomentarios($subcomentario['subcomentario_id'], $subcomentarios);
-                            echo '</div>'; // Cerrar subcomentario
-                        }
-                        echo '</div>'; // Cerrar subcomentarios
-                    }
-                }
-                ?>
+                if (isset($comentarios['comentarios']) && count($comentarios['comentarios']) > 0) {
+                    foreach ($comentarios['comentarios'] as $comentario) { ?>
+                        <div class="comentarios">
+                            <div class="imagen-comentarios">
+                                <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
+                            </div>
+                            <div class="contenedorComentarioNombre">
+                                <div class="nombre-comentarios"><?= htmlspecialchars($comentario['nombre_usuario_comentario'] ?? 'Usuario desconocido') ?></div>
+                                <div class="fecha-comentarios"><?= htmlspecialchars($comentario['fecha_creacion'] ?? 'Fecha no disponible') ?></div>
+                            </div>
+                            <div class="contenido-comentario"><?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
+                            <div class="containerBotones-comentarios">
+                                <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
+                            </div>
+                            <div class="subcomentarios">
+                                <?php
+                                // Mostrar subcomentarios
+                                foreach ($comentarios['subcomentarios'] as $subcomentario) {
+                                    if ($subcomentario['subcomentario_padre'] == $comentario['id_comentario']) { ?>
+                                        <div class="comentario-sub">
+                                            <div class="containerComentarios">
+                                                <div class="imagen-comentarios">
+                                                    <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
+                                                </div>
+                                                <div class="nombre-comentarios"><?= htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) ?></div>
+                                                <div class="fecha-comentarios"><?= $subcomentario['subcomentario_fecha'] ?></div>
+                                            </div>
+                                            <div class="contenido-comentario"><?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
+                                            <div class="containerBotones-comentarios">
+                                                <div class="comentar-comentarios boton">Comentar</div>
+                                            </div>
+                                        </div>
+                                <?php }
+                                } ?>
+                            </div>
+                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>" style="display:none;">
+                                <input type="text" placeholder="Escribe tu respuesta...">
+                                <button onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>)">Enviar</button>
+                            </div>
+                        </div>
+                    <?php }
+                } else { ?>
+                    <p>No hay comentarios disponibles para este post.</p>
+                <?php } ?>
             </div>
         </div>
     </div>
 </section>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+    function mostrarFormularioRespuesta(idComentario) {
+    const form = document.getElementById('respuesta-' + idComentario);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function enviarRespuesta(idComentario) {
+    console.log(idComentario);
+}
+ 
+ document.querySelector(".boton-enviar-comentario").addEventListener("click",()=>{
+
+    let comentario=document.querySelector(".textoComentarioPrincipal").value;
+    console.log(comentario);
+ });
+</script>

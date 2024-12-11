@@ -694,7 +694,9 @@ footer {
     background-color: red;
     color: black;
 }
-
+.back{
+    cursor: pointer;
+}
 
 
 @media (min-width: 1061px) {
