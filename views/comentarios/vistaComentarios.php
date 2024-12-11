@@ -219,7 +219,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             </div>
             <div class="inputComentar">
                 <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">
-                <span class="boton-enviar-comentario">Comentar</span>
+                <span class="boton-enviar-comentario" data-id-post="<?= $post['id_post'] ?>">Comentar</span>
             </div>
             <!-- Lista de comentarios -->
             <div class="containerComentarios">
@@ -237,6 +237,10 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                             <div class="contenido-comentario"><?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
                             <div class="containerBotones-comentarios">
                                 <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
+                            </div>
+                             <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>" style="display:none;">
+                                <input type="text" placeholder="Escribe tu respuesta...">
+                                <button onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
                             </div>
                             <div class="subcomentarios">
                                 <?php
@@ -259,10 +263,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                 <?php }
                                 } ?>
                             </div>
-                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>" style="display:none;">
-                                <input type="text" placeholder="Escribe tu respuesta...">
-                                <button onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>)">Enviar</button>
-                            </div>
+                           
                         </div>
                     <?php }
                 } else { ?>
@@ -276,18 +277,139 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     function goBack() {
         window.history.back();
     }
+
     function mostrarFormularioRespuesta(idComentario) {
-    const form = document.getElementById('respuesta-' + idComentario);
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        const form = document.getElementById('respuesta-' + idComentario);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function enviarRespuesta(idComentario,idPost) {
+    const input = document.querySelector(`#respuesta-${idComentario} input`);
+    const subComentario   = input.value;
+
+    const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+    let url = parametersBaseUrl + "Comentarios/subirComentario";
+
+    fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comentario: subComentario ,
+                idComentario: idComentario,
+                idPost:idPost,
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Respuesta del servidor no es exitosa. Estado: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                // Crear un nuevo elemento para el subcomentario
+                const nuevoSubComentario = document.createElement('div');
+                nuevoSubComentario.classList.add('comentario-sub');
+                nuevoSubComentario.innerHTML = `
+                    <div class="containerComentarios">
+                        <div class="imagen-comentarios">
+                            <img src="${parametersBaseUrl}assets/img/1.jpg" alt="Usuario">
+                        </div>
+                        <div class="nombre-comentarios">${data.comentario.nombre}</div>
+                        <div class="fecha-comentarios">${data.comentario.fecha_creacion}</div>
+                    </div>
+                    <div class="contenido-comentario">${data.comentario.contenido}</div>
+                `;
+                // Insertar el nuevo subcomentario en el contenedor correspondiente
+                const subcomentariosContainer = document.querySelector(`.subcomentarios`);
+                subcomentariosContainer.appendChild(nuevoSubComentario);
+
+                // Limpiar el campo de texto del subcomentario
+                input.value = '';
+            } else {
+                alert(data.mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud fetch:', error);
+        });
 }
 
-function enviarRespuesta(idComentario) {
-    console.log(idComentario);
-}
- 
- document.querySelector(".boton-enviar-comentario").addEventListener("click",()=>{
+    document.querySelector(".boton-enviar-comentario").addEventListener("click", () => {
 
-    let comentario=document.querySelector(".textoComentarioPrincipal").value;
-    console.log(comentario);
- });
+        const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+        let comentario = document.querySelector(".textoComentarioPrincipal").value;
+        let url = parametersBaseUrl + "Comentarios/subirComentario";
+        let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
+
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    comentario: comentario,
+                    idPost: idPost,
+                })
+            })
+            .then(response => {
+                // Verificar si la respuesta tiene el formato correcto
+                if (!response.ok) {
+                    throw new Error('Respuesta del servidor no es exitosa. Estado: ' + response.status);
+                }
+
+                // Obtener la respuesta como texto para inspeccionarla
+                return response.text(); // Usamos text en lugar de json para inspeccionar el contenido
+            })
+            .then(data => {
+                try {
+                    let JSONdata = JSON.parse(data);
+                    console.log(JSONdata.comentario);
+                    if(JSONdata.success){
+                    // Crear un nuevo elemento para el comentario
+                    const nuevoComentario = document.createElement('div');
+                    nuevoComentario.classList.add('comentarios');
+                    nuevoComentario.innerHTML = `
+                    <div class="imagen-comentarios">
+                    <img src="${parametersBaseUrl}assets/img/1.jpg" alt="Usuario">
+                    </div>
+                    <div class="contenedorComentarioNombre">
+                    <div class="nombre-comentarios">${JSONdata.comentario.nombre}</div>
+                    <div class="fecha-comentarios">${JSONdata.comentario.fecha_creacion}</div>
+                    </div>
+                    <div class="contenido-comentario">${JSONdata.comentario.contenido}</div>
+                    <div class="containerBotones-comentarios">
+                    <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(${JSONdata.comentario.id_comentario})">Comentar</div>
+                    </div>
+                    <div class="subcomentarios"></div>
+                    <div class="respuesta-form" id="respuesta-${JSONdata.comentario.id_comentario}" style="display:none;">
+                    <input type="text" placeholder="Escribe tu respuesta...">
+                    <button onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>
+                    </div>
+                    `;
+                          // Insertar el nuevo comentario al principio de la lista de comentarios
+                          const containerComentarios = document.querySelector('.containerComentarios');
+                    containerComentarios.insertBefore(nuevoComentario, containerComentarios.firstChild);
+
+                    // Limpiar el campo de texto del comentario
+                    document.querySelector(".textoComentarioPrincipal").value = '';
+
+                    }else{
+                        alert(JSONdata.mensaje);
+                    }
+
+              
+
+
+                } catch (error) {
+                    alert('Error al procesar la respuesta del servidor.' + error);
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud fetch:', error);
+            });
+    });
 </script>
