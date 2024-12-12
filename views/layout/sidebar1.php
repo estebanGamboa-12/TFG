@@ -55,14 +55,14 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
       Recientes <i class="fa fa-sort-up icono"></i>
     </div>
     <div class="recientes-lista contenido1">
-    <?php if ($comunidadesRecientes!=NULL) { ?>
-      <div class="logo-texto">
-        <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-        <div id="textoAside1">comunidad1</div>
-      </div>
-   <?php }else { ?>
-          <div> no hay nah</div>
-    <?php } ?>
+      <?php if ($comunidadesRecientes != NULL) { ?>
+        <div class="logo-texto">
+          <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
+          <div id="textoAside1">comunidad1</div>
+        </div>
+      <?php } else { ?>
+        <div> no hay nah</div>
+      <?php } ?>
     </div>
 
     <!-- Temas--------------------------------------------------------------------- -->
@@ -87,10 +87,15 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
     <!-- Comunidades --------------------------------------------------------------------- -->
     <?php if ($comunidades != NULL) { ?>
       <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="crearComunidad logo-texto">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+      </div>
       <div class="comunidades-lista contenido1">
         <?php
         $comunidades_por_pagina = 6;
         $total_comunidades = count($comunidades);
+
         //muestra los primeros
         foreach (array_slice($comunidades, 0, $comunidades_por_pagina) as $indice => $contenido) { ?>
           <div class="logo-texto">
@@ -163,7 +168,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
     comunidadesParaMostrar.forEach(function(comunidad) {
       contenidoHTML += `
         <div class="logo-texto">
-          <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
+          <img src="<?= Parameters::$BASE_URL ?>assets/img/${comunidad.imagen}" alt="foto">
           <div id="textoAside1">${comunidad.nombre}</div>
         </div>
       `;

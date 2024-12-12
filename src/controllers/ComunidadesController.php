@@ -65,6 +65,9 @@ class ComunidadesController{
             ViewController::showError(403);
         }
     }
+    public function VistaCrearComunidad(){
+        //creacion de una vista de crear Comunidades
+    }
     public static function generarToken($idUsuario, $idComunidad, $idpost)
     {
         $token_data = array(

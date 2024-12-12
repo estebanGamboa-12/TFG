@@ -14,11 +14,11 @@ class UsuarioController
         unset($_SESSION['user']);
         header("location:" . Parameters::$BASE_URL . "Post/popularNoLogeado");
     }
-    public function mostrarVentanaCerrarSesion()
+    public function mostrarVetananCerrarSesion()
     {
         $_SESSION['cambioVista'] = "cerrarSesion";
-        echo json_encode(["success" => true, "cambiosVista" => $_SESSION['cambioVista']]);
-        exit();
+        header('Location: ' . Parameters::$BASE_URL);
+        exit;   
     }
 
     public function iniciarSesion()

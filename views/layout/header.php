@@ -54,7 +54,7 @@ use admin\foro\Helpers\Authentication;
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
-                            <img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt="">
+                            <a href="<?=Parameters::$BASE_URL?>Usuario/mostrarVetananCerrarSesion"><img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt=""></a>
                         </div>
                     <?php } else { ?>
                         <div class="iniciarSesion">Iniciar Sesion</div>
