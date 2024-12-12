@@ -98,4 +98,17 @@ GROUP BY c.id_comunidad;";
             die($e->getMessage());
         }
     }
+    public function insertarComunidad($idUsuario, $nombre, $descripcion, $imagen)
+    {
+        $sql = "INSERT INTO comunidades
+        ( nombre, descripcion,fecha_creacion, imagen, id_usuario) 
+        VALUES (:nombre,:descripcion,current_timestamp(),:imagen,:idUsuario);
+        ";
+        $consulta = $this->conn->prepare($sql);
+        $consulta->bindParam(":nombre", $nombre);
+        $consulta->bindParam(":descripcion", $descripcion);
+        $consulta->bindParam(":imagen", $imagen);
+        $consulta->bindParam(":idUsuario", $idUsuario);
+        return $consulta->execute();
+    }
 }

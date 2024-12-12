@@ -14,7 +14,7 @@ class TemaModel extends Model
     public function getTemas()
     {
         try {
-            $sql = " SELECT nombre  FROM {$this->tabla} ";
+            $sql = " SELECT id_temas, nombre  FROM {$this->tabla} ";
             $consulta = $this->conn->prepare($sql);
             $consulta->execute();
             $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);

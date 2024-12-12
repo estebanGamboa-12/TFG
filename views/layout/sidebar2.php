@@ -175,6 +175,5 @@ use admin\foro\Config\Parameters;
     </style>
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
     <aside class="second-aside ">
-        <h2>intentar hacer movidas</h2>
     </aside>
 <?php } ?>

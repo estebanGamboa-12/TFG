@@ -15,6 +15,10 @@ use admin\foro\Helpers\Authentication;
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/estilos.css" ?>">
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/logeado.css" ?>">
     <script src="<?= Parameters::$BASE_URL . "assets/js/script.js" ?>"></script>
+    <!-- jquery y select multiple -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Foro</title>
 </head>
 <style>
@@ -54,7 +58,7 @@ use admin\foro\Helpers\Authentication;
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
-                            <a href="<?=Parameters::$BASE_URL?>Usuario/mostrarVetananCerrarSesion"><img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt=""></a>
+                            <a href="<?= Parameters::$BASE_URL ?>Usuario/mostrarVetananCerrarSesion"><img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt=""></a>
                         </div>
                     <?php } else { ?>
                         <div class="iniciarSesion">Iniciar Sesion</div>
