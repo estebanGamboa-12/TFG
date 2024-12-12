@@ -11,7 +11,7 @@ class ImageUploader
 
     public function __construct($tamanioMaximo = 2 * 1024 * 1024) // 2 MB por defecto
     {
-        $this->rutaDestino = "http://localhost/proyectos/TFG/assets/img/"; // Asegúrate de que la ruta termine con una barra
+        $this->rutaDestino = "C:/xampp2/htdocs/proyectos/TFG/assets/img/"; // Asegúrate de que la ruta termine con una barra
         $this->tamanioMaximo = $tamanioMaximo;
     }
 
