@@ -24,7 +24,7 @@ window.onload = function () {
     }
     const section = document.querySelector('.section');
     if (section) {
-        document.querySelector('.section').addEventListener('click', function (event) {
+        section.addEventListener('click', function (event) {
             //----------------------------------------UNIRSE BOTON---------------------------------------------------------------------------------
             if (event.target && event.target.classList.contains('unirse')) {
                 let token = event.target.getAttribute('data-token-unirse'); // Obtener token
@@ -47,7 +47,16 @@ window.onload = function () {
                 } else {
                     alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
-            };
+                //--------------------------------------------click encima de una carta -----------------------------------------------------------------------------
+            } else if (event.target.closest('.card-section')) {
+                let card = event.target.closest(".card-section");
+                let token = card.getAttribute("data-token-comentar");
+                if (token) {
+                    mostrarComentarios(token);
+                } else {
+                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                }
+            }
         });
     }
     //---------------------------------------------------------- vista All---------------------------------------------------------------
@@ -287,10 +296,17 @@ function appendPosts(posts, tokens) {
     posts.forEach(post => {
         const postElement = document.createElement('div');
         postElement.classList.add('card-section');
+        postElement.setAttribute("data-token-comentar", tokens[post.id_post]);
         postElement.innerHTML = `
 <div class="encabezado-section">
-    <img src="${post.tipo_post === 'normal' ? Parameters.BASE_URL + 'assets/img/' + post.imagen_logo_usuario : Parameters.BASE_URL + 'assets/img/' + post.image_comunidad}" 
-        alt="imagen" class="imagenLogo-section">
+      <a href="${post.tipo_post === 'normal'
+                ? Parameters.BASE_URL + 'Usuario/verUsuario?nombre=' + post.nombre
+                : Parameters.BASE_URL + 'Comunidades/verComunidad?idComunidad=' + post.id_comunidad}">
+        <img src="${post.tipo_post === 'normal'
+                ? Parameters.BASE_URL + 'assets/img/' + post.imagen_logo_usuario
+                : Parameters.BASE_URL + 'assets/img/' + post.image_comunidad}" 
+            alt="imagen" class="imagenLogo-section">
+    </a>
     <div class="nombre-section">
         ${post.tipo_post === 'normal' ? 'n/' : 'c/'}${post.nombre}
     </div>
@@ -333,5 +349,37 @@ function appendPosts(posts, tokens) {
         container.appendChild(postElement);
     });
 }
+
+// -------------------------------------------------------Vervista comentarios
+function mostrarComentarios(token) {
+    fetch(parametersBaseUrl + "Post/verPostPorId", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: token })
+    })
+        .then(response => {
+            if (!response.ok) { // Si el código de respuesta HTTP no es 200 (OK)
+                return response.text().then(err => {
+                    console.error("Error:", err);
+                    throw new Error("Error al obtener los datos del servidor");
+                });
+            }
+            return response.json(); // Solo parsear como JSON si la respuesta es correcta
+        })
+        .then(data => {
+            console.log(data.post);
+            if (data.success) {
+                window.location.href = parametersBaseUrl + 'Post/verPostPorId?titulo=' + data.post.id_post;
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+}
+
+
 
 

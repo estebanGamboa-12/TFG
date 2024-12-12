@@ -11,11 +11,36 @@ use admin\foro\Helpers\Authentication;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/estilos.css" ?>">
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/logeado.css" ?>">
     <script src="<?= Parameters::$BASE_URL . "assets/js/script.js" ?>"></script>
     <title>Foro</title>
 </head>
+<style>
+    .perfil {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .desplegable {
+        position: absolute;
+        width: auto;
+        height: au;
+        transform: translateY(-50%);
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        display: block;
+        z-index: 10;
+    }
+
+    .logo-usuario:hover+.desplegable,
+    .desplegable:hover {
+        display: block;
+    }
+</style>
 
 <body>
     <div class="grid">
@@ -28,9 +53,8 @@ use admin\foro\Helpers\Authentication;
                 <div class="tresPuntos">
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
-                            <a class="CrearPost" href="<?= Parameters::$BASE_URL?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
-                            <div class="nombre-usuario"><?php echo $_SESSION['user']["nombre"] ?></div>
-                            <img src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt="">
+                            <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
+                            <img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt="">
                         </div>
                     <?php } else { ?>
                         <div class="iniciarSesion">Iniciar Sesion</div>
@@ -45,7 +69,7 @@ use admin\foro\Helpers\Authentication;
     <div class="modal-content-sesion">
         <div class="cerrar">x</div>
         <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-        <form action="<?= Parameters::$BASE_URL ?>Usuario/iniciarSesion"method="post">
+        <form action="<?= Parameters::$BASE_URL ?>Usuario/iniciarSesion" method="post">
             <label for="nombre">
                 <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
             </label>
@@ -54,7 +78,7 @@ use admin\foro\Helpers\Authentication;
             </label>
             <input type="submit" value="Iniciar Sesion">
         </form>
-        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse" >Registrarse</a></div>
+        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse">Registrarse</a></div>
     </div>
 </div>
 <!-- ventana modal registrarse ----------------------------------------------------------------- -->
@@ -62,7 +86,7 @@ use admin\foro\Helpers\Authentication;
     <div class="modal-content-registrarse">
         <div class="cerrar">x</div>
         <div class="titulo-registrarse">Registrarse</div>
-        <form action="<?= Parameters::$BASE_URL?> Usuario/registrarUsuarios" method="post">
+        <form action="<?= Parameters::$BASE_URL ?> Usuario/registrarUsuarios" method="post">
             <label for="nombre">
                 <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
             </label>
@@ -82,5 +106,20 @@ use admin\foro\Helpers\Authentication;
         </form>
     </div>
 </div>
+
+<!-- 
+<script>
+    document.querySelector(".logo-usuario").addEventListener("click", () => {
+        console.log("entra");
+        fetch("<?= Parameters::$BASE_URL ?>Usuario/mostrarVentanaCerrarSesion", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => console.error(error));
+    });
+</script> -->
 
 </html>
