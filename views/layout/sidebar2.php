@@ -35,19 +35,20 @@ use admin\foro\Config\Parameters;
                 </div>
                 <div id="datos">
                     <span><?= $datosUsuario['comentariosTotales'] ?></span>
-                    <span  class="tituloDatos">Comentarios</span>
+                    <span class="tituloDatos">Comentarios</span>
                 </div>
                 <div id="datos">
                     <span><?= $usuario['fecha_unido'] ?></span>
-                    <span  class="tituloDatos">Fecha unido</span>
+                    <span class="tituloDatos">Fecha unido</span>
                 </div>
             </div>
         </div>
         <style>
-            .tituloDatos{
+            .tituloDatos {
                 color: #828282;
                 margin-bottom: 4%;
             }
+
             .containerNombreBotonVer {
                 display: flex;
                 flex-direction: row;
@@ -60,7 +61,7 @@ use admin\foro\Config\Parameters;
 
             .botonSeguirUsuario {
                 display: flex;
-                margin:  5%;
+                margin: 5%;
                 margin-left: auto;
             }
 
@@ -159,13 +160,21 @@ use admin\foro\Config\Parameters;
         </style>
 
     </aside>
+    
+<?php } else if ($_SESSION['cambioVista'] == "cerrarSesion") { ?>
+    <aside class="second-aside ">
+        <div class="aside2 asideCerrarSesion">
+            <div>Editar Usuario</div>
+            <div class="boton cerrarSesion"> <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion </a></div>
+        </div>
+    </aside>
+    <style>
+        .asideCerrarSesion {
+            gap: 1rem;
+        }
+    </style>
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
     <aside class="second-aside ">
-        <div class="aside2">
-            <h2>
-                los post que ya ha entrado 
-            </h2>
-
-        </div>
+        <h2>intentar hacer movidas</h2>
     </aside>
 <?php } ?>

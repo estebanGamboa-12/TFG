@@ -9,6 +9,17 @@ use Firebase\JWT\JWT;
 
 class UsuarioController
 {
+    public function cerrarSesion()
+    {
+        unset($_SESSION['user']);
+        header("location:" . Parameters::$BASE_URL . "Post/popularNoLogeado");
+    }
+    public function mostrarVentanaCerrarSesion()
+    {
+        $_SESSION['cambioVista'] = "cerrarSesion";
+        echo json_encode(["success" => true, "cambiosVista" => $_SESSION['cambioVista']]);
+        exit();
+    }
 
     public function iniciarSesion()
     {
@@ -43,18 +54,18 @@ class UsuarioController
     }
     public function verUsuario()
     {
-        $_SESSION['cambioVista']="perfilUsuario";
+        $_SESSION['cambioVista'] = "perfilUsuario";
         $usuarioModel = new UsuarioModel();
         $postModel = new PostModel();
         $nombre = $_GET['nombre'];
         $token = [];
         $usuario = $usuarioModel->usuarioPorNombre($nombre);
         $idUsuarioPerfil = $usuario['id_usuario'];
-        $idUsuarioVisita= $_SESSION['user']['idUsuario'];
-        $_SESSION['usuarioVer']=$usuario;
+        $idUsuarioVisita = $_SESSION['user']['idUsuario'];
+        $_SESSION['usuarioVer'] = $usuario;
 
 
-        $posts = $postModel->postPorUsuario($idUsuarioPerfil,$idUsuarioVisita);
+        $posts = $postModel->postPorUsuario($idUsuarioPerfil, $idUsuarioVisita);
         foreach ($posts as $post) {
             $idUsuario = $_SESSION['user']['idUsuario'];
             if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
@@ -63,7 +74,7 @@ class UsuarioController
                 $post['jwt_token'] = null;
             }
         }
-        ViewController::show("views/usuario/verUsuario.php", ["post" => $posts,"token"=>$token,"usuario"=>$usuario]);
+        ViewController::show("views/usuario/verUsuario.php", ["post" => $posts, "token" => $token, "usuario" => $usuario]);
     }
     public static function generarToken($idUsuario, $idComunidad, $idpost)
     {
