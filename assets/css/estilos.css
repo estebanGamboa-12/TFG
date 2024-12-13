@@ -867,7 +867,40 @@ footer {
     margin-left: calc(var(--nivel) * 20px);
     /* Ejemplo: Desplazar según el nivel */
 }
+.mensaje {
+    color: green;
+    background-color: #d4edda;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 10%; /* Ajusta la posición desde arriba */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente */
+    z-index: 100;
+}
 
+.error {
+    color: red;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 10%; 
+    left: 50%;
+    transform: translateX(-50%); 
+    z-index: 100;
+    color: red;
+    background-color: #f8d7da;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
 
 @media (min-width: 1061px) {
     .first-aside {

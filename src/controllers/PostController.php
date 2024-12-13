@@ -4,7 +4,10 @@ namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
 use  admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\ImageUploader;
+use admin\foro\Helpers\VideoUploader;
 use admin\foro\Models\ComentariosModel;
+use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\PostModel;
 use Exception;
 use \Firebase\JWT\JWT;
@@ -17,13 +20,13 @@ class PostController
     {
         if (isset($_GET['titulo'])) {
             $postModel = new PostModel();
-            $comentariosModel=new ComentariosModel();
+            $comentariosModel = new ComentariosModel();
             $idPost = $_GET['titulo'];
             $posts = $postModel->postPorId($idPost);
-            $comentarios=$comentariosModel->comentariosDeUnPost($idPost);
-            ViewController::show("views/comentarios/vistaComentarios.php",[
-                "post"=>$posts,
-                "comentarios"=>$comentarios,
+            $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
+            ViewController::show("views/comentarios/vistaComentarios.php", [
+                "post" => $posts,
+                "comentarios" => $comentarios,
             ]);
         } else {
 
@@ -75,9 +78,6 @@ class PostController
             }
         }
     }
-
-
-
     public function popular() // populares 
     {
         if (Authentication::isUserLogged()) {
@@ -104,7 +104,12 @@ class PostController
     public function mostrarForm() //vista formulario para subir post 
     {
         if (Authentication::isUserLogged()) {
-            ViewController::show("views/post/crearPost.php");
+            $comunidadModel = new ComunidadModel();
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $comunidades = $comunidadModel->getComunidadesUnido($idUsuario);
+
+            //var_dump($comunidades);exit;
+            ViewController::show("views/post/crearPost.php", ["comunidades" => $comunidades]);
             exit;
         } else {
             ViewController::showError(403);
@@ -116,8 +121,30 @@ class PostController
             //tengo que acabar estooo.
             $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
-            var_dump($_POST); //aqui debeoms 
-            exit;
+            var_dump($_FILES);
+            $idTem = $_POST['tema'];
+            $titulo = $_POST['titulo'];
+            $contenido = $_POST['contenido'];
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $archivo=$_FILES['archivo'];
+            $fileType=$_FILES['archivo']['type'];
+            $video=NULL;
+            $imagen=NULL;
+
+            if (strpos($fileType, 'video') !== false) {
+                $videoUploader=new VideoUploader();
+                $video=$videoUploader->subirVideo($archivo);
+            }
+
+            elseif (strpos($fileType, 'image') !== false) {
+                $imagenUploader=new ImageUploader();
+                $imagen=$imagenUploader->subirImagen($archivo);
+            } else {
+                header("location:". Parameters::$BASE_URL."Post/mostrarForm");
+                echo "El archivo no es ni video ni imagen.";
+                exit;
+            }
+
             $post = $postModel->subirPost();
             header('Location:' . Parameters::$BASE_URL . "Post/home");
             exit;

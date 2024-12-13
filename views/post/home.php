@@ -49,6 +49,36 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     <?php //var_dump($post);exit; 
     ?>
 </pre>
+<?php
+if (isset($_SESSION['mensaje'])) {
+    echo '<div class="mensaje id="mensaje"">';
+    echo $_SESSION['mensaje'];
+    echo '</div>';
+    unset($_SESSION['mensaje']);
+}
+
+if (isset($_SESSION['errores'])) {
+    echo '<div class="error" id="errores">';
+    foreach ($_SESSION['errores'] as $error) {
+        echo $error . '<br>';
+    }
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
+<script>
+    // Función para ocultar el mensaje después de 3 segundos
+    setTimeout(function() {
+        var mensaje = document.getElementById('mensaje');
+        var errores = document.getElementById('errores');
+        if (mensaje) {
+            mensaje.style.display = 'none';
+        }
+        if (errores) {
+            errores.style.display = 'none';
+        }
+    }, 2000); // 3000 milisegundos = 3 segundos
+</script>
 <section id="sectionHome">
     <div class="section">
         <div class="contenidoMensajes"></div>

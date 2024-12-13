@@ -536,6 +536,22 @@ footer {
     margin-left: calc(var(--nivel) * 20px);
     /* Ejemplo: Desplazar según el nivel */
 }
+.mensaje {
+    width: 60%;
+    color: green;
+    background-color: #d4edda;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+    background-color: #f8d7da;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
 
 
 @media (max-width: 960px) {
@@ -562,6 +578,14 @@ footer {
 
     .bars {
         display: block;
+    }
+    @media (max-width: 600px) {
+        .mensaje {
+            width: 100%;
+            top: 15%; /* Baja el mensaje un poco */
+            padding: 15px; /* Aumenta el espacio interno para mayor legibilidad */
+            font-size: 14px; /* Ajusta el tamaño de la fuente */
+        }
     }
 
 }
