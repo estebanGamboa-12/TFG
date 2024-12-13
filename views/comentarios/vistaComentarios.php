@@ -61,16 +61,23 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                 <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
                             </div>
                             <div class="contenedorComentarioNombre">
-                                <div class="nombre-comentarios"><?= htmlspecialchars($comentario['nombre_usuario_comentario'] ?? 'Usuario desconocido') ?></div>
-                                <div class="fecha-comentarios"><?= htmlspecialchars($comentario['fecha_creacion'] ?? 'Fecha no disponible') ?></div>
+                                <div class="nombre-comentarios">
+                                    <?= htmlspecialchars($comentario['nombre_usuario_comentario'] ?? 'Usuario desconocido') ?>
+                                </div>
+                                <div class="fecha-comentarios">
+                                    <?= htmlspecialchars($comentario['fecha_creacion'] ?? 'Fecha no disponible') ?></div>
                             </div>
-                            <div class="contenido-comentario"><?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
+                            <div class="contenido-comentario">
+                                <?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
                             <div class="containerBotones-comentarios">
-                                <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
+                                <div class="comentar-comentarios boton"
+                                    onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
                             </div>
-                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>" style="display:none;">
+                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>"
+                                style="display:none;">
                                 <input type="text" class="textoComentarioPrincipal" placeholder="Escribe tu respuesta">
-                                <button onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
+                                <button
+                                    onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
                             </div>
                             <div class="subcomentarios">
                                 <?php
@@ -82,15 +89,17 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                                 <div class="imagen-comentarios">
                                                     <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
                                                 </div>
-                                                <div class="nombre-comentarios"><?= htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) ?></div>
+                                                <div class="nombre-comentarios">
+                                                    <?= htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) ?></div>
                                                 <div class="fecha-comentarios"><?= $subcomentario['subcomentario_fecha'] ?></div>
                                             </div>
-                                            <div class="contenido-comentario"><?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
+                                            <div class="contenido-comentario">
+                                                <?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
                                             <div class="containerBotones-comentarios">
                                                 <div class="comentar-comentarios boton">Comentar</div>
                                             </div>
                                         </div>
-                                <?php }
+                                    <?php }
                                 } ?>
                             </div>
 
@@ -121,16 +130,16 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    comentario: subComentario,
-                    idComentario: idComentario,
-                    idPost: idPost,
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comentario: subComentario,
+                idComentario: idComentario,
+                idPost: idPost,
             })
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Respuesta del servidor no es exitosa. Estado: ' + response.status);
@@ -174,17 +183,16 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
-
         fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    comentario: comentario,
-                    idPost: idPost,
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comentario: comentario,
+                idPost: idPost,
             })
+        })
             .then(response => {
                 // Verificar si la respuesta tiene el formato correcto
                 if (!response.ok) {
@@ -196,6 +204,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             })
             .then(data => {
                 try {
+                    console.log(data);
                     let JSONdata = JSON.parse(data);
                     console.log(JSONdata.comentario);
                     if (JSONdata.success) {
@@ -236,10 +245,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                         alert(JSONdata.mensaje);
                     }
 
-
-
-
                 } catch (error) {
+                    console.error('Error al procesar la respuesta del servidor:', error);
                     alert('Error al procesar la respuesta del servidor.' + error);
                 }
             })

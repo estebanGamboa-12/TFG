@@ -24,15 +24,16 @@ class TemasController
         $temasModel = new TemaModel();
         $temasComunidadModel = new temasComunidadModel();
         $temas = [];
-        $idComunidad = $_GET['idComunidad'];
+        $idComunidad = intval($_GET['idComunidad']);
         $idTemas = $temasComunidadModel->getTemasPorComunidad($idComunidad);
-        var_dump($idTemas);exit; 
-        foreach ($idTemas['id_tema'] as $idTema) {
+        foreach ($idTemas as $tema) {
             $temasModel = new TemaModel();
-            $temas = $temasModel->getTemasPorId($idTema);
+            $temaObtenido = $temasModel->getTemasPorId($tema['id_tema']);
+            if (!empty($temaObtenido)) {
+                $temas[] = $temaObtenido[0]; 
+            }
         }
         if ($temas) {
-            var_dump($temas);exit;
             echo json_encode(["success" => true, "temas" => $temas]);
         } else {
             echo json_encode(["success" => false]);

@@ -9,19 +9,27 @@ $comunidades = $data['comunidades'] ?? NULL;
     <div class="section">
         <div class="form-container">
             <h2>Formulario</h2>
-            <form id="dynamicForm" action="<?= Parameters::$BASE_URL ?>Post/subirPost" method="post" enctype="multipart/form-data">
+            <form id="dynamicForm" action="<?= Parameters::$BASE_URL ?>Post/subirPost" method="post"
+                enctype="multipart/form-data">
                 <label for="comunidad">Selecciona Comunidad:</label>
                 <select id="comunidad" name="comunidad" required>
-                    <option value="">-- Selecciona una comunidad --</option>
-                    <?php foreach ($comunidades as $comunidad): ?>
-                        <option value="<?php echo $comunidad['id_comunidad']; ?>">
-                            <img src="<?php echo $comunidad['imagen']; ?>" alt="<?php echo $comunidad['nombre']; ?>" style="width: 20px; height: 20px; vertical-align: middle;">
-                            <?php echo $comunidad['nombre']; ?>
+                    <optgroup label="Usuario ">
+                        <option value="<?= $_SESSION['user']['idUsuario'] ?>">
+                            <?= $_SESSION['user']['nombre'] ?>
                         </option>
-                    <?php endforeach; ?>
+                    </optgroup>
+                    <optgroup label="Comunidades">
+                        <?php foreach ($comunidades as $comunidad): ?>
+                            <option value="<?php echo $comunidad['id_comunidad']; ?>">
+                                <img src="<?php echo $comunidad['imagen']; ?>" alt="<?php echo $comunidad['nombre']; ?>"
+                                    style="width: 20px; height: 20px; vertical-align: middle;">
+                                <?php echo $comunidad['nombre']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </optgroup>
                 </select>
                 <label for="tema" style="display: none;">Selecciona un tema :</label>
-                <select id="tema" name="tema" style="display: none;">
+                <select id="tema" name="idTema" style="display: none;">
                     <!-- Las opciones se llenarán dinámicamente -->
                 </select>
 
@@ -45,12 +53,12 @@ $comunidades = $data['comunidades'] ?? NULL;
 </section>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Inicializar select2 si es necesario
         $('#comunidad').select2();
 
         // Manejar el cambio de contenido del formulario
-        $('.btn-option').on('click', function() {
+        $('.btn-option').on('click', function () {
             const option = $(this).data('option');
             let content = '';
 
@@ -90,7 +98,7 @@ $comunidades = $data['comunidades'] ?? NULL;
             const tldRegex = new RegExp(`\\.(${validTLDs.join('|')})$`, 'i');
 
             // Agregar evento para el campo de URL
-            $('#url_link').on('input', function() {
+            $('#url_link').on('input', function () {
                 let value = $(this).val().trim();
                 const errorMessage = $('#url_error');
 
@@ -112,7 +120,7 @@ $comunidades = $data['comunidades'] ?? NULL;
             });
 
             // Manejar el envío del formulario para impedir enviar datos no válidos
-            $('#form').on('submit', function(e) {
+            $('#form').on('submit', function (e) {
                 const value = $('#url_link').val().trim();
                 const errorMessage = $('#url_error');
 
@@ -127,7 +135,7 @@ $comunidades = $data['comunidades'] ?? NULL;
         // Inicializar el contenido por defecto como "Texto"
         $('.btn-option[data-option="text"]').click();
 
-        $('#comunidad').change(function() {
+        $('#comunidad').change(function () {
             let idComunidad = $(this).val();
 
             $('#tema').empty().hide();
@@ -141,18 +149,18 @@ $comunidades = $data['comunidades'] ?? NULL;
                     data: {
                         idComunidad: idComunidad
                     },
-                    success: function(data) {
-                        console.log(data);
-                        let temas = JSON.parse(data);
-                        if (temas.length > 0) {
+                    success: function (data) {
+                        let JSONdata = JSON.parse(data);
+                        if (JSONdata.temas.length > 0) {
                             // Mostrar la etiqueta y el select de temas
                             $('label[for="tema"]').show();
                             $('#tema').show();
 
                             // Llenar el select de temas
-                            $.each(temas, function(index, tema) {
+                            $.each(JSONdata.temas, function (index, tema) {
+                                console.log(tema);
                                 $('#tema').append($('<option>', {
-                                    value: tema.id_tema,
+                                    value: tema.id_temas,
                                     text: tema.nombre
                                 }));
                             });
@@ -162,7 +170,7 @@ $comunidades = $data['comunidades'] ?? NULL;
                             $('label[for="tema"]').hide();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error al obtener los temas:', error);
                     }
                 });

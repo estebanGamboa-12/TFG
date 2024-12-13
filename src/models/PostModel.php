@@ -62,7 +62,6 @@ LIMIT :offset, :limit;
 
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-            exit;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
@@ -215,28 +214,34 @@ UNION ALL
             die($e->getMessage());
         }
     }
-    public function subirPost($titulo, $contenido, $id_usuario, $id_tema, $tipo_post)
-    {
-        // Preparar la consulta SQL
-        $sql = "INSERT INTO `post` (id_post, titulo, contenido, fecha_creacion, imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
-        VALUES (NULL, :titulo, :contenido, CURRENT_TIMESTAMP(), NULL, NULL, :id_usuario, NULL, :id_tema, :tipo_post);";
+    public function subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost,$video,$imagen, $idComunidad)
+{
+    // Preparar la consulta SQL
+    $sql = "INSERT INTO `post` ( titulo, contenido, fecha_creacion,
+     imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
+    VALUES 
+    ( :titulo, :contenido, CURRENT_TIMESTAMP(), 
+    :imagen, :video, :idUsuario, :idComunidad, :idTema, :tipoPost);";
 
-        $consulta = $this->conn->prepare($sql);
+    $consulta = $this->conn->prepare($sql);
 
-        // Bind de los parámetros
-        $consulta->bindParam(':titulo', $titulo);
-        $consulta->bindParam(':contenido', $contenido);
-        $consulta->bindParam(':id_usuario', $id_usuario);
-        $consulta->bindParam(':id_tema', $id_tema);
-        $consulta->bindParam(':tipo_post', $tipo_post);
+    // Bind de los parámetros
+    $consulta->bindParam(':titulo', $titulo);
+    $consulta->bindParam(':contenido', $contenido);
+    $consulta->bindParam(':idUsuario', $idUsuario);
+    $consulta->bindParam(':idTema', $idTema);
+    $consulta->bindParam(':imagen', $imagen);
+    $consulta->bindParam(':video', $video);
+    $consulta->bindParam(':tipoPost', $tipoPost);
+    $consulta->bindParam(':idComunidad', $idComunidad);
 
-        // Ejecuta la consulta
-        if ($consulta->execute()) {
-            echo "Post insertado correctamente.";
-        } else {
-            echo "Error al insertar el post.";
-        }
+    // Ejecuta la consulta
+    if ($consulta->execute()) {
+        echo "Post insertado correctamente.";
+    } else {
+        echo "Error al insertar el post.";
     }
+}
     public function getPostPopularNoLogeado($pagina, $postPorPagina) //parte popular no logeado
     {
         // Calcular el OFFSET (desplazamiento)
@@ -258,7 +263,6 @@ UNION ALL
             $consulta->execute();
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-            exit;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";

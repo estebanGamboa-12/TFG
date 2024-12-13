@@ -13,13 +13,11 @@ class Parameters {
 
     public static function getControllerAndAction() {
         if (Authentication::isUserLogged()) {
-            // Si el usuario está logueado, redirigir a otro controlador y acción
             return [
-                'controller' => 'Post', // Cambia esto al controlador que desees
-                'action' => 'home' // Cambia esto a la acción que desees
+                'controller' => 'Post',
+                'action' => 'home'
             ];
         } else {
-            // Si el usuario no está logueado, usar los valores por defecto
             return [
                 'controller' => self::$CONTROLLER_DEFAULT,
                 'action' => self::$ACTION_DEFAULT

@@ -3,7 +3,7 @@
 namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
-use  admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\Authentication;
 use admin\foro\Helpers\ImageUploader;
 use admin\foro\Helpers\VideoUploader;
 use admin\foro\Models\ComentariosModel;
@@ -118,34 +118,42 @@ class PostController
     public function subirPost() //subir un post desde el formulario crearPost.php
     {
         if (Authentication::isUserLogged()) {
-            //tengo que acabar estooo.
             $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
-            var_dump($_FILES);
-            $idTem = $_POST['tema'];
+            $idTema =$_POST['idTema'] ?? NULL;
             $titulo = $_POST['titulo'];
             $contenido = $_POST['contenido'];
+            $idComunidad=$_POST['comunidad']??NULL;
             $idUsuario = $_SESSION['user']['idUsuario'];
-            $archivo=$_FILES['archivo'];
-            $fileType=$_FILES['archivo']['type'];
-            $video=NULL;
-            $imagen=NULL;
-
-            if (strpos($fileType, 'video') !== false) {
-                $videoUploader=new VideoUploader();
-                $video=$videoUploader->subirVideo($archivo);
-            }
-
-            elseif (strpos($fileType, 'image') !== false) {
-                $imagenUploader=new ImageUploader();
-                $imagen=$imagenUploader->subirImagen($archivo);
+            $archivo = $_FILES['archivo'] ?? NULL;
+            $fileType = $_FILES['archivo']['type'] ?? NULL;
+            $video = NULL;
+            $imagen = NULL;
+            $tipoPost = NULL;
+            if ($idTema == NULL) {
+                $tipoPost = "normal";
             } else {
-                header("location:". Parameters::$BASE_URL."Post/mostrarForm");
-                echo "El archivo no es ni video ni imagen.";
-                exit;
+                $tipoPost = "comunidad";
             }
 
-            $post = $postModel->subirPost();
+            if ($archivo != NULL) {
+                if (strpos($fileType, 'video') !== false) {
+                    $videoUploader = new VideoUploader();
+                    $video = $videoUploader->subirVideo($archivo);
+                } elseif (strpos($fileType, 'image') !== false) {
+                    $imagenUploader = new ImageUploader();
+                    $imagen = $imagenUploader->subirImagen($archivo);
+                } else {
+                    header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
+                    echo "El archivo no es ni video ni imagen.";
+                    exit;
+                }
+            } else {
+                $video = NULL;
+                $imagen = NULL;
+            }
+
+            $post = $postModel->subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen,$idComunidad);
             header('Location:' . Parameters::$BASE_URL . "Post/home");
             exit;
         } else {
@@ -276,7 +284,6 @@ class PostController
                 default:
                     echo json_encode(['success' => false, 'message' => 'Ocurrio un error inesperado (145 postContr)']);
                     exit;
-                    break;
             }
             if ($posts) {
                 echo json_encode([

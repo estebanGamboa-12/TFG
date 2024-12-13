@@ -30,7 +30,7 @@ class TemaModel extends Model
         try {
             $sql = " SELECT id_temas, nombre  FROM {$this->tabla} WHERE id_temas=:idTemas ";
             $consulta = $this->conn->prepare($sql);
-            $consulta->bindParam(":idTema",$idTema);
+            $consulta->bindParam(":idTemas",$idTema,\PDO::PARAM_INT);
             $consulta->execute();
             $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $resultado;
