@@ -14,7 +14,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
 <pre>
     <?php
-    // var_dump($comentarios['subcomentarios']);
+     //var_dump($token);exit;
     ?>
 </pre>
 <section id="section">
@@ -44,8 +44,14 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="imagen">
             </div>
             <div class="containerBotones-comentarios">
-                <div class="votar-comentarios boton votar">Votos (<?= $post['votos_totales'] ?>)</div>
+            <div class="votos-seccion boton  votar"
+                            data-token-votar="<?= $token ?>">
+                            Votos(<?= $post['votos_totales'] ?>)
+                        </div>
                 <div class="compartir-comentarios boton">Compartir</div>
+                <a href="https://api.whatsapp.com/send?text=Texto%20a%20compartir" target="_blank">
+    <button>Compartir en WhatsApp</button>
+</a>
             </div>
             <div class="inputComentar">
                 <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">

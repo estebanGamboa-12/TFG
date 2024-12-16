@@ -21,7 +21,7 @@ use admin\foro\Helpers\Authentication;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Foro</title>
 </head>
-<style>
+<!-- <style>
     .perfil {
         position: relative;
         display: flex;
@@ -44,7 +44,7 @@ use admin\foro\Helpers\Authentication;
     .desplegable:hover {
         display: block;
     }
-</style>
+</style> -->
 
 <body>
     <div class="grid">
@@ -59,6 +59,7 @@ use admin\foro\Helpers\Authentication;
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
                             <a href="<?= Parameters::$BASE_URL ?>Usuario/mostrarVetananCerrarSesion"><img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt=""></a>
+                            <i class="fa fa-bars" style="margin-left: 10%;"></i>
                         </div>
                     <?php } else { ?>
                         <div class="iniciarSesion">Iniciar Sesion</div>
@@ -110,20 +111,4 @@ use admin\foro\Helpers\Authentication;
         </form>
     </div>
 </div>
-
-<!-- 
-<script>
-    document.querySelector(".logo-usuario").addEventListener("click", () => {
-        console.log("entra");
-        fetch("<?= Parameters::$BASE_URL ?>Usuario/mostrarVentanaCerrarSesion", {
-                method: "POST"
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => console.error(error));
-    });
-</script> -->
-
 </html>

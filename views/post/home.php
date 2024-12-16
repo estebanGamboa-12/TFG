@@ -2,49 +2,14 @@
 
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
+
 $post = $data['post'] ?? NULL;
 $token = $data['token'] ?? NULL;
 
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<style>
-    .votar {
-        cursor: pointer;
-    }
 
-    /* Estilo para el contenedor del cargador */
-    #loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
-    }
-
-    /* Animación de giro para el spinner */
-    .spinner {
-        border: 4px solid #f3f3f3;
-        /* Gris claro */
-        border-top: 4px solid #3498db;
-        /* Azul */
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 2s linear infinite;
-        margin-bottom: 10px;
-    }
-
-    /* Definición de la animación de giro */
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
 <pre>
     <?php //var_dump($post);exit; 
     ?>
@@ -126,7 +91,16 @@ if (isset($_SESSION['errores'])) {
                         <?php elseif (!empty($contenido['imagen'])): ?>
                             <!-- si existe imagen -->
                             <div class="videos-fotos-section">
-                                <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
+                                <img
+                                    src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>"
+                                    alt="imagen"
+                                    class="imagen-section"
+                                    srcset="
+            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 600w,
+            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 800w,
+            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 1200w,
+            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 1600w"
+                                    sizes="(max-width: 600px) 100vw, (max-width: 800px) 50vw, (max-width: 1200px) 33vw, 25vw">
                             </div>
                         <?php endif; ?>
                     </div>
@@ -144,9 +118,9 @@ if (isset($_SESSION['errores'])) {
     </div>
     <div id="loading"></div>
 </section>
-<style>
+<!-- <style>
     .card-section:hover {
         background-color: #8080800d;
         cursor: pointer;
     }
-</style>
+</style> -->

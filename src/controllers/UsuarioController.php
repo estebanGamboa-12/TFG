@@ -3,6 +3,7 @@
 namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
+use admin\foro\Helpers\GenerarToken as HelpersGenerarToken;
 use admin\foro\Models\PostModel;
 use admin\foro\Models\UsuarioModel;
 use Firebase\JWT\JWT;
@@ -17,8 +18,6 @@ class UsuarioController
     public function mostrarVetananCerrarSesion()
     {
         $_SESSION['cambioVista'] = "cerrarSesion";
-        header('Location: ' . Parameters::$BASE_URL);
-        exit;   
     }
 
     public function iniciarSesion()
@@ -57,6 +56,7 @@ class UsuarioController
         $_SESSION['cambioVista'] = "perfilUsuario";
         $usuarioModel = new UsuarioModel();
         $postModel = new PostModel();
+        $generarToken=new HelpersGenerarToken();
         $nombre = $_GET['nombre'];
         $token = [];
         $usuario = $usuarioModel->usuarioPorNombre($nombre);
@@ -69,26 +69,12 @@ class UsuarioController
         foreach ($posts as $post) {
             $idUsuario = $_SESSION['user']['idUsuario'];
             if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);              
             } else {
                 $post['jwt_token'] = null;
             }
         }
         ViewController::show("views/usuario/verUsuario.php", ["post" => $posts, "token" => $token, "usuario" => $usuario]);
     }
-    public static function generarToken($idUsuario, $idComunidad, $idpost)
-    {
-        $token_data = array(
-            "id_usuario" => $idUsuario,
-            "id_comunidad" => $idComunidad,
-            "id_post" => $idpost,
-        );
-        $key = "123"; //clave secreta
-        $alg = 'HS256';
-        $_SESSION['key'] = $key;
-        $_SESSION['alg'] = $alg;
-        $jwt = JWT::encode($token_data, $key, $alg);
-        return $jwt;
-        // Generar el token JWT
-    }
+   
 }

@@ -36,7 +36,7 @@ $temas = $data['temas'] ?? NULL;
         $('#temas').select2();
     });
 </script>
-<style>
+<!-- <style>
     option.selected {
         background-color: #007BFF;
         color: white;
@@ -112,4 +112,4 @@ $temas = $data['temas'] ?? NULL;
     input[type="submit"]:hover {
         background-color: #45a049;
     }
-</style>
+</style> -->

@@ -24,9 +24,6 @@ use admin\foro\Config\Parameters;
         <div class="aside2">
             <div class="containerNombreBotonVer">
                 <span class="nombreUsuarioVer"><?= $usuario['nombre'] ?></span>
-                <div class="botonSeguirUsuario">
-                    <span>seguir</span>
-                </div>
             </div>
             <div class="datosUsuarioVer">
                 <div id="datos">
@@ -43,7 +40,7 @@ use admin\foro\Config\Parameters;
                 </div>
             </div>
         </div>
-        <style>
+        <!-- <style>
             .tituloDatos {
                 color: #828282;
                 margin-bottom: 4%;
@@ -88,16 +85,17 @@ use admin\foro\Config\Parameters;
                 display: flex;
                 flex-direction: column;
             }
-        </style>
+        </style> -->
 
     </aside>
 <?php } else if ($_SESSION['cambioVista'] == "perfilComunidades") { ?>
     <aside class="second-aside ">
         <div class="containerBotones">
-            <a href="<?= Parameters::$BASE_URL ?>Post/mostrarForm">
-                <div class="crearPost botones" id="crearPost">Crear Post</div>
-            </a>
-            <div class="unirseComunidad botones">Unirse</div>
+            <?php if ($datosComunidad["usuario_unido"] == "1") { ?>
+                    
+            <?php } else { ?>
+                <div class="unirseComunidad botones">Unirse </div>
+            <?php  } ?>
         </div>
         <div class="aside2">
             <div class="nombreComunidad"><?= $datosComunidad['nombre'] ?></div>
@@ -108,7 +106,7 @@ use admin\foro\Config\Parameters;
                 <div>Miembros</div>
             </div>
         </div>
-        <style>
+        <!-- <style>
             #numeroMiembrosComunidad {
                 display: flex;
                 align-items: center;
@@ -157,10 +155,10 @@ use admin\foro\Config\Parameters;
                 flex-direction: column;
                 justify-content: flex-start;
             }
-        </style>
+        </style> -->
 
     </aside>
-    
+
 <?php } else if ($_SESSION['cambioVista'] == "cerrarSesion") { ?>
     <aside class="second-aside ">
         <div class="aside2 asideCerrarSesion">
@@ -168,11 +166,11 @@ use admin\foro\Config\Parameters;
             <div class="boton cerrarSesion"> <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion </a></div>
         </div>
     </aside>
-    <style>
+    <!-- <style>
         .asideCerrarSesion {
             gap: 1rem;
         }
-    </style>
+    </style> -->
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
     <aside class="second-aside ">
     </aside>

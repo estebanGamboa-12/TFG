@@ -180,7 +180,7 @@ $comunidades = $data['comunidades'] ?? NULL;
 </script>
 
 
-<style>
+<!-- <style>
     .form-container {
         display: flex;
         flex-direction: column;
@@ -256,4 +256,4 @@ $comunidades = $data['comunidades'] ?? NULL;
         transition: background-color 0.3s;
         /* Transición suave para el hover */
     }
-</style>
+</style> -->

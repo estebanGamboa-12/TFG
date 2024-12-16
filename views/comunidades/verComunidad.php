@@ -10,7 +10,7 @@ $comunidad = $data['comunidad'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<style>
+<!-- <style>
     .votar {
         cursor: pointer;
     }
@@ -87,7 +87,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         align-items: center;
         margin: 0% 2%;
     }
-</style>
+</style> -->
 <pre>
     <?php //var_dump($post);exit;
     ?>
@@ -99,14 +99,11 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $comunidad['imagen'] ?>" alt="foto">
             <span>c/ <?= $comunidad['nombre'] ?></span>
         </div>
-        <div class="botonesVer">
-            <span>Crear post</span>
-        </div>
     </div>
     <div class="section">
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
-            <div class="card-section">
+            <div class="card-section" data-token-comentar="<?= $token[$contenido['id_post']] ?>">
                 <div class="encabezado-section">
                     <?php if ($contenido['tipo_post'] === "comunidad") { ?>
                         <a href="<?= Parameters::$BASE_URL ?>Usuario/verUsuario?nombre=<?= $contenido['nombre_usuario'] ?>">

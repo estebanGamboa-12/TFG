@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     a {
         text-decoration: none;
     }
@@ -93,7 +93,7 @@
         background-color: red;
         color: black;
     }
-</style>
+</style> -->
 
 <?php
 

@@ -34,7 +34,7 @@ window.onload = function () {
                 if (token) {
                     actualizarCamposGenericos(url, token);
                 } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
                 //--------------------------------------------BOTON VOTAR-----------------------------------------------------------------------------
             } else if (event.target && event.target.classList.contains('votar')) {
@@ -45,7 +45,7 @@ window.onload = function () {
                 if (token) {
                     actualizarCamposGenericos(url, token);
                 } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
                 //--------------------------------------------click encima de una carta -----------------------------------------------------------------------------
             } else if (event.target.closest('.card-section')) {
@@ -54,7 +54,7 @@ window.onload = function () {
                 if (token) {
                     mostrarComentarios(token);
                 } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
             }
         });
@@ -128,7 +128,7 @@ window.onload = function () {
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+const parametersBaseUrl = "http://192.168.137.1/proyectos/TFG/";
 
 function mostrarVentanaRegistrar() {
     let modalIniciarSesion = document.querySelector(".modalIniciarSesion");

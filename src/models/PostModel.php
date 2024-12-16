@@ -112,6 +112,8 @@ LIMIT :offset, :limit;
                     p.video, 
                     p.tipo_post, 
                     c.imagen
+                ORDER BY
+                    p.fecha_creacion DESC
                 LIMIT :offset, :limit";
 
         try {
@@ -197,7 +199,10 @@ UNION ALL
         c.id_comunidad NOT IN (SELECT id_comunidad FROM membresias m WHERE m.id_usuario = :idUsuario)
     GROUP BY 
         p.id_post
+   
 )
+         ORDER BY
+     fecha_creacion DESC
     LIMIT :offset, :limit;
     ";
             $consulta = $this->conn->prepare($sql);
@@ -214,34 +219,34 @@ UNION ALL
             die($e->getMessage());
         }
     }
-    public function subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost,$video,$imagen, $idComunidad)
-{
-    // Preparar la consulta SQL
-    $sql = "INSERT INTO `post` ( titulo, contenido, fecha_creacion,
+    public function subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad)
+    {
+        // Preparar la consulta SQL
+        $sql = "INSERT INTO `post` ( titulo, contenido, fecha_creacion,
      imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
     VALUES 
     ( :titulo, :contenido, CURRENT_TIMESTAMP(), 
     :imagen, :video, :idUsuario, :idComunidad, :idTema, :tipoPost);";
 
-    $consulta = $this->conn->prepare($sql);
+        $consulta = $this->conn->prepare($sql);
 
-    // Bind de los parámetros
-    $consulta->bindParam(':titulo', $titulo);
-    $consulta->bindParam(':contenido', $contenido);
-    $consulta->bindParam(':idUsuario', $idUsuario);
-    $consulta->bindParam(':idTema', $idTema);
-    $consulta->bindParam(':imagen', $imagen);
-    $consulta->bindParam(':video', $video);
-    $consulta->bindParam(':tipoPost', $tipoPost);
-    $consulta->bindParam(':idComunidad', $idComunidad);
+        // Bind de los parámetros
+        $consulta->bindParam(':titulo', $titulo);
+        $consulta->bindParam(':contenido', $contenido);
+        $consulta->bindParam(':idUsuario', $idUsuario);
+        $consulta->bindParam(':idTema', $idTema);
+        $consulta->bindParam(':imagen', $imagen);
+        $consulta->bindParam(':video', $video);
+        $consulta->bindParam(':tipoPost', $tipoPost);
+        $consulta->bindParam(':idComunidad', $idComunidad);
 
-    // Ejecuta la consulta
-    if ($consulta->execute()) {
-        echo "Post insertado correctamente.";
-    } else {
-        echo "Error al insertar el post.";
+        // Ejecuta la consulta
+        if ($consulta->execute()) {
+            echo "Post insertado correctamente.";
+        } else {
+            echo "Error al insertar el post.";
+        }
     }
-}
     public function getPostPopularNoLogeado($pagina, $postPorPagina) //parte popular no logeado
     {
         // Calcular el OFFSET (desplazamiento)

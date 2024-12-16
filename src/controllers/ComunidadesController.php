@@ -4,6 +4,7 @@ namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\GenerarToken as HelpersGenerarToken;
 use admin\foro\Helpers\ImageUploader;
 use admin\foro\Models\ComunidadesModel;
 use admin\foro\Models\ComunidadModel;
@@ -12,6 +13,7 @@ use admin\foro\Models\PostModel;
 use admin\foro\Models\TemaModel;
 use admin\foro\Models\temasComunidadModel;
 use Firebase\JWT\JWT;
+use GenerarToken;
 
 class ComunidadesController
 {
@@ -25,12 +27,15 @@ class ComunidadesController
             $comunidades = $comunidadesModel->getAll();
             $membresias = [];
             $token = [];
+            $generarToken=new HelpersGenerarToken();
+
+
             $idUsuario = $_SESSION['user']['idUsuario'];
 
             foreach ($comunidades as  $indice => $contenido) {
                 $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
                 $membresias[$contenido['id_comunidad']] = $membresiasComunidad;
-                $token[$contenido['id_comunidad']] = self::generarToken($idUsuario, $contenido['id_comunidad'], NULL);
+                $token[$contenido['id_comunidad']] = $generarToken->generarToken($idUsuario, $contenido['id_comunidad'], NULL);
             }
 
             ViewController::show("views/comunidades/explorarComunidades.php", [
@@ -49,6 +54,7 @@ class ComunidadesController
             $_SESSION['cambioVista'] = "perfilComunidades";
             $comunidadesModel = new ComunidadModel();
             $postModel = new PostModel();
+            $generarToken=new HelpersGenerarToken();
             $_SESSION['comunidadVer'] = $_GET['nombreComunidad'];
             $token = [];
             $idUsuario = $_SESSION['user']['idUsuario'];
@@ -58,7 +64,7 @@ class ComunidadesController
             $posts = $postModel->postPorComunidad($idUsuario, $idComunidad);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
@@ -147,19 +153,5 @@ class ComunidadesController
         }
     }
 
-    public static function generarToken($idUsuario, $idComunidad, $idpost)
-    {
-        $token_data = array(
-            "id_usuario" => $idUsuario,
-            "id_comunidad" => $idComunidad,
-            "id_post" => $idpost,
-        );
-        $key = "123"; //clave secreta
-        $alg = 'HS256';
-        $_SESSION['key'] = $key;
-        $_SESSION['alg'] = $alg;
-        $jwt = JWT::encode($token_data, $key, $alg);
-        return $jwt;
-        // Generar el token JWT
-    }
+   
 }

@@ -6,7 +6,7 @@ use admin\foro\Helpers\Authentication;
 $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
 
 ?>
-<style>
+<!-- <style>
   a {
     text-decoration: none;
   }
@@ -27,7 +27,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
     opacity: 1;
     transition: opacity 0.3s ease, max-height 0.3s ease;
   }
-</style>
+</style> -->
 
 
 <aside class="contenido-aside first-aside">

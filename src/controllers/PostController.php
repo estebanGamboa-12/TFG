@@ -4,6 +4,7 @@ namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\GenerarToken as HelpersGenerarToken;
 use admin\foro\Helpers\ImageUploader;
 use admin\foro\Helpers\VideoUploader;
 use admin\foro\Models\ComentariosModel;
@@ -13,6 +14,7 @@ use Exception;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\JWTExceptionWithPayloadInterface;
 use Firebase\JWT\Key;
+use GenerarToken;
 
 class PostController
 {
@@ -21,12 +23,16 @@ class PostController
         if (isset($_GET['titulo'])) {
             $postModel = new PostModel();
             $comentariosModel = new ComentariosModel();
+            $generarToken=new HelpersGenerarToken();
             $idPost = $_GET['titulo'];
             $posts = $postModel->postPorId($idPost);
+            $idUsuario=$_SESSION['user']['idUsuario'];
+            $token=$generarToken->generarToken($idUsuario,$posts['id_comunidad'],$posts['id_post']);
             $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
             ViewController::show("views/comentarios/vistaComentarios.php", [
                 "post" => $posts,
                 "comentarios" => $comentarios,
+                "token"=>$token,
             ]);
         } else {
 
@@ -82,6 +88,7 @@ class PostController
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
+            $generarToken=new HelpersGenerarToken();
             $_SESSION['cambioVista'] = "";
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
@@ -90,7 +97,7 @@ class PostController
             $posts = $postModel->getPostPopular($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
@@ -164,6 +171,7 @@ class PostController
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
+            $generarToken=new HelpersGenerarToken();
             $_SESSION['cambioVista'] = "";
 
             $idUsuario = $_SESSION['user']['idUsuario'];
@@ -173,8 +181,7 @@ class PostController
             $posts = $postModel->getPostHome($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
-                } else {
+                    $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);                } else {
                     $post['jwt_token'] = null;
                 }
             }
@@ -190,6 +197,7 @@ class PostController
         if (Authentication::isUserLogged()) {
             $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
+            $generarToken=new HelpersGenerarToken();
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
             $postPorPagina = 15;
@@ -197,8 +205,8 @@ class PostController
             $posts = $postModel->getAllPost($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
-                } else {
+                    $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);              
+                    } else {
                     $post['jwt_token'] = null;
                 }
             }
@@ -227,6 +235,7 @@ class PostController
             $_SESSION['cambioVista'] = "";
 
             $postModel = new PostModel();
+            $generarToken=new HelpersGenerarToken();
 
             $data = json_decode(file_get_contents('php://input'), true);
             //variables
@@ -252,7 +261,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);              
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -263,7 +272,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);              
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -274,7 +283,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] =$generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);              
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -303,19 +312,5 @@ class PostController
             exit;
         }
     }
-    public static function generarToken($idUsuario, $idComunidad, $idpost)
-    {
-        $token_data = array(
-            "id_usuario" => $idUsuario,
-            "id_comunidad" => $idComunidad,
-            "id_post" => $idpost,
-        );
-        $key = "123"; //clave secreta
-        $alg = 'HS256';
-        $_SESSION['key'] = $key;
-        $_SESSION['alg'] = $alg;
-        $jwt = JWT::encode($token_data, $key, $alg);
-        return $jwt;
-        // Generar el token JWT
-    }
+  
 }

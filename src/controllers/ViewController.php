@@ -62,7 +62,8 @@ class ViewController
         }
         if(isset($_SESSION['comunidadVer'])){
             $comunidad=$_SESSION['comunidadVer'];
-            $datosComunidad=$comunidadesModel->datosComunidad($comunidad);
+            $idUsuario=$_SESSION['user']['idUsuario'];
+            $datosComunidad=$comunidadesModel->datosComunidad($comunidad,$idUsuario);
         }
         include 'views/layout/sidebar2.php';
     }

@@ -10,7 +10,7 @@ $usuario = $data['usuario'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<style>
+<!-- <style>
     .votar {
         cursor: pointer;
     }
@@ -90,7 +90,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     .back{
         cursor: pointer;
     }
-</style>
+</style> -->
 <pre>
     <?php //var_dump($post);exit; 
     ?>
@@ -109,7 +109,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     <div class="section">
         <div class="contenidoMensajes"></div>
         <?php foreach ($post as $indice => $contenido): ?>
-            <div class="card-section">
+            <div class="card-section" data-token-comentar="<?= $token[$contenido['id_post']] ?>">
                 <div class="encabezado-section">
                     <?php if ($contenido['tipo_post'] === "normal") { ?>
                         <a href="<?= Parameters::$BASE_URL ?>Usuario/verUsuario?nombre=<?= $usuario['nombre'] ?>">

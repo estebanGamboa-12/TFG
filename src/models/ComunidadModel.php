@@ -77,18 +77,20 @@ class ComunidadModel extends Model
             die($e->getMessage());
         }
     }
-    public function datosComunidad($nombre)
+    public function datosComunidad($nombre,$idUsuario)
     {
         try {
             $sql = "SELECT 
-    c.*,
-    COUNT(m.id_membresia) AS numero_usuarios
-FROM comunidades c
-LEFT JOIN membresias m ON m.id_comunidad = c.id_comunidad
-WHERE c.nombre = :nombre
-GROUP BY c.id_comunidad;";
+            c.*,
+            COUNT(m.id_membresia) AS numero_usuarios,
+            SUM(CASE WHEN m.id_usuario = :id_usuario THEN 1 ELSE 0 END) AS usuario_unido
+        FROM comunidades c
+        LEFT JOIN membresias m ON m.id_comunidad = c.id_comunidad
+        WHERE c.nombre = :nombre
+        GROUP BY c.id_comunidad;";
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":nombre", $nombre);
+            $consulta->bindParam(":id_usuario", $idUsuario);
             $consulta->execute();
             $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
             return $resultado;

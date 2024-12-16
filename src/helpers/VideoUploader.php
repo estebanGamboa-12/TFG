@@ -9,7 +9,7 @@ class VideoUploader
     private $rutaDestino; // Ruta donde se guardarán los videos
     private $extensionesPermitidas; // Extensiones de video permitidas
 
-    public function __construct($tamanioMaximo = 50 * 1024 * 1024) // 50 MB por defecto
+    public function __construct($tamanioMaximo = 20 * 1024 * 1024) // 50 MB por defecto
     {
         $this->rutaDestino = "C:/xampp2/htdocs/proyectos/TFG/assets/videos/"; // Asegúrate de que la ruta termine con una barra
         $this->tamanioMaximo = $tamanioMaximo;

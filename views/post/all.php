@@ -9,7 +9,7 @@ $token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<style>
+<!-- <style>
     .votar {
         cursor: pointer;
     }
@@ -45,7 +45,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             transform: rotate(360deg);
         }
     }
-</style>
+</style> -->
 <pre>
     <?php //var_dump($post);exit; 
     ?>
@@ -115,9 +115,9 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     </div>
     <div id="loading"></div>
 </section>
-<style>
+<!-- <style>
     .card-section:hover {
         background-color: #8080800d;
         cursor: pointer;
     }
-</style>
+</style> -->
