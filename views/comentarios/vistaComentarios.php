@@ -14,11 +14,12 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
 <pre>
     <?php
-     //var_dump($token);exit;
+    // var_dump($post);exit;
     ?>
 </pre>
 <section id="section">
     <div class="sectionAll">
+        <div class="contenidoMensajes"></div>
         <div class="card-section" id="card-comentarios">
             <!-- Título y contenido del post -->
             <div class="conteinerEncabezado-comentarios">
@@ -27,31 +28,48 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 </div>
                 <?php if ($post['tipo_post'] == "normal") { ?>
                     <div class="imagen-comentarios">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Usuario">
+                        <a href="<?= Parameters::$BASE_URL ?>Usuario/verUsuario?nombre=<?= $post['nombre_usuario'] ?>">
+                            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Usuario">
+                        </a>
                     </div>
                     <div class="nombre-comentarios"><?= $post['nombre_usuario'] ?></div>
                 <?php } else { ?>
                     <div class="imagen-comentarios">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Usuario">
+                        <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $post['nombre_comunidad'] ?>">
+                            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Usuario">
+                        </a>
                     </div>
                     <div class="nombre-comentarios"><?= $post['nombre_comunidad'] ?></div>
                 <?php } ?>
                 <div class="fecha-comentarios"><?= $post['fecha_creacion'] ?></div>
             </div>
             <h2 class="titulo-post-comentarios"><?= $post['titulo'] ?></h2>
-            <div class="nombre-comentarios"><?= $post['contenido'] ?></div>
+            <?php
+            $contenido_texto = trim($post['contenido']); // Elimina los espacios alrededor del texto
+            if ($post['video'] == NULL && $post['imagen'] == NULL) {
+                if (strpos($contenido_texto, 'http') !== false) { ?>
+                    <a href="#" class="link" style="color: blue; "><?= $contenido_texto ?></a>
+                <?php } else { ?>
+                    <div> <?= $contenido_texto ?></div>
+            <?php }
+            } else{?>
             <div class="imagen-post-comentarios">
-                <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="imagen">
+                <?php if ($post['video'] != NULL) { ?>
+                    <video src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
+                <?php } else { ?>
+                    <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
+                <?php } ?>
             </div>
+            <?php } ?>
             <div class="containerBotones-comentarios">
-            <div class="votos-seccion boton  votar"
-                            data-token-votar="<?= $token ?>">
-                            Votos(<?= $post['votos_totales'] ?>)
-                        </div>
+                <div class="votos-seccion boton  votar"
+                    data-token-votar="<?= $token ?>">
+                    Votos(<?= $post['votos_totales'] ?>)
+                </div>
                 <div class="compartir-comentarios boton">Compartir</div>
                 <a href="https://api.whatsapp.com/send?text=Texto%20a%20compartir" target="_blank">
-    <button>Compartir en WhatsApp</button>
-</a>
+                    <button>Compartir en WhatsApp</button>
+                </a>
             </div>
             <div class="inputComentar">
                 <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">
@@ -105,7 +123,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                                 <div class="comentar-comentarios boton">Comentar</div>
                                             </div>
                                         </div>
-                                    <?php }
+                                <?php }
                                 } ?>
                             </div>
 
@@ -136,16 +154,16 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                comentario: subComentario,
-                idComentario: idComentario,
-                idPost: idPost,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    comentario: subComentario,
+                    idComentario: idComentario,
+                    idPost: idPost,
+                })
             })
-        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Respuesta del servidor no es exitosa. Estado: ' + response.status);
@@ -190,15 +208,15 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
         fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                comentario: comentario,
-                idPost: idPost,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    comentario: comentario,
+                    idPost: idPost,
+                })
             })
-        })
             .then(response => {
                 // Verificar si la respuesta tiene el formato correcto
                 if (!response.ok) {

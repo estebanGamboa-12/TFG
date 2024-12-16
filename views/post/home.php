@@ -78,8 +78,15 @@ if (isset($_SESSION['errores'])) {
                     </div>
                     <div class="section-card">
                         <div class="titulo-section"><?= $contenido['titulo'] ?></div>
-                        <div class="contenido-section"><?= $contenido['contenido'] ?></div>
-
+                        <div class="contenido-section">
+                            <?php
+                            $contenido_texto = trim($contenido['contenido']); // Elimina los espacios alrededor del texto
+                            if (strpos($contenido_texto, 'http') !== false) { ?>
+                                <a href="#" class="link" style="color: blue; border-bottom: 1px solid blue;"><?= $contenido_texto ?></a>
+                            <?php } else { ?>
+                                <div> <?= $contenido_texto ?></div>
+                            <?php } ?>
+                        </div>
                         <?php if (!empty($contenido['video'])): ?>
                             <!-- si existe video -->
                             <div class="videos-fotos-section">
@@ -91,16 +98,7 @@ if (isset($_SESSION['errores'])) {
                         <?php elseif (!empty($contenido['imagen'])): ?>
                             <!-- si existe imagen -->
                             <div class="videos-fotos-section">
-                                <img
-                                    src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>"
-                                    alt="imagen"
-                                    class="imagen-section"
-                                    srcset="
-            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 600w,
-            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 800w,
-            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 1200w,
-            <?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?> 1600w"
-                                    sizes="(max-width: 600px) 100vw, (max-width: 800px) 50vw, (max-width: 1200px) 33vw, 25vw">
+                                <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen" class="imagen-section">
                             </div>
                         <?php endif; ?>
                     </div>
@@ -118,9 +116,10 @@ if (isset($_SESSION['errores'])) {
     </div>
     <div id="loading"></div>
 </section>
-<!-- <style>
-    .card-section:hover {
-        background-color: #8080800d;
-        cursor: pointer;
-    }
-</style> -->
+<script>
+    document.querySelector(".link").addEventListener("click",(e)=>{
+        let valorLink=e.value;
+        console.log(valorLink);
+       window.open(valorLink, '_blank');
+    })
+</script>

@@ -41,6 +41,7 @@ window.onload = function () {
                 let token = event.target.getAttribute('data-token-votar'); // Obtener token
 
                 const url = `${parametersBaseUrl}Votos/votar`;
+                console.log("dio a votar");
 
                 if (token) {
                     actualizarCamposGenericos(url, token);
@@ -59,6 +60,7 @@ window.onload = function () {
             }
         });
     }
+
     //---------------------------------------------------------- vista All---------------------------------------------------------------
     const sectionElementAll = document.querySelector('#sectionAll');
     if (sectionElementAll) {
@@ -125,10 +127,22 @@ window.onload = function () {
             }
         });
     }
+   document.querySelector(".votar").addEventListener("click",(e)=>{
+    const token=e.target.getAttribute('data-token-votar');
+    const url = `${parametersBaseUrl}Votos/votar`;
+    console.log("dio a votar");
+
+    if (token) {
+        actualizarCamposGenericos(url, token);
+    } else {
+         alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+    }
+
+});
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://192.168.137.1/proyectos/TFG/";
+const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
 
 function mostrarVentanaRegistrar() {
     let modalIniciarSesion = document.querySelector(".modalIniciarSesion");
@@ -212,6 +226,7 @@ function actualizarCamposGenericos(url, token) {
 
                 }
             } catch (error) {
+                console.log(error);
                 alert('Error al procesar la respuesta del servidor.' + error);
             }
         })
