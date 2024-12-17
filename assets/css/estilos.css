@@ -525,9 +525,9 @@ footer {
     align-items: center;
     background-color: #0e1113;
     margin: 0% auto;
-    padding: 4%;
-    width: 26%;
-    height: 78%;
+    padding: 1%;
+    width: auto;
+    height: auto;
     border-radius: 3rem;
 }
 
@@ -599,14 +599,14 @@ footer {
 
 .modal-content-registrarse {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #0e1113;
-    margin: 0% auto;
-    padding: 4%;
-    width: 26%;
-    height: 78%;
-    border-radius: 3rem;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0e1113;
+  margin: 0% auto;
+  padding: 1%;
+  width: auto;
+  height: auto;
+  border-radius: 3rem;
 }
 
 .titulo-registrarse {

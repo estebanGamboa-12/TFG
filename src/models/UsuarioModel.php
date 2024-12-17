@@ -15,21 +15,13 @@ class UsuarioModel extends Model
     {
         try {
 
-            $sql = "SELECT id_usuario, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
-
-
+          $sql = "SELECT id_usuario, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
             $consulta = $this->conn->prepare($sql);
-
             // Vincula los parámetros
             $consulta->bindParam(':nombre', $nombre);
             $consulta->bindParam(':contrasena', $contrasena);
-
             $consulta->execute();
-            $resultado=null;
-            while ($dato = $consulta->fetch(\PDO::FETCH_ASSOC)) {
-                $resultado = $dato;
-            }
-
+            $resultado=$consulta->fetch(\pdo::FETCH_ASSOC);
             if ($consulta->rowCount() > 0) {
                 $_SESSION['user'] = [
                     "idUsuario"=>$resultado['id_usuario'],

@@ -102,7 +102,6 @@ class PostController
                     $post['jwt_token'] = null;
                 }
             }
-
             ViewController::show("views/post/popular.php", ['post' => $posts, "token" => $token]);
         } else {
             ViewController::showError(403);

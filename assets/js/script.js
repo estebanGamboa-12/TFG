@@ -127,42 +127,25 @@ window.onload = function () {
             }
         });
     }
-   document.querySelector(".votar").addEventListener("click",(e)=>{
-    const token=e.target.getAttribute('data-token-votar');
-    const url = `${parametersBaseUrl}Votos/votar`;
-    console.log("dio a votar");
-
-    if (token) {
-        actualizarCamposGenericos(url, token);
-    } else {
-         alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+    //boton de votar en verPost
+    const votar = document.querySelector(".votar");
+    if (votar) {
+        votar.addEventListener("click", (e) => {
+            const token = e.target.getAttribute('data-token-votar');
+            const url = `${parametersBaseUrl}Votos/votar`;
+            console.log("dio a votar");
+            if (token) {
+                actualizarCamposGenericos(url, token);
+            } else {
+                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+            }
+        });
     }
-
-});
 }
 let loading = false;
 let pagina = 2;
 const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
 
-function mostrarVentanaRegistrar() {
-    let modalIniciarSesion = document.querySelector(".modalIniciarSesion");
-    let modalRegistrar = document.querySelector(".modalRegistrar");
-    modalIniciarSesion.style.display = "none";
-    modalRegistrar.style.display = "flex";
-}
-function abrirVentanaSesion() {
-
-    let modal = document.querySelector(".modalIniciarSesion");
-    modal.style.display = "flex";
-}
-function cerrarVentanasModal1() {
-    let modal = document.querySelector(".modalIniciarSesion");
-    modal.style.display = "none";
-}
-function cerrarVentanaModal2() {
-    let modal1 = document.querySelector(".modalRegistrar");
-    modal1.style.display = "none";
-}
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');
     let section = document.querySelector("section");

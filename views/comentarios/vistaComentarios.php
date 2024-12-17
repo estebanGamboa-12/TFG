@@ -10,7 +10,11 @@ $token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-
+<style>
+    .margin{
+        margin: 2% 0%;
+    }
+</style>
 
 <pre>
     <?php
@@ -48,16 +52,16 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             $contenido_texto = trim($post['contenido']); // Elimina los espacios alrededor del texto
             if ($post['video'] == NULL && $post['imagen'] == NULL) {
                 if (strpos($contenido_texto, 'http') !== false) { ?>
-                    <a href="#" class="link" style="color: blue; "><?= $contenido_texto ?></a>
+                    <a  href="#" class="link margin" style="color: blue; "><?= $contenido_texto ?></a>
                 <?php } else { ?>
-                    <div> <?= $contenido_texto ?></div>
+                    <div class="margin"> <?= $contenido_texto ?></div>
             <?php }
             } else{?>
             <div class="imagen-post-comentarios">
                 <?php if ($post['video'] != NULL) { ?>
-                    <video src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
+                    <video style="width: 100%; margin:2% 0%" src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
                 <?php } else { ?>
-                    <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
+                    <img  style="width: 100%; margin-top: 2%;" src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
                 <?php } ?>
             </div>
             <?php } ?>
@@ -126,7 +130,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                 <?php }
                                 } ?>
                             </div>
-
                         </div>
                     <?php }
                 } else { ?>
@@ -150,7 +153,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         const input = document.querySelector(`#respuesta-${idComentario} input`);
         const subComentario = input.value;
 
-        const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+        const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
@@ -203,7 +206,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
     document.querySelector(".boton-enviar-comentario").addEventListener("click", () => {
 
-        const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+        const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
@@ -247,7 +250,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <div class="containerBotones-comentarios">
                     <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(${JSONdata.comentario.id_comentario})">Comentar</div>
                     </div>
-                    <div class="subcomentarios"></div>
                     <div class="respuesta-form" id="respuesta-${JSONdata.comentario.id_comentario}" style="display:none;">
                     <input class="textoComentarioPrincipal" type="text" placeholder="Escribe tu respuesta">
                     <button  onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>

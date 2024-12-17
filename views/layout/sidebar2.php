@@ -40,53 +40,6 @@ use admin\foro\Config\Parameters;
                 </div>
             </div>
         </div>
-        <!-- <style>
-            .tituloDatos {
-                color: #828282;
-                margin-bottom: 4%;
-            }
-
-            .containerNombreBotonVer {
-                display: flex;
-                flex-direction: row;
-            }
-
-            .nombreUsuarioVer {
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-                margin: 5%;
-            }
-
-            .botonSeguirUsuario {
-                display: flex;
-                margin: 5%;
-                margin-left: auto;
-            }
-
-            .botonSeguirUsuario span {
-                border-radius: 1rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: rgb(0, 150, 136);
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                color: black;
-                font-size: 100%;
-                width: 6rem;
-                height: 2rem;
-            }
-
-            .datosUsuarioVer {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            #datos {
-                display: flex;
-                flex-direction: column;
-            }
-        </style> -->
-
     </aside>
 <?php } else if ($_SESSION['cambioVista'] == "perfilComunidades") { ?>
     <aside class="second-aside ">
@@ -106,57 +59,7 @@ use admin\foro\Config\Parameters;
                 <div>Miembros</div>
             </div>
         </div>
-        <!-- <style>
-            #numeroMiembrosComunidad {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 3rem;
-            }
-
-            .nombreComunidad {
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-                margin-bottom: 2%;
-            }
-
-            .descripcionComunidad,
-            .fechaComunidad {
-                color: #828282;
-                margin-bottom: 2%;
-            }
-
-            .botones {
-                border-radius: 1rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: rgb(0, 150, 136);
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                color: black;
-                font-size: 100%;
-                width: 6rem;
-                height: 2rem;
-            }
-
-            .containerBotones {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                margin-top: 5%;
-            }
-
-            .unirseComunidad {
-                margin-left: 2rem;
-            }
-
-            .miembrosComunidad {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-        </style> -->
-
+       
     </aside>
 
 <?php } else if ($_SESSION['cambioVista'] == "cerrarSesion") { ?>
@@ -166,11 +69,6 @@ use admin\foro\Config\Parameters;
             <div class="boton cerrarSesion"> <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion </a></div>
         </div>
     </aside>
-    <!-- <style>
-        .asideCerrarSesion {
-            gap: 1rem;
-        }
-    </style> -->
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
     <aside class="second-aside ">
     </aside>

@@ -21,31 +21,6 @@ use admin\foro\Helpers\Authentication;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Foro</title>
 </head>
-<!-- <style>
-    .perfil {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .desplegable {
-        position: absolute;
-        width: auto;
-        height: au;
-        transform: translateY(-50%);
-        background-color: #fff;
-        border: 1px solid #ddd;
-        padding: 10px;
-        display: block;
-        z-index: 10;
-    }
-
-    .logo-usuario:hover+.desplegable,
-    .desplegable:hover {
-        display: block;
-    }
-</style> -->
-
 <body>
     <div class="grid">
         <header>
@@ -62,53 +37,14 @@ use admin\foro\Helpers\Authentication;
                             <i class="fa fa-bars" style="margin-left: 10%;"></i>
                         </div>
                     <?php } else { ?>
-                        <div class="iniciarSesion">Iniciar Sesion</div>
+                        <a href="<?= Parameters::$BASE_URL ?>Usuario/verFormularioIniciarSesion">
+                            <div class="iniciarSesion">Iniciar Sesion</div>
+                        </a>
                         <i class="fa fa-ellipsis-h"></i>
                     <?php  }  ?>
                 </div>
             </div>
         </header>
 </body>
-<!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
-<div class="modalIniciarSesion" id="modal-IniciarSesion">
-    <div class="modal-content-sesion">
-        <div class="cerrar">x</div>
-        <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-        <form action="<?= Parameters::$BASE_URL ?>Usuario/iniciarSesion" method="post">
-            <label for="nombre">
-                <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
-            </label>
-            <label for="contreaseña">
-                <input type="password" name="contrasena" id="contraseña" placeholder="Contraseña" required>
-            </label>
-            <input type="submit" value="Iniciar Sesion">
-        </form>
-        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse">Registrarse</a></div>
-    </div>
-</div>
-<!-- ventana modal registrarse ----------------------------------------------------------------- -->
-<div class="modalRegistrar" id="modal-registrarse">
-    <div class="modal-content-registrarse">
-        <div class="cerrar">x</div>
-        <div class="titulo-registrarse">Registrarse</div>
-        <form action="<?= Parameters::$BASE_URL ?> Usuario/registrarUsuarios" method="post">
-            <label for="nombre">
-                <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
-            </label>
-            <label for="apellido">
-                <input type="text" name="apellido" id="apellido" placeholder="apellido" required>
-            </label>
-            <label for="correo">
-                <input type="email" name="email" id="email" placeholder="email" required>
-            </label>
-            <label for="contraseña">
-                <input type="password" name="contraseña" id="contraseña " placeholder="contraseña" required>
-            </label>
-            <label for="repetir_contraseña">
-                <input type="password" name="repetir_contraseña" id="repetir_contraseña" placeholder="Repetircontreaseña" required>
-            </label>
-            <input type="submit" value="Registrarse ">
-        </form>
-    </div>
-</div>
+
 </html>

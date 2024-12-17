@@ -19,6 +19,11 @@ class UsuarioController
     {
         $_SESSION['cambioVista'] = "cerrarSesion";
     }
+    public function verFormularioIniciarSesion(){
+        echo "entra";
+         ViewController::show(Parameters::$BASE_URL."views/usuario/formularioIniciarSesion.php");
+         exit;
+    }
 
     public function iniciarSesion()
     {
@@ -26,8 +31,17 @@ class UsuarioController
         $nombre = $_REQUEST['nombre'];
         $contrasena = $_REQUEST['contrasena'];
         $datos = $usuarioModel->iniciarSesion($nombre, $contrasena);
-
-        header('Location: ' . Parameters::$BASE_URL . 'Post/home');
+        if($datos==0){
+            $errores=[];
+            $errores="El usuario o la contraseña son incorrectas";
+            $_SESSION['errores']=$errores;
+            header("location:" . Parameters::$BASE_URL );
+            exit;
+        }
+        if($datos){
+            header('Location: ' . Parameters::$BASE_URL . 'Post/home');
+            exit;
+        }
     }
     public function registrarUsuarios()
     {
