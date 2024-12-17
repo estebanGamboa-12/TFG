@@ -153,9 +153,7 @@ section {
     grid-column: 2/3;
     grid-row: 2;
     margin: 0 10%;
-    /* Margen ajustado */
     overflow-y: auto;
-    /* Permite scroll vertical si es necesario */
 }
 
 .second-aside {

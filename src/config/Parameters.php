@@ -8,7 +8,7 @@ class Parameters {
     public static $ACTION_DEFAULT = "popularNoLogeado";
 
     public static $PASSWORD_MIN_LENGTH = 6;
-
+    
     public static $BASE_URL = "http://192.168.3.210/proyectos/TFG/";
 
     public static function getControllerAndAction() {

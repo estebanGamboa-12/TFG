@@ -1,15 +1,5 @@
 window.onload = function () {
     // Verificar si el elemento existe antes de añadir el evento
-    const iniciarSesion = document.querySelector(".iniciarSesion");
-    if (iniciarSesion) {
-        iniciarSesion.addEventListener("click", abrirVentanaSesion);
-    }
-
-    const cerrar = document.querySelector(".cerrar");
-    if (cerrar) {
-        cerrar.addEventListener("click", cerrarVentanasModal1);
-        cerrar.addEventListener("click", cerrarVentanaModal2);
-    }
 
     const bars = document.querySelector(".bars");
     if (bars) {
@@ -153,10 +143,11 @@ function mostrarAside() {
     aside.style.display = "flex";
 }
 function cerrarAsideFuera(event) {
+    
     let aside = document.querySelector('.contenido-aside');
     let bars = document.querySelector(".bars");
     let section = document.querySelector("section");
-
+    console.log(section);
     if (!aside.contains(event.target) && !bars.contains(event.target)) {
         aside.style.display = "none";
         section.classList.remove("fondo");

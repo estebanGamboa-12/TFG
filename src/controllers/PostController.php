@@ -209,6 +209,7 @@ class PostController
                     $post['jwt_token'] = null;
                 }
             }
+            
             ViewController::show("views/post/all.php", [
                 'post' => $posts,
                 "token" => $token

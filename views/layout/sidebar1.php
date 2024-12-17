@@ -6,28 +6,7 @@ use admin\foro\Helpers\Authentication;
 $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
 
 ?>
-<!-- <style>
-  a {
-    text-decoration: none;
-  }
 
-  .rotado {
-    transform: rotate(180deg);
-    transition: transform 0.3s ease;
-  }
-
-  /* Estilo para el contenido cuando está oculto */
-  .oculto {
-    display: none;
-  }
-
-  /* Estilo para el contenedor de contenido cuando está visible */
-  .contenido1 {
-    max-height: auto;
-    opacity: 1;
-    transition: opacity 0.3s ease, max-height 0.3s ease;
-  }
-</style> -->
 
 
 <aside class="contenido-aside first-aside">
@@ -115,7 +94,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
   let comunidadesMostradas = 6;
   let temasPorPagina = 6;
   let comunidadesPorPagina = 6;
-
+<?php $comunidades=$comunidades ?? []; ?>
   let totalTemas = <?= json_encode(count($temas)); ?>; // Total de temas disponibles
   let totalComunidades = <?= json_encode(count($comunidades)); ?>; // Total de comunidades disponibles
 
@@ -160,6 +139,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
 
   // Función para cargar las comunidades
   function cargarComunidades() {
+
     // Obtener las comunidades que se mostrarán según comunidadesMostradas
     let comunidadesParaMostrar = comunidades.slice(0, comunidadesMostradas);
 

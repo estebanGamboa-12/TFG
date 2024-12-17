@@ -628,7 +628,9 @@ label {
 
 input[type="text"],
 textarea,
-input[type="file"] {
+input[type="file"],
+input[type="email"],
+input[type="password"]{
     width: 95%;
     padding: 10px;
     margin-bottom: 15px;
@@ -700,9 +702,6 @@ section {
     overflow-y: auto;
 }
 
-.second-aside {
-    display: none;
-}
 
 .botonUnirte {
     border-radius: 1rem;
