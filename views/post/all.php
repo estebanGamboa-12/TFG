@@ -11,7 +11,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
 
 <pre>
-    <?php var_dump($post);exit; 
+    <?php //var_dump($post);exit; 
     ?>
 </pre>
 <section id="sectionAll">
@@ -79,9 +79,3 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     </div>
     <div id="loading"></div>
 </section>
-<!-- <style>
-    .card-section:hover {
-        background-color: #8080800d;
-        cursor: pointer;
-    }
-</style> -->

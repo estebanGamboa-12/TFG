@@ -20,10 +20,10 @@ $comunidades = $data['comunidades'] ?? NULL;
                     </optgroup>
                     <optgroup label="Comunidades">
                         <?php foreach ($comunidades as $comunidad): ?>
-                            <option value="<?php echo $comunidad['id_comunidad']; ?>">
-                                <img src="<?php echo $comunidad['imagen']; ?>" alt="<?php echo $comunidad['nombre']; ?>"
+                            <option value="<?= $comunidad['id_comunidad']; ?>">
+                                <img src="<?= $comunidad['imagen']; ?>" alt="<?= $comunidad['nombre']; ?>"
                                     style="width: 20px; height: 20px; vertical-align: middle;">
-                                <?php echo $comunidad['nombre']; ?>
+                                <?= $comunidad['nombre']; ?>
                             </option>
                         <?php endforeach; ?>
                     </optgroup>

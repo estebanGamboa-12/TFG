@@ -348,25 +348,23 @@ function mostrarComentarios(token) {
         },
         body: JSON.stringify({ token: token })
     })
-        .then(response => {
-            if (!response.ok) { // Si el código de respuesta HTTP no es 200 (OK)
-                return response.text().then(err => {
-                    console.error("Error:", err);
-                    throw new Error("Error al obtener los datos del servidor");
-                });
-            }
-            return response.json(); // Solo parsear como JSON si la respuesta es correcta
-        })
+        .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
         .then(data => {
-            console.log(data.post);
-            if (data.success) {
-                window.location.href = parametersBaseUrl + 'Post/verPostPorId?titulo=' + data.post.id_post;
+            try {
+                console.log(data);
+                let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
+                console.log(jsonData.post.titulo);
+                if (jsonData.success) {
+                    window.location.href = parametersBaseUrl + 'Post/verPostPorId?titulo=' + jsonData.post.id_post;
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Error al procesar la respuesta del servidor.' + error);
             }
         })
         .catch(error => {
-            console.error("Error:", error);
+            console.error('Error en la solicitud fetch:', error);
         });
-
 }
 
 

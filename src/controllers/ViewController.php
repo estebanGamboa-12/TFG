@@ -8,6 +8,7 @@ use admin\foro\Models\ComunidadesModel;
 use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\MembresiaModel;
 use admin\foro\Models\MembresiasModel;
+use admin\foro\Models\PostModel;
 use admin\foro\Models\TemaModel;
 use admin\foro\Models\TemasModel;
 use admin\foro\Models\UsuarioModel;
@@ -59,6 +60,7 @@ class ViewController
     {
         $comunidadesModel = new ComunidadModel();
         $usuariosModel = new UsuarioModel();
+        $postModel= new PostModel();
         if(isset($_SESSION['user'])){
             $comunidades = $comunidadesModel->getComunidadesPopulares();
             if (isset($_SESSION['usuarioVer'])) {
@@ -74,10 +76,16 @@ class ViewController
             $comunidades=$comunidadesModel->getComunidades();
         }
         if(isset($_SESSION['post'])){
-            $post = $_SESSION['post'];
-            /*echo "esoyt aqui";
-            var_dump($post);exit;*/
+            $posts = $_SESSION['post'];
+            $postRecientes=[];
+            foreach($posts as $post){
+                $post=$postModel->postPorId($post);
+                $postRecientes[]=$post;
+            }
+        }else{
+            $postRecientes=NULL;
         }
+        
         include 'views/layout/sidebar2.php';
     }
     private static function showFooter()
