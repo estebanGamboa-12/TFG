@@ -12,8 +12,6 @@ use admin\foro\Models\MembresiaModel;
 use admin\foro\Models\PostModel;
 use admin\foro\Models\TemaModel;
 use admin\foro\Models\temasComunidadModel;
-use Firebase\JWT\JWT;
-use GenerarToken;
 
 class ComunidadesController
 {
@@ -81,11 +79,16 @@ class ComunidadesController
     }
     public function VistaCrearComunidad()
     {
-        $temasModel = new TemaModel();
-        $temas = $temasModel->getTemas();
-        ViewController::show("views/comunidades/crearComunidad.php", ["temas" => $temas]);
-        $_SESSION['cambioVista'] = "";
-        exit;
+        if(Authentication::isUserLogged()){
+
+            $temasModel = new TemaModel();
+            $temas = $temasModel->getTemas();
+            ViewController::show("views/comunidades/crearComunidad.php", ["temas" => $temas]);
+            $_SESSION['cambioVista'] = "";
+            exit;
+        }else{
+            header("location:" . Parameters::$BASE_URL."Post/popularNoLogeado");
+        }
     }
 
     public function crearComunidad()

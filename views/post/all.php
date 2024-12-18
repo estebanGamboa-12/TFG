@@ -11,7 +11,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
 
 <pre>
-    <?php //var_dump($post);exit; 
+    <?php var_dump($post);exit; 
     ?>
 </pre>
 <section id="sectionAll">

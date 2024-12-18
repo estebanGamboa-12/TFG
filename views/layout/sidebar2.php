@@ -13,7 +13,7 @@ use admin\foro\Config\Parameters;
                     <img class="imagenLogo-aside" src="<?= Parameters::$BASE_URL . "assets/img/" . $contenido['imagen'] ?>" alt="foto">
                     <div class="contenido-aside2">
                         <div class="nombre-aside"><?= $contenido['nombre'] ?></div>
-                        <div class="miembros-aside"><?= $contenido['numero_de_usuarios'] ?> miembros</div>
+                        <div class="miembros-aside"><?= $contenido['numero_usuarios'] ?> miembros</div>
                     </div>
                 </div>
             <?php } ?>
@@ -59,17 +59,11 @@ use admin\foro\Config\Parameters;
                 <div>Miembros</div>
             </div>
         </div>
-       
     </aside>
-
-<?php } else if ($_SESSION['cambioVista'] == "cerrarSesion") { ?>
+<?php } else if ($_SESSION['cambioVista'] == "verPostRecientes") { ?>
     <aside class="second-aside ">
-        <div class="aside2 asideCerrarSesion">
-            <div>Editar Usuario</div>
-            <div class="boton cerrarSesion"> <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion </a></div>
+        <div class="containerBotones">
+            <?php var_dump($_SESSION['post']) ?>
         </div>
-    </aside>
-<?php } else if ($_SESSION['cambioVista'] == "") { ?>
-    <aside class="second-aside ">
-    </aside>
-<?php } ?>
+    </aside> 
+    <?php } ?>

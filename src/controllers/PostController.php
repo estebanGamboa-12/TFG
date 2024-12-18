@@ -21,6 +21,7 @@ class PostController
     public function verPostPorId()
     {
         if (isset($_GET['titulo'])) {
+            $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
             $comentariosModel = new ComentariosModel();
             $generarToken=new HelpersGenerarToken();
@@ -29,6 +30,11 @@ class PostController
             $idUsuario=$_SESSION['user']['idUsuario'];
             $token=$generarToken->generarToken($idUsuario,$posts['id_comunidad'],$posts['id_post']);
             $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
+
+            if(!isset($_SESSION['post'])){
+                $_SESSION['post']=[];
+            }
+            $_SESSION['post'][$idPost]=$idPost;
             ViewController::show("views/comentarios/vistaComentarios.php", [
                 "post" => $posts,
                 "comentarios" => $comentarios,
@@ -89,7 +95,7 @@ class PostController
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
             $generarToken=new HelpersGenerarToken();
-            $_SESSION['cambioVista'] = "";
+            $_SESSION['cambioVista'] = "verPostRecientes";
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
             $postPorPagina = 15;
@@ -171,7 +177,7 @@ class PostController
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
             $generarToken=new HelpersGenerarToken();
-            $_SESSION['cambioVista'] = "";
+            $_SESSION['cambioVista'] = "verPostRecientes";
 
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
@@ -194,7 +200,7 @@ class PostController
     public function All() // All 
     {
         if (Authentication::isUserLogged()) {
-            $_SESSION['cambioVista'] = "";
+            $_SESSION['cambioVista'] = "verPostRecientes";
             $postModel = new PostModel();
             $generarToken=new HelpersGenerarToken();
             $idUsuario = $_SESSION['user']['idUsuario'];

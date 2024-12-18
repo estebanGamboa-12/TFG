@@ -59,15 +59,24 @@ class ViewController
     {
         $comunidadesModel = new ComunidadModel();
         $usuariosModel = new UsuarioModel();
-        $comunidades = $comunidadesModel->getComunidadesPopulares();
-        if (isset($_SESSION['usuarioVer'])) {
-            $usuario = $_SESSION['usuarioVer'];
-            $datosUsuario = $usuariosModel->datosUsuario($usuario['id_usuario']);
+        if(isset($_SESSION['user'])){
+            $comunidades = $comunidadesModel->getComunidadesPopulares();
+            if (isset($_SESSION['usuarioVer'])) {
+                $usuario = $_SESSION['usuarioVer'];
+                $datosUsuario = $usuariosModel->datosUsuario($usuario['id_usuario']);
+            }
+            if (isset($_SESSION['comunidadVer'])) {
+                $comunidad = $_SESSION['comunidadVer'];
+                $idUsuario = $_SESSION['user']['idUsuario'];
+                $datosComunidad = $comunidadesModel->datosComunidad($comunidad, $idUsuario);
+            }
+        }else{
+            $comunidades=$comunidadesModel->getComunidades();
         }
-        if (isset($_SESSION['comunidadVer'])) {
-            $comunidad = $_SESSION['comunidadVer'];
-            $idUsuario = $_SESSION['user']['idUsuario'];
-            $datosComunidad = $comunidadesModel->datosComunidad($comunidad, $idUsuario);
+        if(isset($_SESSION['post'])){
+            $post = $_SESSION['post'];
+            /*echo "esoyt aqui";
+            var_dump($post);exit;*/
         }
         include 'views/layout/sidebar2.php';
     }

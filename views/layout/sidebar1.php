@@ -85,7 +85,13 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
       </div>
       <button id="verMasComunidades" class="ver-mas">Ver más</button>
       <button id="verMenosComunidades" class="ver-menos" style="display: none;">Ver Menos</button>
-    <?php } ?>
+    <?php } else { ?>
+      <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="crearComunidad logo-texto">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+      </div>
+      <?php }?>
   </div>
 </aside>
 <script>

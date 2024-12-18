@@ -113,4 +113,23 @@ class ComunidadModel extends Model
         $consulta->bindParam(":idUsuario", $idUsuario);
         return $consulta->execute();
     }
+    public function getComunidades()
+    {
+        try {
+            $sql = "SELECT 
+    c.*,
+    COUNT(m.id_membresia) AS numero_usuarios
+FROM comunidades c
+LEFT JOIN membresias m ON m.id_comunidad = c.id_comunidad
+GROUP BY c.id_comunidad";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
 }

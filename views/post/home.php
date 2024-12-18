@@ -117,9 +117,11 @@ if (isset($_SESSION['errores'])) {
     <div id="loading"></div>
 </section>
 <script>
-    document.querySelector(".link").addEventListener("click",(e)=>{
-        let valorLink=e.value;
-        console.log(valorLink);
-       window.open(valorLink, '_blank');
-    })
+    if (document.querySelector(".link")) {
+        document.querySelector(".link").addEventListener("click", (e) => {
+            let valorLink = e.value;
+            console.log(valorLink);
+            window.open(valorLink, '_blank');
+        })
+    }
 </script>

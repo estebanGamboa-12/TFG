@@ -15,6 +15,9 @@ use admin\foro\Config\Parameters;
         color: blue;
         border-bottom: 1px solid blue;
     }
+    section{
+        grid-column: 2/4;
+    }
 </style>
 <section>
     <div class="section">

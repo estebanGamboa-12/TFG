@@ -6,6 +6,12 @@ use admin\foro\Config\Parameters;
     .second-aside {
         display: none;
     }
+    section{
+        grid-column: 2/4;
+    }
+    .second-aside {
+        display: none;
+    }
 </style>
 <section>
     <div class="section">
