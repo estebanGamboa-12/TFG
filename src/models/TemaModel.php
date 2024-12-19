@@ -40,5 +40,19 @@ class TemaModel extends Model
             die($e->getMessage());
         }
     }
+    public function getTemaPorNombre($nombreTema){
+        try {
+            $sql = " SELECT id_temas, nombre  FROM {$this->tabla} WHERE nombre=:nombre ";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":nombre",$nombreTema,);
+            $consulta->execute();
+            $resultado = $consulta->fetch(\PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
 
 }

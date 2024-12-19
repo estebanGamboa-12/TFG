@@ -53,4 +53,18 @@ class temasComunidadModel extends Model
             die($e->getMessage());
         }
     }
+    public function getComunidadesPorTema($idtema)
+    {
+        try {
+            $sql = "SELECT * FROM  `temas-comunidades` WHERE id_tema = :idTema";
+            $consulta = $this->conn->prepare($sql);
+            $consulta->bindParam(":idTema",$idtema);
+            $consulta->execute();
+            return $consulta->fetchAll(\PDO::FETCH_ASSOC); // Devuelve la última comunidad como un array asociativo
+        } catch (\PDOException $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea: " . $e->getLine() . "<br>Mensaje: ";
+            die($e->getMessage());
+        }
+    }
 }

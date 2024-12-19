@@ -3,6 +3,7 @@
 use admin\foro\Config\Parameters;
 ?>
 
+<?php  if(isset($_SESSION['cambioVista'])){?>
 
 <?php if ($_SESSION['cambioVista'] == "todasComunidades") { ?>
     <aside class="second-aside ">
@@ -94,9 +95,6 @@ use admin\foro\Config\Parameters;
                                     <video src="<?= Parameters::$BASE_URL ?>assets/video/<?= $post['video'] ?>" alt="Miniatura del video">
                                 </div>
                             <?php } ?>
-                            <div class="post-thumbnail">
-                                <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Miniatura del video">
-                            </div>
                         </div>
                     <?php } else { ?>
                         <div class="post-card">
@@ -121,9 +119,6 @@ use admin\foro\Config\Parameters;
                                     <video src="<?= Parameters::$BASE_URL ?>assets/video/<?= $post['video'] ?>" alt="Miniatura del video">
                                 </div>
                             <?php } ?>
-                            <div class="post-thumbnail">
-                                <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Miniatura del video">
-                            </div>
                         </div>
                 <?php }
                 } ?>
@@ -131,7 +126,10 @@ use admin\foro\Config\Parameters;
         </aside>
     <?php } ?>
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
-<?php } ?>
+<?php } 
+}else{?>
+    
+<?php }?>
 <style>
     /* Estilo del contenedor general */
 

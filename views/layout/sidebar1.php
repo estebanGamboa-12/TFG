@@ -3,12 +3,9 @@
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 
-$comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
-
+$idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
+$comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 ?>
-
-
-
 <aside class="contenido-aside first-aside">
   <div class="aside1">
     <!-- home ----------------------------------------------------------------------------------------->
@@ -30,17 +27,20 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
       <a href="<?= Parameters::$BASE_URL ?>Post/All" class="popular">All </a>
     <?php } ?>
     <!-- recientes--------------------------------------------------------------------- -->
-    <div class="recientes">
-      Recientes <i class="fa fa-sort-up icono"></i>
-    </div>
+   
     <div class="recientes-lista contenido1">
-      <?php if ($comunidadesRecientes != NULL) { ?>
-        <div class="logo-texto">
-          <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-          <div id="textoAside1">comunidad1</div>
-        </div>
-      <?php } else { ?>
-        <div> no hay nah</div>
+      <?php if ($comunidadesRecientes != NULL) {?>
+         <div class="recientes">
+         Recientes <i class="fa fa-sort-up icono"></i>
+       </div>
+       <?php foreach ($comunidadesRecientes as $comunidad) {
+      ?>
+          <div class="logo-texto">
+            <img src="<?= Parameters::$BASE_URL . "assets/img/" . $comunidad['imagen'] ?>" alt="foto">
+            <div id="textoAside1"><?= $comunidad['nombre'] ?></div>
+          </div>
+        <?php }
+      } else { ?>
       <?php } ?>
     </div>
 
@@ -68,7 +68,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
       <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
-        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
       </div>
       <div class="comunidades-lista contenido1">
         <?php
@@ -89,18 +89,26 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
       <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
-        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
       </div>
-      <?php }?>
+    <?php } ?>
   </div>
 </aside>
+<style>
+  .icono-flecha, .icono-punto, .icono-linea {
+    display: inline-block;
+    margin-left: 5px; /* Espacio entre el texto y el ícono */
+    font-size: 20px; /* Tamaño del ícono */
+    color: #000; /* Color del ícono */
+}
+</style>
 <script>
   // Inicialización de variables
   let temasMostrados = 6;
   let comunidadesMostradas = 6;
   let temasPorPagina = 6;
   let comunidadesPorPagina = 6;
-<?php $comunidades=$comunidades ?? []; ?>
+  <?php $comunidades = $comunidades ?? []; ?>
   let totalTemas = <?= json_encode(count($temas)); ?>; // Total de temas disponibles
   let totalComunidades = <?= json_encode(count($comunidades)); ?>; // Total de comunidades disponibles
 
@@ -116,9 +124,9 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes']['prefijo'] ?? NULL;
     let contenidoHTML = '';
     temasParaMostrar.forEach(function(tema) {
       contenidoHTML += `
-        <div class="logo-texto">
-          <img src="<?= Parameters::$BASE_URL . "assets/img/administrador2.png" ?>" alt="foto">
-          <div id="textoAside1">${tema.nombre}</div>
+      <div class="logo-texto">
+            <div id="textoAside1">${tema.nombre}</div>
+            <a class="icono-flecha" href="<?= Parameters::$BASE_URL?>Temas/verTemas?nombreTema=${tema.nombre}">➔</a>
         </div>
       `;
     });

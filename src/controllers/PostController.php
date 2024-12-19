@@ -32,14 +32,14 @@ class PostController
             $token = $generarToken->generarToken($idUsuario, $posts['id_comunidad'], $posts['id_post']);
             $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
             if (!isset($_SESSION['post'])) {
-                $_SESSION['post'] = [];
+                $_SESSION['post'][$idUsuario][] = [];
             }
             if (empty($posts)) {
                 header('location:' . Parameters::$BASE_URL);
                 exit;
             }
             if (!in_array($idPost, $_SESSION['post'])) {
-                $_SESSION['post'][] = $idPost; // Solo se añade si no está ya en el array
+                $_SESSION['post'][$idUsuario][] = $idPost; // Solo se añade si no está ya en el array
             }
             ViewController::show("views/comentarios/vistaComentarios.php", [
                 "post" => $posts,
@@ -329,7 +329,7 @@ class PostController
         }
     }
     public function borrarPostRecientes(){
-        unset($_SESSION['post']);
+        unset($_SESSION['post'][$_SESSION['user']['idUsuario']]);
         header("location:". Parameters::$BASE_URL);
         exit;
     }

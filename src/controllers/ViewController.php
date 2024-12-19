@@ -75,8 +75,8 @@ class ViewController
         }else{
             $comunidades=$comunidadesModel->getComunidades();
         }
-        if(isset($_SESSION['post'])){
-            $posts = $_SESSION['post'];
+        if(isset($_SESSION['user']) && isset($_SESSION['post'][$_SESSION['user']['idUsuario']]) ){
+            $posts = $_SESSION['post'][$_SESSION['user']['idUsuario']];
             $postRecientes=[];
             foreach($posts as $post){
                 $post=$postModel->postPorId($post);

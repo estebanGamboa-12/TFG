@@ -77,7 +77,7 @@ class ComunidadModel extends Model
             die($e->getMessage());
         }
     }
-    public function datosComunidad($nombre,$idUsuario)
+    public function datosComunidad($nombre, $idUsuario)
     {
         try {
             $sql = "SELECT 

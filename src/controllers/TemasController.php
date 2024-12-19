@@ -2,6 +2,7 @@
 
 namespace admin\foro\Controllers;
 
+use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\TemaModel;
 use admin\foro\Models\temasComunidadModel;
 use admin\foro\Models\TemasModel;
@@ -38,5 +39,22 @@ class TemasController
         } else {
             echo json_encode(["success" => false]);
         }
+    }
+    public function verTemas(){ 
+        $temasComunidadModel = new temasComunidadModel();
+        $temasModel= new TemaModel();
+        $comuninidadesModel=new ComunidadModel();
+        $nombreTema=$_GET['nombreTema'];
+        $temas=$temasModel->getTemaPorNombre($nombreTema);
+        if(empty($temas)){
+            echo "no hay nah bro";
+            exit;
+        }else{
+            $idTema=$temas['id_temas'];
+            $comunidades=$temasComunidadModel->getComunidadesPorTema($idTema);
+            var_dump($comunidades);exit;
+            $comunidades=$comuninidadesModel->comunidadesPorNombre();
+        }
+
     }
 }

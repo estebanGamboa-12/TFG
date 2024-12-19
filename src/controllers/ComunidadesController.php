@@ -25,7 +25,7 @@ class ComunidadesController
             $comunidades = $comunidadesModel->getAll();
             $membresias = [];
             $token = [];
-            $generarToken=new HelpersGenerarToken();
+            $generarToken = new HelpersGenerarToken();
 
 
             $idUsuario = $_SESSION['user']['idUsuario'];
@@ -52,7 +52,7 @@ class ComunidadesController
             $_SESSION['cambioVista'] = "perfilComunidades";
             $comunidadesModel = new ComunidadModel();
             $postModel = new PostModel();
-            $generarToken=new HelpersGenerarToken();
+            $generarToken = new HelpersGenerarToken();
             $_SESSION['comunidadVer'] = $_GET['nombreComunidad'];
             $token = [];
             $idUsuario = $_SESSION['user']['idUsuario'];
@@ -67,6 +67,16 @@ class ComunidadesController
                     $post['jwt_token'] = null;
                 }
             }
+            // Inicializar el array de comunidades recientes si no existe
+            if (!isset($_SESSION['comunidadesRecientes'][$idUsuario])) {
+                $_SESSION['comunidadesRecientes'][$idUsuario] = [];
+            }
+
+            // Agregar la comunidad al array de comunidades recientes
+            if (!in_array($comunidad, $_SESSION['comunidadesRecientes'][$idUsuario])) {
+                $_SESSION['comunidadesRecientes'][$idUsuario][] = $comunidad;
+            }
+
             ViewController::show("views/comunidades/verComunidad.php", [
                 "post" => $posts,
                 "comunidad" => $comunidad,
@@ -79,15 +89,15 @@ class ComunidadesController
     }
     public function VistaCrearComunidad()
     {
-        if(Authentication::isUserLogged()){
+        if (Authentication::isUserLogged()) {
 
             $temasModel = new TemaModel();
             $temas = $temasModel->getTemas();
             ViewController::show("views/comunidades/crearComunidad.php", ["temas" => $temas]);
             $_SESSION['cambioVista'] = "";
             exit;
-        }else{
-            header("location:" . Parameters::$BASE_URL."Post/popularNoLogeado");
+        } else {
+            header("location:" . Parameters::$BASE_URL . "Post/popularNoLogeado");
         }
     }
 
@@ -129,16 +139,16 @@ class ComunidadesController
                 $nombreImagen = $subirImange->subirImagen($imagen);
                 $comprobacion = $comunidadesModel->insertarComunidad($idUsuario, $nombre, $descripcion, $nombreImagen);
                 $comunidad = $temasComunidadModel->obtenerUltimaComunidad();
-                $idComunidad=$comunidad['id_comunidad'];
+                $idComunidad = $comunidad['id_comunidad'];
                 if ($comprobacion) {
                     foreach ($temas as $tema) {
                         $idTema = intval($tema);
                         $comprobacion = $temasComunidadModel->insertarTemasEnComunidad($idTema, $idComunidad);
                     }
-                    if($comprobacion){
+                    if ($comprobacion) {
                         $_SESSION['mensaje'] = "Se ha creado correctamente la comunidad";
                         header("location:" . Parameters::$BASE_URL . "Post/home");
-                    }else{
+                    } else {
                         $errores[] = "Hubo un problema inesperado al crear la comunidad";
                         $_SESSION['errores'] = $errores;
                         header("location:" . Parameters::$BASE_URL . "Post/home");
@@ -155,6 +165,4 @@ class ComunidadesController
             }
         }
     }
-
-   
 }
