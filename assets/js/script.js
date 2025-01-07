@@ -134,7 +134,7 @@ window.onload = function () {
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
+const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
 
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');

@@ -39,7 +39,6 @@ $post = $data['post'] ?? NULL;
                     <div class="pie-section">
                         <div class="votos-seccion">votos</div>
                         <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
                     </div>
                 </div>
             <?php endforeach; ?>

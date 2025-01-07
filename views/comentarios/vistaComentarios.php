@@ -70,10 +70,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     data-token-votar="<?= $token ?>">
                     Votos(<?= $post['votos_totales'] ?>)
                 </div>
-                <div class="compartir-comentarios boton">Compartir</div>
-                <a href="https://api.whatsapp.com/send?text=Texto%20a%20compartir" target="_blank">
-                    <button>Compartir en WhatsApp</button>
-                </a>
             </div>
             <div class="inputComentar">
                 <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">
@@ -104,7 +100,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                             <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>"
                                 style="display:none;">
                                 <input type="text" class="textoComentarioPrincipal" placeholder="Escribe tu respuesta">
-                                <button
+                                <button class="boton"
                                     onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
                             </div>
                             <div class="subcomentarios">
@@ -124,7 +120,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                             <div class="contenido-comentario">
                                                 <?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
                                             <div class="containerBotones-comentarios">
-                                                <div class="comentar-comentarios boton">Comentar</div>
                                             </div>
                                         </div>
                                 <?php }
@@ -153,7 +148,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         const input = document.querySelector(`#respuesta-${idComentario} input`);
         const subComentario = input.value;
 
-        const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
+        const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
@@ -206,7 +201,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
     document.querySelector(".boton-enviar-comentario").addEventListener("click", () => {
 
-        const parametersBaseUrl = "http://192.168.3.210/proyectos/TFG/";
+        const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
@@ -231,7 +226,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             })
             .then(data => {
                 try {
-                    console.log(data);
                     let JSONdata = JSON.parse(data);
                     console.log(JSONdata.comentario);
                     if (JSONdata.success) {
@@ -252,7 +246,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     </div>
                     <div class="respuesta-form" id="respuesta-${JSONdata.comentario.id_comentario}" style="display:none;">
                     <input class="textoComentarioPrincipal" type="text" placeholder="Escribe tu respuesta">
-                    <button  onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>
+                    <button class="boton" onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>
                     </div>
                     <div class="subcomentarios"></div>
                     `;

@@ -89,7 +89,6 @@ use admin\foro\Helpers\Authentication;
     }
 </style>
 
-
 <body>
     <div class="grid">
         <header>
@@ -99,6 +98,7 @@ use admin\foro\Helpers\Authentication;
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
+                            <p style="margin-right: 5px;"> <?= $_SESSION['user']['nombre']?></p>
                             <img src="<?= Parameters::$BASE_URL . "assets/img/logo1.jpg" ?>" alt="" class="logo-header">
                             <div class="listaUsuario">☰</div>
                         </div>

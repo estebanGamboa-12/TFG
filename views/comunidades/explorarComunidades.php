@@ -1,5 +1,3 @@
-
-
 <?php
 
 use admin\foro\Helpers\Authentication;
@@ -16,21 +14,25 @@ $idUsuario = $_SESSION['user']['idUsuario'];
         <div class="contenido"></div>
         <div class="conteiner-comunidades">
             <?php foreach ($comunidades as $indice => $contenido) {
-            ?>
+                ?>
                 <div id="card-comunidades">
                     <div class="parteArriba">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?php echo $contenido["imagen"] ?>" alt="" class="logo-comunidades">
+                        <a
+                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre'] ?>">
+                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen"
+                                class="imagenLogo-section">
+                        </a>
                         <div class="nombreComunidad"><?php echo $contenido['nombre'] ?>
-                            <div class="miembrosComunidad" data-token="<?= $token[$contenido['id_comunidad']] ?>"><?= $membresias[$contenido['id_comunidad']] ?> miembros</div>
+                            <div class="miembrosComunidad" data-token="<?= $token[$contenido['id_comunidad']] ?>">
+                                <?= $membresias[$contenido['id_comunidad']] ?> miembros</div>
                         </div>
-                        <div class="botonUnirte unirse"
-                            data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
+                        <div class="botonUnirte unirse" data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
                     </div>
                     <div class="parteAbajo">
                         <?php echo $contenido['descripcion'] ?>
                     </div>
                 </div>
-            <?php  } ?>
+            <?php } ?>
         </div>
     </div>
     </div>
@@ -39,14 +41,14 @@ $idUsuario = $_SESSION['user']['idUsuario'];
 <script>
     function actualizarCamposGenericos(url, token) {
         fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "token": token,
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "token": token,
             })
+        })
             .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
             .then(data => {
                 try {
@@ -88,7 +90,7 @@ $idUsuario = $_SESSION['user']['idUsuario'];
     }
     // ------------------UNIRSE---------------------------------- 
     document.querySelectorAll('.unirse').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
+        botonUnirse.addEventListener('click', function () {
             let token = botonUnirse.getAttribute('data-token'); // Obtener el token de la comunidad
             const url = '<?= Parameters::$BASE_URL ?>Membresias/unirseComunidad'; // URL de la solicitud
 

@@ -21,9 +21,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
             <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $usuario['imagen_logo_usuario'] ?>" alt="foto">
             <span>n/ <?= $usuario['nombre'] ?></span>
         </div>
-        <div class="botonesVer">
-            <span>Crear post</span>
-        </div>
     </div>
     <div class="section">
         <div class="contenidoMensajes"></div>
@@ -76,7 +73,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                         Votos(<?= $contenido['votos'] ?>)
                     </div>
                     <div class="comentarios-section">Comentarios</div>
-                    <div class="compartir-section">Compartir</div>
                 </div>
             </div>
         <?php endforeach; ?>

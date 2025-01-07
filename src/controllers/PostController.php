@@ -18,7 +18,7 @@ use GenerarToken;
 
 class PostController
 {
-    
+
     public function verPostPorId()
     {
         if (isset($_GET['titulo'])) {
@@ -31,15 +31,24 @@ class PostController
             $idUsuario = $_SESSION['user']['idUsuario'];
             $token = $generarToken->generarToken($idUsuario, $posts['id_comunidad'], $posts['id_post']);
             $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
+            // Verificar si la sesión de posts está inicializada
             if (!isset($_SESSION['post'])) {
-                $_SESSION['post'][$idUsuario][] = [];
+                $_SESSION['post'] = []; // Inicializar como un array vacío
             }
+
+            // Verificar si el array de posts para el usuario está inicializado
+            if (!isset($_SESSION['post'][$idUsuario])) {
+                $_SESSION['post'][$idUsuario] = []; // Inicializar como un array vacío
+            }
+            // Verificar si el post está vacío
             if (empty($posts)) {
                 header('location:' . Parameters::$BASE_URL);
                 exit;
             }
-            if (!in_array($idPost, $_SESSION['post'])) {
-                $_SESSION['post'][$idUsuario][] = $idPost; // Solo se añade si no está ya en el array
+            // Verificar si el idPost ya existe en el array de posts del usuario
+            if (!in_array($idPost, $_SESSION['post'][$idUsuario])) {
+                // Añadir el idPost al array de posts del usuario
+                $_SESSION['post'][$idUsuario][] = $idPost;
             }
             ViewController::show("views/comentarios/vistaComentarios.php", [
                 "post" => $posts,
@@ -328,9 +337,10 @@ class PostController
             exit;
         }
     }
-    public function borrarPostRecientes(){
+    public function borrarPostRecientes()
+    {
         unset($_SESSION['post'][$_SESSION['user']['idUsuario']]);
-        header("location:". Parameters::$BASE_URL);
+        header("location:" . Parameters::$BASE_URL);
         exit;
     }
 }

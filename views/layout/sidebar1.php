@@ -36,7 +36,11 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
        <?php foreach ($comunidadesRecientes as $comunidad) {
       ?>
           <div class="logo-texto">
-            <img src="<?= Parameters::$BASE_URL . "assets/img/" . $comunidad['imagen'] ?>" alt="foto">
+            <a
+                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $comunidad['nombre'] ?>">
+                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $comunidad['imagen'] ?>" alt="imagen"
+                                class="imagenLogo-section">
+                        </a>
             <div id="textoAside1"><?= $comunidad['nombre'] ?></div>
           </div>
         <?php }
@@ -78,7 +82,11 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
         //muestra los primeros
         foreach (array_slice($comunidades, 0, $comunidades_por_pagina) as $indice => $contenido) { ?>
           <div class="logo-texto">
-            <img src="<?= Parameters::$BASE_URL . "assets/img/" . $contenido['imagen'] ?>" alt="foto">
+          <a
+                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre'] ?>">
+                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen"
+                                class="imagenLogo-section">
+                        </a>
             <div id="textoAside1"><?= $contenido['nombre'] ?></div>
           </div>
         <?php } ?>

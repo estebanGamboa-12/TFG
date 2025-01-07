@@ -108,7 +108,6 @@ if (isset($_SESSION['errores'])) {
                             Votos(<?= $contenido['votos'] ?>)
                         </div>
                         <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
                     </div>
                 </div>
             </a>

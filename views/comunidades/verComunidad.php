@@ -68,7 +68,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                         Votos(<?= $contenido['votos'] ?>)
                     </div>
                     <div class="comentarios-section">Comentarios</div>
-                    <div class="compartir-section">Compartir</div>
                 </div>
             </div>
         <?php endforeach; ?>
