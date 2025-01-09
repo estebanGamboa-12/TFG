@@ -5,6 +5,7 @@
     color: rgb(0, 0, 0);
 
 }
+
 /* crear post , perfil */
 .perfil {
     grid-column: 5;
@@ -14,11 +15,13 @@
     justify-content: flex-end;
     align-items: center;
 }
+
 .perfil img {
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
 }
+
 .CrearPost {
     border-radius: 1rem;
     display: flex;
@@ -33,9 +36,11 @@
     padding: 2%;
 
 }
-.nombre-usuario{
+
+.nombre-usuario {
     margin-right: 1rem;
 }
+
 /* crearPublicaciones */
 .CrearPublicaciones-titulo {
     display: flex;
@@ -93,6 +98,7 @@
     padding: 2%;
     height: 4rem;
 }
+
 .CrearPublicaciones-contenido input {
     border-radius: 1rem;
     border: 1px solid black;
@@ -150,12 +156,10 @@ header {
 
 
 section {
-    grid-column: 2/3;
+    grid-column: 2;
     grid-row: 2;
     margin: 0 10%;
-    /* Margen ajustado */
     overflow-y: auto;
-    /* Permite scroll vertical si es necesario */
 }
 
 .second-aside {
@@ -205,14 +209,14 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(0, 150, 136);
+    background-color: #45a049;
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: black;
     margin-right: 8%;
     font-size: 100%;
     width: 8rem;
-    padding: 2%;
-
+    padding: 8px;
+    margin: 5% 0% 5% -10%;
 }
 
 .tresPuntos {
@@ -236,7 +240,7 @@ footer {
 
 
 .popular {
-    border-bottom: 1px solid#007A33;
+    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -247,7 +251,8 @@ footer {
 }
 
 .recientes {
-    border-bottom: 1px solid#007A33;
+    border-bottom: 1px solid #45a049;
+    ;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -261,7 +266,7 @@ footer {
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
-    border-bottom: 1px solid#007A33;
+    border-bottom: 1px solid #45a049;
     color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
@@ -270,7 +275,7 @@ footer {
 }
 
 .comunidades {
-    border-bottom: 1px solid #007A33;
+    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
@@ -311,11 +316,12 @@ footer {
 
 .imagenLogo-section {
     border-radius: 50%;
-    width: 4vw;
+    width: 50px;
     display: flex;
     text-align: center;
     justify-content: flex-start;
-    margin-right: 5%;
+    margin-right: 0%;
+    height: 50px;
 }
 
 .logo-texto {
@@ -364,7 +370,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(0, 150, 136);
+    background-color: #45a049;
     border-radius: 1rem;
     width: 5rem;
     padding: 1%;
@@ -427,13 +433,13 @@ footer {
 
 .pie-section>div {
     margin-right: 5%;
-  background-color: rgb(0, 150, 136);
-  width: 6rem;
-  border-radius: 1rem;
-  padding: 1%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    background-color: #007A33;
+    width: 6rem;
+    border-radius: 1rem;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Elimina el margen del último elemento */
@@ -490,11 +496,13 @@ footer {
     display: flex;
     flex-direction: row;
 }
-.contenido-aside2{
+
+.contenido-aside2 {
     display: flex;
     flex-direction: column;
     margin-left: 5%;
 }
+
 .imagenLogo-aside {
     width: 3rem;
     height: 3rem;
@@ -525,9 +533,9 @@ footer {
     align-items: center;
     background-color: #0e1113;
     margin: 0% auto;
-    padding: 4%;
-    width: 26%;
-    height: 78%;
+    padding: 1%;
+    width: auto;
+    height: auto;
     border-radius: 3rem;
 }
 
@@ -603,9 +611,9 @@ footer {
     align-items: center;
     background-color: #0e1113;
     margin: 0% auto;
-    padding: 4%;
-    width: 26%;
-    height: 78%;
+    padding: 1%;
+    width: auto;
+    height: auto;
     border-radius: 3rem;
 }
 
@@ -621,7 +629,8 @@ footer {
 .cerrar {
     color: white;
     font-size: 2rem;
-    cursor: pointer; /* Agregado para indicar que es un botón */
+    cursor: pointer;
+    /* Agregado para indicar que es un botón */
     display: flex;
     justify-content: flex-end;
     width: 100%;
@@ -661,14 +670,18 @@ footer {
     border: none;
     cursor: pointer;
 }
+
 .modal-content-registrarse input[type="submit"]:hover {
-    background-color: #005bb5; /* Efecto hover para el botón */
+    background-color: #005bb5;
+    /* Efecto hover para el botón */
 }
 
 .modal-content-registrarse input:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5); /* Resalta los campos seleccionados */
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+    /* Resalta los campos seleccionados */
 }
+
 .contenido {
     height: 50px;
     background-color: blue;
@@ -693,9 +706,11 @@ footer {
     background-color: red;
     color: black;
 }
-.back{
+
+.back {
     cursor: pointer;
 }
+
 #card-comentarios {
     display: flex;
     flex-direction: column;
@@ -868,6 +883,42 @@ footer {
     /* Ejemplo: Desplazar según el nivel */
 }
 
+.mensaje {
+    color: green;
+    background-color: #d4edda;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 10%;
+    /* Ajusta la posición desde arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    /* Centra horizontalmente */
+    z-index: 100;
+}
+
+.error {
+    color: red;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    color: red;
+    background-color: #f8d7da;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
 
 @media (min-width: 1061px) {
     .first-aside {
@@ -902,9 +953,9 @@ footer {
     }
 
     section {
-        grid-row: 2;
-        grid-column: 1/3;
-        margin: 0%;
+        grid-row: 2 !important;
+        grid-column: 1/3 !important;
+        margin: 0% !important;
     }
 
     .fondo {
@@ -938,9 +989,9 @@ footer {
     }
 
     section {
-        grid-row: 2;
-        grid-column: 1/5;
-        margin: 0%;
+        grid-row: 2!important;
+        grid-column: 1/5!important;
+        margin: 0%!important;
     }
 
     .fondo {

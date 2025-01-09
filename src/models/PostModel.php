@@ -62,7 +62,6 @@ LIMIT :offset, :limit;
 
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-            exit;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
@@ -113,6 +112,8 @@ LIMIT :offset, :limit;
                     p.video, 
                     p.tipo_post, 
                     c.imagen
+                ORDER BY
+                    p.fecha_creacion DESC
                 LIMIT :offset, :limit";
 
         try {
@@ -198,7 +199,10 @@ UNION ALL
         c.id_comunidad NOT IN (SELECT id_comunidad FROM membresias m WHERE m.id_usuario = :idUsuario)
     GROUP BY 
         p.id_post
+   
 )
+         ORDER BY
+     fecha_creacion DESC
     LIMIT :offset, :limit;
     ";
             $consulta = $this->conn->prepare($sql);
@@ -215,27 +219,28 @@ UNION ALL
             die($e->getMessage());
         }
     }
-    public function subirPost($titulo, $contenido, $id_usuario, $id_tema, $tipo_post)
+    public function subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad)
     {
         // Preparar la consulta SQL
-        $sql = "INSERT INTO `post` (id_post, titulo, contenido, fecha_creacion, imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
-        VALUES (NULL, :titulo, :contenido, CURRENT_TIMESTAMP(), NULL, NULL, :id_usuario, NULL, :id_tema, :tipo_post);";
+        $sql = "INSERT INTO `post` ( titulo, contenido, fecha_creacion,
+     imagen, video, id_usuario, id_comunidad, id_tema, tipo_post) 
+    VALUES 
+    ( :titulo, :contenido, CURRENT_TIMESTAMP(), 
+    :imagen, :video, :idUsuario, :idComunidad, :idTema, :tipoPost);";
 
         $consulta = $this->conn->prepare($sql);
 
         // Bind de los parámetros
         $consulta->bindParam(':titulo', $titulo);
         $consulta->bindParam(':contenido', $contenido);
-        $consulta->bindParam(':id_usuario', $id_usuario);
-        $consulta->bindParam(':id_tema', $id_tema);
-        $consulta->bindParam(':tipo_post', $tipo_post);
-
+        $consulta->bindParam(':idUsuario', $idUsuario);
+        $consulta->bindParam(':idTema', $idTema);
+        $consulta->bindParam(':imagen', $imagen);
+        $consulta->bindParam(':video', $video);
+        $consulta->bindParam(':tipoPost', $tipoPost);
+        $consulta->bindParam(':idComunidad', $idComunidad);
+        return $consulta->execute();
         // Ejecuta la consulta
-        if ($consulta->execute()) {
-            echo "Post insertado correctamente.";
-        } else {
-            echo "Error al insertar el post.";
-        }
     }
     public function getPostPopularNoLogeado($pagina, $postPorPagina) //parte popular no logeado
     {
@@ -258,7 +263,6 @@ UNION ALL
             $consulta->execute();
             $dato = $consulta->fetchAll(\PDO::FETCH_ASSOC);
             return $dato;
-            exit;
         } catch (\PDOException $e) {
             echo "<h1><br>Fichero: " . $e->getFile();
             echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
@@ -342,8 +346,8 @@ GROUP BY p.id_post,c.id_comunidad;
             $sql = "SELECT p.*,u.nombre as nombre_usuario , u.imagen_logo_usuario,c.nombre as nombre_comunidad,c.imagen as imagen_comunidad,COUNT(v.id_voto) AS votos_totales 
         FROM post p 
         LEFT JOIN votos v ON v.id_post=p.id_post 
-        JOIN usuarios u ON u.id_usuario=p.id_usuario
-        JOIN comunidades c ON c.id_comunidad=p.id_comunidad
+        LEFT JOIN usuarios u ON u.id_usuario=p.id_usuario
+        LEFT JOIN comunidades c ON c.id_comunidad=p.id_comunidad
         WHERE p.id_post=:idPost; ";
             $consulta = $this->conn->prepare($sql);
             $consulta->bindParam(":idPost", $idPost);

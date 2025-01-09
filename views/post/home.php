@@ -2,53 +2,48 @@
 
 use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
+
 $post = $data['post'] ?? NULL;
 $token = $data['token'] ?? NULL;
 
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-<style>
-    .votar {
-        cursor: pointer;
-    }
 
-    /* Estilo para el contenedor del cargador */
-    #loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
-    }
-
-    /* Animación de giro para el spinner */
-    .spinner {
-        border: 4px solid #f3f3f3;
-        /* Gris claro */
-        border-top: 4px solid #3498db;
-        /* Azul */
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 2s linear infinite;
-        margin-bottom: 10px;
-    }
-
-    /* Definición de la animación de giro */
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
 <pre>
     <?php //var_dump($post);exit; 
     ?>
 </pre>
+<?php
+if (isset($_SESSION['mensaje'])) {
+    echo '<div class="mensaje id="mensaje"">';
+    echo $_SESSION['mensaje'];
+    echo '</div>';
+    unset($_SESSION['mensaje']);
+}
+
+if (isset($_SESSION['errores'])) {
+    echo '<div class="error" id="errores">';
+    foreach ($_SESSION['errores'] as $error) {
+        echo $error . '<br>';
+    }
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
+<script>
+    // Función para ocultar el mensaje después de 3 segundos
+    setTimeout(function() {
+        var mensaje = document.getElementById('mensaje');
+        var errores = document.getElementById('errores');
+        if (mensaje) {
+            mensaje.style.display = 'none';
+        }
+        if (errores) {
+            errores.style.display = 'none';
+        }
+    }, 2000); // 3000 milisegundos = 3 segundos
+</script>
 <section id="sectionHome">
     <div class="section">
         <div class="contenidoMensajes"></div>
@@ -83,8 +78,15 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     </div>
                     <div class="section-card">
                         <div class="titulo-section"><?= $contenido['titulo'] ?></div>
-                        <div class="contenido-section"><?= $contenido['contenido'] ?></div>
-
+                        <div class="contenido-section">
+                            <?php
+                            $contenido_texto = trim($contenido['contenido']); // Elimina los espacios alrededor del texto
+                            if (strpos($contenido_texto, 'http') !== false) { ?>
+                                <a href="#" class="link" style="color: blue; border-bottom: 1px solid blue;"><?= $contenido_texto ?></a>
+                            <?php } else { ?>
+                                <div> <?= $contenido_texto ?></div>
+                            <?php } ?>
+                        </div>
                         <?php if (!empty($contenido['video'])): ?>
                             <!-- si existe video -->
                             <div class="videos-fotos-section">
@@ -106,7 +108,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                             Votos(<?= $contenido['votos'] ?>)
                         </div>
                         <div class="comentarios-section">Comentarios</div>
-                        <div class="compartir-section">Compartir</div>
                     </div>
                 </div>
             </a>
@@ -114,9 +115,12 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     </div>
     <div id="loading"></div>
 </section>
-<style>
-    .card-section:hover {
-        background-color: #8080800d;
-        cursor: pointer;
+<script>
+    if (document.querySelector(".link")) {
+        document.querySelector(".link").addEventListener("click", (e) => {
+            let valorLink = e.value;
+            console.log(valorLink);
+            window.open(valorLink, '_blank');
+        })
     }
-</style>
+</script>

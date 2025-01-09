@@ -15,30 +15,77 @@ use admin\foro\Helpers\Authentication;
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/estilos.css" ?>">
     <link rel="stylesheet" href="<?= Parameters::$BASE_URL . "assets/css/logeado.css" ?>">
     <script src="<?= Parameters::$BASE_URL . "assets/js/script.js" ?>"></script>
+    <!-- jquery y select multiple -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Foro</title>
 </head>
 <style>
-    .perfil {
+    .tooltip-container {
         position: relative;
         display: flex;
-        align-items: center;
     }
 
-    .desplegable {
+    .user-icon {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip {
         position: absolute;
-        width: auto;
-        height: au;
-        transform: translateY(-50%);
+        top: 45px;
+        left: 0%;
+        width: 250px;
+        transform: translateX(-90%);
         background-color: #fff;
-        border: 1px solid #ddd;
-        padding: 10px;
-        display: block;
-        z-index: 10;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-align: center;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        ;
     }
 
-    .logo-usuario:hover+.desplegable,
-    .desplegable:hover {
-        display: block;
+    .tooltip::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        pointer-events: auto;
+    }
+
+    .tooltip .nav-link {
+        text-decoration: none;
+        padding: 10px;
+        color: #696969;
+    }
+
+    .tooltip span {
+        text-align: left;
+        color: #696969;
+        padding: 0px 5px 5px 5px;
+    }
+
+    .tooltip span:first-of-type {
+        padding: 5px 5px 0px 5px !important;
+    }
+
+    .tooltip .nav-link:hover {
+        background-color: #e2e2e2;
+        color: #696969;
+        transition: all .5s;
+        border-radius: 10px;
+    }
+
+    .tooltip-clicked {
+        visibility: visible;
+        opacity: 1;
     }
 </style>
 
@@ -46,80 +93,57 @@ use admin\foro\Helpers\Authentication;
     <div class="grid">
         <header>
             <div class="header">
-                <div class="logo">
-                    <div class="bars">☰</div>
-                    <img src="<?= Parameters::$BASE_URL . "assets/img/logo1.jpg" ?>" alt="" class="logo-header">
-                </div>
+                <div class="bars">☰</div>
                 <div class="tresPuntos">
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
-                            <img class="logo-usuario" src="<?php echo  Parameters::$BASE_URL ?>assets/img/<?php echo $_SESSION['user']["imagen_logo_usuario"] ?>" alt="">
+                            <p style="margin-right: 5px;"> <?= $_SESSION['user']['nombre']?></p>
+                            <img src="<?= Parameters::$BASE_URL . "assets/img/logo1.jpg" ?>" alt="" class="logo-header">
+                            <div class="listaUsuario">☰</div>
                         </div>
                     <?php } else { ?>
-                        <div class="iniciarSesion">Iniciar Sesion</div>
+                        <a href="<?= Parameters::$BASE_URL ?>Usuario/verFormularioIniciarSesion">
+                            <div class="iniciarSesion">Iniciar Sesion</div>
+                        </a>
                         <i class="fa fa-ellipsis-h"></i>
                     <?php  }  ?>
                 </div>
             </div>
+            <div class="containerUsuario">
+                <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion</a>
+            </div>
         </header>
-</body>
-<!-- Ventana modal iniciar sesion .------------------------------------------------------ -->
-<div class="modalIniciarSesion" id="modal-IniciarSesion">
-    <div class="modal-content-sesion">
-        <div class="cerrar">x</div>
-        <div class="titulo-iniciarSesion">Iniciar Sesión</div>
-        <form action="<?= Parameters::$BASE_URL ?>Usuario/iniciarSesion" method="post">
-            <label for="nombre">
-                <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
-            </label>
-            <label for="contreaseña">
-                <input type="password" name="contrasena" id="contraseña" placeholder="Contraseña" required>
-            </label>
-            <input type="submit" value="Iniciar Sesion">
-        </form>
-        <div class="texto-registro">¿Es tu primera vez en Foro? <a class="botonRegistrarse">Registrarse</a></div>
-    </div>
-</div>
-<!-- ventana modal registrarse ----------------------------------------------------------------- -->
-<div class="modalRegistrar" id="modal-registrarse">
-    <div class="modal-content-registrarse">
-        <div class="cerrar">x</div>
-        <div class="titulo-registrarse">Registrarse</div>
-        <form action="<?= Parameters::$BASE_URL ?> Usuario/registrarUsuarios" method="post">
-            <label for="nombre">
-                <input type="text" name="nombre" id="nombre" placeholder="Nombre de usuario" required>
-            </label>
-            <label for="apellido">
-                <input type="text" name="apellido" id="apellido" placeholder="apellido" required>
-            </label>
-            <label for="correo">
-                <input type="email" name="email" id="email" placeholder="email" required>
-            </label>
-            <label for="contraseña">
-                <input type="password" name="contraseña" id="contraseña " placeholder="contraseña" required>
-            </label>
-            <label for="repetir_contraseña">
-                <input type="password" name="repetir_contraseña" id="repetir_contraseña" placeholder="Repetircontreaseña" required>
-            </label>
-            <input type="submit" value="Registrarse ">
-        </form>
-    </div>
-</div>
 
-<!-- 
-<script>
-    document.querySelector(".logo-usuario").addEventListener("click", () => {
-        console.log("entra");
-        fetch("<?= Parameters::$BASE_URL ?>Usuario/mostrarVentanaCerrarSesion", {
-                method: "POST"
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => console.error(error));
-    });
-</script> -->
+</body>
+<style>
+    .containerUsuario {
+        display: none;
+        justify-items: flex-end;
+        margin-right: 2%;
+
+    }
+
+    .containerUsuario a {
+        padding: 5px 15px;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(0, 150, 136);
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: black;
+        font-size: 100%;
+        width: 8rem;
+    }
+</style>
 
 </html>
+<script>
+    if (document.querySelector('.listaUsuario')) {
+        document.querySelector('.listaUsuario').addEventListener('click', function() {
+            console.log("entra");
+            document.querySelector('.containerUsuario').style.display = "grid";
+        });
+    }
+</script>

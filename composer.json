@@ -14,7 +14,6 @@
         }
     },
     "require": {
-        "monolog/monolog": "^2.8",
         "firebase/php-jwt": "^6.10"
         
     }

@@ -3,27 +3,57 @@
 namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
-use  admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\GenerarToken as HelpersGenerarToken;
+use admin\foro\Helpers\ImageUploader;
+use admin\foro\Helpers\VideoUploader;
 use admin\foro\Models\ComentariosModel;
+use admin\foro\Models\ComunidadModel;
 use admin\foro\Models\PostModel;
 use Exception;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\JWTExceptionWithPayloadInterface;
 use Firebase\JWT\Key;
+use GenerarToken;
 
 class PostController
 {
+
     public function verPostPorId()
     {
         if (isset($_GET['titulo'])) {
+            $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
-            $comentariosModel=new ComentariosModel();
-            $idPost = $_GET['titulo'];
+            $comentariosModel = new ComentariosModel();
+            $generarToken = new HelpersGenerarToken();
+            $idPost = intval($_GET['titulo']);
             $posts = $postModel->postPorId($idPost);
-            $comentarios=$comentariosModel->comentariosDeUnPost($idPost);
-            ViewController::show("views/comentarios/vistaComentarios.php",[
-                "post"=>$posts,
-                "comentarios"=>$comentarios,
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $token = $generarToken->generarToken($idUsuario, $posts['id_comunidad'], $posts['id_post']);
+            $comentarios = $comentariosModel->comentariosDeUnPost($idPost);
+            // Verificar si la sesión de posts está inicializada
+            if (!isset($_SESSION['post'])) {
+                $_SESSION['post'] = []; // Inicializar como un array vacío
+            }
+
+            // Verificar si el array de posts para el usuario está inicializado
+            if (!isset($_SESSION['post'][$idUsuario])) {
+                $_SESSION['post'][$idUsuario] = []; // Inicializar como un array vacío
+            }
+            // Verificar si el post está vacío
+            if (empty($posts)) {
+                header('location:' . Parameters::$BASE_URL);
+                exit;
+            }
+            // Verificar si el idPost ya existe en el array de posts del usuario
+            if (!in_array($idPost, $_SESSION['post'][$idUsuario])) {
+                // Añadir el idPost al array de posts del usuario
+                $_SESSION['post'][$idUsuario][] = $idPost;
+            }
+            ViewController::show("views/comentarios/vistaComentarios.php", [
+                "post" => $posts,
+                "comentarios" => $comentarios,
+                "token" => $token,
             ]);
         } else {
 
@@ -75,14 +105,12 @@ class PostController
             }
         }
     }
-
-
-
     public function popular() // populares 
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
-            $_SESSION['cambioVista'] = "";
+            $generarToken = new HelpersGenerarToken();
+            $_SESSION['cambioVista'] = "verPostRecientes";
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
             $postPorPagina = 15;
@@ -90,46 +118,92 @@ class PostController
             $posts = $postModel->getPostPopular($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
             }
-
             ViewController::show("views/post/popular.php", ['post' => $posts, "token" => $token]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
         }
     }
     public function mostrarForm() //vista formulario para subir post 
     {
         if (Authentication::isUserLogged()) {
-            ViewController::show("views/post/crearPost.php");
+            $comunidadModel = new ComunidadModel();
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $comunidades = $comunidadModel->getComunidadesUnido($idUsuario);
+
+            //var_dump($comunidades);exit;
+            ViewController::show("views/post/crearPost.php", ["comunidades" => $comunidades]);
             exit;
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
         }
     }
     public function subirPost() //subir un post desde el formulario crearPost.php
     {
         if (Authentication::isUserLogged()) {
-            //tengo que acabar estooo.
             $_SESSION['cambioVista'] = "";
             $postModel = new PostModel();
-            var_dump($_POST); //aqui debeoms 
-            exit;
-            $post = $postModel->subirPost();
-            header('Location:' . Parameters::$BASE_URL . "Post/home");
-            exit;
+            $idTema = $_POST['idTema'] ?? NULL;
+            $titulo = $_POST['titulo'];
+            $contenido = $_POST['contenido'];
+            $idComunidad = $_POST['comunidad'] ?? NULL;
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $archivo = $_FILES['archivo'] ?? NULL;
+            $fileType = $_FILES['archivo']['type'] ?? NULL;
+            $video = NULL;
+            $imagen = NULL;
+            $tipoPost = NULL;
+            if ($idTema == NULL) {
+                $tipoPost = "normal";
+            } else {
+                $tipoPost = "comunidad";
+            }
+            if ($tipoPost == "normal") {
+                $idComunidad = NULL;
+            }
+
+            if ($archivo != NULL) {
+                if (strpos($fileType, 'video') !== false) {
+                    $videoUploader = new VideoUploader();
+                    $video = $videoUploader->subirVideo($archivo);
+                } elseif (strpos($fileType, 'image') !== false) {
+                    $imagenUploader = new ImageUploader();
+                    $imagen = $imagenUploader->subirImagen($archivo);
+                } else {
+                    header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
+                    echo "El archivo no es ni video ni imagen.";
+                    exit;
+                }
+            } else {
+                $video = NULL;
+                $imagen = NULL;
+            }
+
+            $post = $postModel->subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad);
+            if($post){
+                header('Location:' . Parameters::$BASE_URL . "Post/home");
+                exit;
+            }else{
+                header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
+                exit;
+            }
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
     public function home() // home 
     {
         if (Authentication::isUserLogged()) {
             $postModel = new PostModel();
-            $_SESSION['cambioVista'] = "";
+            $generarToken = new HelpersGenerarToken();
+            $_SESSION['cambioVista'] = "verPostRecientes";
 
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
@@ -138,7 +212,7 @@ class PostController
             $posts = $postModel->getPostHome($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
@@ -147,14 +221,16 @@ class PostController
 
             ViewController::show("views/post/home.php", ['post' => $posts, "token" => $token]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
     public function All() // All 
     {
         if (Authentication::isUserLogged()) {
-            $_SESSION['cambioVista'] = "";
+            $_SESSION['cambioVista'] = "verPostRecientes";
             $postModel = new PostModel();
+            $generarToken = new HelpersGenerarToken();
             $idUsuario = $_SESSION['user']['idUsuario'];
             $pagina = 1;
             $postPorPagina = 15;
@@ -162,17 +238,19 @@ class PostController
             $posts = $postModel->getAllPost($idUsuario, $pagina, $postPorPagina);
             foreach ($posts as $post) {
                 if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                 } else {
                     $post['jwt_token'] = null;
                 }
             }
+
             ViewController::show("views/post/all.php", [
                 'post' => $posts,
                 "token" => $token
             ]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 
@@ -192,6 +270,7 @@ class PostController
             $_SESSION['cambioVista'] = "";
 
             $postModel = new PostModel();
+            $generarToken = new HelpersGenerarToken();
 
             $data = json_decode(file_get_contents('php://input'), true);
             //variables
@@ -206,7 +285,7 @@ class PostController
                 exit;
             }
             if (!isset($data['vista'])) {
-                echo json_encode(['success' => false, 'message' => 'Ocurrio un erro (132 post controller)']);
+                echo json_encode(['success' => false, 'message' => 'Ocurrio un error inesperado']);
                 exit;
             }
             /*var_dump($vista);
@@ -217,7 +296,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -228,7 +307,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -239,7 +318,7 @@ class PostController
                     foreach ($posts as $post) {
                         $idUsuario = $_SESSION['user']['idUsuario'];
                         if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                            $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                            $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
                         } else {
                             $post['jwt_token'] = null;
                         }
@@ -249,7 +328,6 @@ class PostController
                 default:
                     echo json_encode(['success' => false, 'message' => 'Ocurrio un error inesperado (145 postContr)']);
                     exit;
-                    break;
             }
             if ($posts) {
                 echo json_encode([
@@ -269,19 +347,10 @@ class PostController
             exit;
         }
     }
-    public static function generarToken($idUsuario, $idComunidad, $idpost)
+    public function borrarPostRecientes()
     {
-        $token_data = array(
-            "id_usuario" => $idUsuario,
-            "id_comunidad" => $idComunidad,
-            "id_post" => $idpost,
-        );
-        $key = "123"; //clave secreta
-        $alg = 'HS256';
-        $_SESSION['key'] = $key;
-        $_SESSION['alg'] = $alg;
-        $jwt = JWT::encode($token_data, $key, $alg);
-        return $jwt;
-        // Generar el token JWT
+        unset($_SESSION['post'][$_SESSION['user']['idUsuario']]);
+        header("location:" . Parameters::$BASE_URL);
+        exit;
     }
 }

@@ -1,100 +1,3 @@
-<style>
-    a {
-        text-decoration: none;
-    }
-
-    #card-comunidades {
-        border-radius: 1rem;
-        display: flex;
-        padding: 1%;
-        border: 1px solid gray;
-        width: 15rem;
-        margin: 3% 3%;
-        flex-direction: column;
-    }
-
-    .parteArriba {
-        display: flex;
-        justify-content: space-between;
-
-    }
-
-    .parteAbajo {
-        display: flex;
-        justify-content: flex-start;
-        margin-top: 5%;
-    }
-
-    .conteiner-comunidades {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .logo-comunidades {
-        border-radius: 1rem;
-        width: 2rem;
-        height: 2rem;
-    }
-
-    section {
-        grid-column: 2 / 4;
-        grid-row: 2;
-        margin: 0% 3%;
-        overflow-y: auto;
-    }
-
-    .second-aside {
-        display: none;
-    }
-
-    .botonUnirte {
-        border-radius: 1rem;
-        background-color: #009688;
-        height: 2rem;
-        width: 5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .nombreComunidad {
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial;
-
-    }
-
-    .miembrosComunidad,
-    .parteAbajo {
-        font-family: serif;
-        color: grey;
-
-    }
-
-    .contenido {
-        height: 50px;
-        background-color: blue;
-        z-index: 1000;
-        position: sticky;
-        top: 0;
-        width: 100%;
-        justify-content: center;
-        display: none;
-        justify-content: center;
-        align-content: flex-start;
-        align-items: center;
-        font-size: 1.5rem;
-    }
-
-    .verde {
-        background-color: #009688;
-        color: black;
-    }
-
-    .rojo {
-        background-color: red;
-        color: black;
-    }
-</style>
-
 <?php
 
 use admin\foro\Helpers\Authentication;
@@ -111,21 +14,25 @@ $idUsuario = $_SESSION['user']['idUsuario'];
         <div class="contenido"></div>
         <div class="conteiner-comunidades">
             <?php foreach ($comunidades as $indice => $contenido) {
-            ?>
+                ?>
                 <div id="card-comunidades">
                     <div class="parteArriba">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?php echo $contenido["imagen"] ?>" alt="" class="logo-comunidades">
+                        <a
+                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre'] ?>">
+                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen"
+                                class="imagenLogo-section">
+                        </a>
                         <div class="nombreComunidad"><?php echo $contenido['nombre'] ?>
-                            <div class="miembrosComunidad" data-token="<?= $token[$contenido['id_comunidad']] ?>"><?= $membresias[$contenido['id_comunidad']] ?> miembros</div>
+                            <div class="miembrosComunidad" data-token="<?= $token[$contenido['id_comunidad']] ?>">
+                                <?= $membresias[$contenido['id_comunidad']] ?> miembros</div>
                         </div>
-                        <div class="botonUnirte unirse"
-                            data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
+                        <div class="botonUnirte unirse" data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
                     </div>
                     <div class="parteAbajo">
                         <?php echo $contenido['descripcion'] ?>
                     </div>
                 </div>
-            <?php  } ?>
+            <?php } ?>
         </div>
     </div>
     </div>
@@ -134,14 +41,14 @@ $idUsuario = $_SESSION['user']['idUsuario'];
 <script>
     function actualizarCamposGenericos(url, token) {
         fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "token": token,
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "token": token,
             })
+        })
             .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
             .then(data => {
                 try {
@@ -183,7 +90,7 @@ $idUsuario = $_SESSION['user']['idUsuario'];
     }
     // ------------------UNIRSE---------------------------------- 
     document.querySelectorAll('.unirse').forEach(botonUnirse => {
-        botonUnirse.addEventListener('click', function() {
+        botonUnirse.addEventListener('click', function () {
             let token = botonUnirse.getAttribute('data-token'); // Obtener el token de la comunidad
             const url = '<?= Parameters::$BASE_URL ?>Membresias/unirseComunidad'; // URL de la solicitud
 

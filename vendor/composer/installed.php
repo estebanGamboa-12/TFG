@@ -3,7 +3,7 @@
         'name' => 'admin/foro',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '97b30a0abe455068e1481e6cd6e79cd2cddafe9a',
+        'reference' => 'c64a28faa7796b52b7b4d50408ea0842c92c12e9',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'admin/foro' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '97b30a0abe455068e1481e6cd6e79cd2cddafe9a',
+            'reference' => 'c64a28faa7796b52b7b4d50408ea0842c92c12e9',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -27,30 +27,6 @@
             'install_path' => __DIR__ . '/../firebase/php-jwt',
             'aliases' => array(),
             'dev_requirement' => false,
-        ),
-        'monolog/monolog' => array(
-            'pretty_version' => '2.10.0',
-            'version' => '2.10.0.0',
-            'reference' => '5cf826f2991858b54d5c3809bee745560a1042a7',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../monolog/monolog',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'psr/log' => array(
-            'pretty_version' => '3.0.2',
-            'version' => '3.0.2.0',
-            'reference' => 'f16e1d5863e37f8d8c2a01719f5b34baa2b714d3',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/log',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'psr/log-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0.0 || 2.0.0 || 3.0.0',
-            ),
         ),
     ),
 );

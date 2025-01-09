@@ -10,15 +10,20 @@ $token = $data['token'] ?? NULL;
 
 $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 ?>
-
+<style>
+    .margin{
+        margin: 2% 0%;
+    }
+</style>
 
 <pre>
     <?php
-    // var_dump($comentarios['subcomentarios']);
+    // var_dump($post);exit;
     ?>
 </pre>
 <section id="section">
     <div class="sectionAll">
+        <div class="contenidoMensajes"></div>
         <div class="card-section" id="card-comentarios">
             <!-- Título y contenido del post -->
             <div class="conteinerEncabezado-comentarios">
@@ -27,25 +32,44 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                 </div>
                 <?php if ($post['tipo_post'] == "normal") { ?>
                     <div class="imagen-comentarios">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Usuario">
+                        <a href="<?= Parameters::$BASE_URL ?>Usuario/verUsuario?nombre=<?= $post['nombre_usuario'] ?>">
+                            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Usuario">
+                        </a>
                     </div>
                     <div class="nombre-comentarios"><?= $post['nombre_usuario'] ?></div>
                 <?php } else { ?>
                     <div class="imagen-comentarios">
-                        <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Usuario">
+                        <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $post['nombre_comunidad'] ?>">
+                            <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Usuario">
+                        </a>
                     </div>
                     <div class="nombre-comentarios"><?= $post['nombre_comunidad'] ?></div>
                 <?php } ?>
                 <div class="fecha-comentarios"><?= $post['fecha_creacion'] ?></div>
             </div>
             <h2 class="titulo-post-comentarios"><?= $post['titulo'] ?></h2>
-            <div class="nombre-comentarios"><?= $post['contenido'] ?></div>
+            <?php
+            $contenido_texto = trim($post['contenido']); // Elimina los espacios alrededor del texto
+            if ($post['video'] == NULL && $post['imagen'] == NULL) {
+                if (strpos($contenido_texto, 'http') !== false) { ?>
+                    <a  href="#" class="link margin" style="color: blue; "><?= $contenido_texto ?></a>
+                <?php } else { ?>
+                    <div class="margin"> <?= $contenido_texto ?></div>
+            <?php }
+            } else{?>
             <div class="imagen-post-comentarios">
-                <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="imagen">
+                <?php if ($post['video'] != NULL) { ?>
+                    <video style="width: 100%; margin:2% 0%" src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
+                <?php } else { ?>
+                    <img  style="width: 100%; margin-top: 2%;" src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
+                <?php } ?>
             </div>
+            <?php } ?>
             <div class="containerBotones-comentarios">
-                <div class="votar-comentarios boton votar">Votos (<?= $post['votos_totales'] ?>)</div>
-                <div class="compartir-comentarios boton">Compartir</div>
+                <div class="votos-seccion boton  votar"
+                    data-token-votar="<?= $token ?>">
+                    Votos(<?= $post['votos_totales'] ?>)
+                </div>
             </div>
             <div class="inputComentar">
                 <input type="texto" class="textoComentarioPrincipal" placeholder="Comentar">
@@ -61,16 +85,23 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                 <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
                             </div>
                             <div class="contenedorComentarioNombre">
-                                <div class="nombre-comentarios"><?= htmlspecialchars($comentario['nombre_usuario_comentario'] ?? 'Usuario desconocido') ?></div>
-                                <div class="fecha-comentarios"><?= htmlspecialchars($comentario['fecha_creacion'] ?? 'Fecha no disponible') ?></div>
+                                <div class="nombre-comentarios">
+                                    <?= htmlspecialchars($comentario['nombre_usuario_comentario'] ?? 'Usuario desconocido') ?>
+                                </div>
+                                <div class="fecha-comentarios">
+                                    <?= htmlspecialchars($comentario['fecha_creacion'] ?? 'Fecha no disponible') ?></div>
                             </div>
-                            <div class="contenido-comentario"><?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
+                            <div class="contenido-comentario">
+                                <?= htmlspecialchars($comentario['contenido'] ?? 'Sin contenido') ?></div>
                             <div class="containerBotones-comentarios">
-                                <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
+                                <div class="comentar-comentarios boton"
+                                    onclick="mostrarFormularioRespuesta(<?= $comentario['id_comentario'] ?>)">Comentar</div>
                             </div>
-                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>" style="display:none;">
+                            <div class="respuesta-form" id="respuesta-<?= $comentario['id_comentario'] ?>"
+                                style="display:none;">
                                 <input type="text" class="textoComentarioPrincipal" placeholder="Escribe tu respuesta">
-                                <button onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
+                                <button class="boton"
+                                    onclick="enviarRespuesta(<?= $comentario['id_comentario'] ?>,<?= $post['id_post'] ?>)">Enviar</button>
                             </div>
                             <div class="subcomentarios">
                                 <?php
@@ -82,18 +113,18 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                                                 <div class="imagen-comentarios">
                                                     <img src="<?= Parameters::$BASE_URL ?>assets/img/1.jpg" alt="Usuario">
                                                 </div>
-                                                <div class="nombre-comentarios"><?= htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) ?></div>
+                                                <div class="nombre-comentarios">
+                                                    <?= htmlspecialchars($subcomentario['nombre_usuario_subcomentario']) ?></div>
                                                 <div class="fecha-comentarios"><?= $subcomentario['subcomentario_fecha'] ?></div>
                                             </div>
-                                            <div class="contenido-comentario"><?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
+                                            <div class="contenido-comentario">
+                                                <?= htmlspecialchars($subcomentario['subcomentario_contenido']) ?></div>
                                             <div class="containerBotones-comentarios">
-                                                <div class="comentar-comentarios boton">Comentar</div>
                                             </div>
                                         </div>
                                 <?php }
                                 } ?>
                             </div>
-
                         </div>
                     <?php }
                 } else { ?>
@@ -174,7 +205,6 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");
-
         fetch(url, {
                 method: 'POST',
                 headers: {
@@ -214,10 +244,9 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                     <div class="containerBotones-comentarios">
                     <div class="comentar-comentarios boton" onclick="mostrarFormularioRespuesta(${JSONdata.comentario.id_comentario})">Comentar</div>
                     </div>
-                    <div class="subcomentarios"></div>
                     <div class="respuesta-form" id="respuesta-${JSONdata.comentario.id_comentario}" style="display:none;">
                     <input class="textoComentarioPrincipal" type="text" placeholder="Escribe tu respuesta">
-                    <button  onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>
+                    <button class="boton" onclick="enviarRespuesta(${JSONdata.comentario.id_comentario},${JSONdata.comentario.id_post})">Enviar</button>
                     </div>
                     <div class="subcomentarios"></div>
                     `;
@@ -236,10 +265,8 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
                         alert(JSONdata.mensaje);
                     }
 
-
-
-
                 } catch (error) {
+                    console.error('Error al procesar la respuesta del servidor:', error);
                     alert('Error al procesar la respuesta del servidor.' + error);
                 }
             })

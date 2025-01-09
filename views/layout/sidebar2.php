@@ -3,6 +3,7 @@
 use admin\foro\Config\Parameters;
 ?>
 
+<?php  if(isset($_SESSION['cambioVista'])){?>
 
 <?php if ($_SESSION['cambioVista'] == "todasComunidades") { ?>
     <aside class="second-aside ">
@@ -13,7 +14,7 @@ use admin\foro\Config\Parameters;
                     <img class="imagenLogo-aside" src="<?= Parameters::$BASE_URL . "assets/img/" . $contenido['imagen'] ?>" alt="foto">
                     <div class="contenido-aside2">
                         <div class="nombre-aside"><?= $contenido['nombre'] ?></div>
-                        <div class="miembros-aside"><?= $contenido['numero_de_usuarios'] ?> miembros</div>
+                        <div class="miembros-aside"><?= $contenido['numero_usuarios'] ?> miembros</div>
                     </div>
                 </div>
             <?php } ?>
@@ -24,9 +25,6 @@ use admin\foro\Config\Parameters;
         <div class="aside2">
             <div class="containerNombreBotonVer">
                 <span class="nombreUsuarioVer"><?= $usuario['nombre'] ?></span>
-                <div class="botonSeguirUsuario">
-                    <span>seguir</span>
-                </div>
             </div>
             <div class="datosUsuarioVer">
                 <div id="datos">
@@ -43,61 +41,15 @@ use admin\foro\Config\Parameters;
                 </div>
             </div>
         </div>
-        <style>
-            .tituloDatos {
-                color: #828282;
-                margin-bottom: 4%;
-            }
-
-            .containerNombreBotonVer {
-                display: flex;
-                flex-direction: row;
-            }
-
-            .nombreUsuarioVer {
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-                margin: 5%;
-            }
-
-            .botonSeguirUsuario {
-                display: flex;
-                margin: 5%;
-                margin-left: auto;
-            }
-
-            .botonSeguirUsuario span {
-                border-radius: 1rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: rgb(0, 150, 136);
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                color: black;
-                font-size: 100%;
-                width: 6rem;
-                height: 2rem;
-            }
-
-            .datosUsuarioVer {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            #datos {
-                display: flex;
-                flex-direction: column;
-            }
-        </style>
-
     </aside>
 <?php } else if ($_SESSION['cambioVista'] == "perfilComunidades") { ?>
     <aside class="second-aside ">
         <div class="containerBotones">
-            <a href="<?= Parameters::$BASE_URL ?>Post/mostrarForm">
-                <div class="crearPost botones" id="crearPost">Crear Post</div>
-            </a>
-            <div class="unirseComunidad botones">Unirse</div>
+            <?php if ($datosComunidad["usuario_unido"] == "1") { ?>
+
+            <?php } else { ?>
+                <div class="unirseComunidad botones">Unirse </div>
+            <?php  } ?>
         </div>
         <div class="aside2">
             <div class="nombreComunidad"><?= $datosComunidad['nombre'] ?></div>
@@ -108,73 +60,157 @@ use admin\foro\Config\Parameters;
                 <div>Miembros</div>
             </div>
         </div>
-        <style>
-            #numeroMiembrosComunidad {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 3rem;
-            }
-
-            .nombreComunidad {
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-                margin-bottom: 2%;
-            }
-
-            .descripcionComunidad,
-            .fechaComunidad {
-                color: #828282;
-                margin-bottom: 2%;
-            }
-
-            .botones {
-                border-radius: 1rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: rgb(0, 150, 136);
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                color: black;
-                font-size: 100%;
-                width: 6rem;
-                height: 2rem;
-            }
-
-            .containerBotones {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                margin-top: 5%;
-            }
-
-            .unirseComunidad {
-                margin-left: 2rem;
-            }
-
-            .miembrosComunidad {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-        </style>
-
     </aside>
-    
-<?php } else if ($_SESSION['cambioVista'] == "cerrarSesion") { ?>
-    <aside class="second-aside ">
-        <div class="aside2 asideCerrarSesion">
-            <div>Editar Usuario</div>
-            <div class="boton cerrarSesion"> <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion </a></div>
-        </div>
-    </aside>
-    <style>
-        .asideCerrarSesion {
-            gap: 1rem;
-        }
-    </style>
+    <?php } else if ($_SESSION['cambioVista'] == "verPostRecientes") {
+    if ($postRecientes == NULL) { ?>
+
+    <?php } else { ?>
+        <aside class="second-aside">
+            <div style="display: flex;flex-direction: row; justify-content: flex-start;margin-top: 5%;padding-right: 9%;">
+                <h2>Post recientes</h2>
+                <a style="margin-left:42%;" href="<?= Parameters::$BASE_URL ?>Post/borrarPostRecientes">Borrar</a>
+            </div>
+            <div class="recent-post-container">
+                <?php foreach ($postRecientes as $post) {
+                    if ($post['tipo_post'] == "comunidad") { ?>
+                        <div class="post-card">
+                            <div class="post-icon">
+                                <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_comunidad'] ?>" alt="Icono del subreddit">
+                            </div>
+                            <div class="post-content">
+                                <span class="post-title">c/<?= $post['nombre_comunidad'] ?></span>
+                                <p class="post-description"><?= $post['contenido'] ?></p>
+                                <div class="post-footer">
+                                    <span><?= $post['votos_totales'] ?> votos</span> · <span><?= $post['votos_totales'] ?> comments</span>
+                                </div>
+                            </div>
+                            <?php if ($post['video'] == NULL && $post['imagen'] == NULL) { ?>
+                                <!-- Aquí puedes agregar contenido si no hay video ni imagen -->
+                            <?php } else if ($post['video'] == NULL) { ?>
+                                <div class="post-thumbnail">
+                                    <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen post">
+                                </div>
+                            <?php } else { ?>
+                                <div class="post-thumbnail">
+                                    <video src="<?= Parameters::$BASE_URL ?>assets/video/<?= $post['video'] ?>" alt="Miniatura del video">
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="post-card">
+                            <div class="post-icon">
+                                <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen_logo_usuario'] ?>" alt="Icono del subreddit">
+                            </div>
+                            <div class="post-content">
+                                <span class="post-title">u/<?= $post['nombre_usuario'] ?></span>
+                                <p class="post-description"><?= $post['contenido'] ?></p>
+                                <div class="post-footer">
+                                    <span><?= $post['votos_totales'] ?> votos</span> · <span><?= $post['votos_totales'] ?> comments</span>
+                                </div>
+                            </div>
+                            <?php if ($post['video'] == NULL && $post['imagen'] == NULL) { ?>
+                                <!-- Aquí puedes agregar contenido si no hay video ni imagen -->
+                            <?php } else if ($post['video'] == NULL) { ?>
+                                <div class="post-thumbnail">
+                                    <img src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen post">
+                                </div>
+                            <?php } else { ?>
+                                <div class="post-thumbnail">
+                                    <video src="<?= Parameters::$BASE_URL ?>assets/video/<?= $post['video'] ?>" alt="Miniatura del video">
+                                </div>
+                            <?php } ?>
+                        </div>
+                <?php }
+                } ?>
+            </div>
+        </aside>
+    <?php } ?>
 <?php } else if ($_SESSION['cambioVista'] == "") { ?>
-    <aside class="second-aside ">
-        <h2>intentar hacer movidas</h2>
-    </aside>
-<?php } ?>
+<?php } 
+}else{?>
+    
+<?php }?>
+<style>
+    /* Estilo del contenedor general */
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    /* Estilo para la tarjeta de cada post */
+    .recent-post-container {
+        display: flex;
+        flex-direction: column;
+        /* Ajuste inicial para pantallas pequeñas */
+        gap: 15px;
+    }
+
+    .post-card {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .post-icon img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    /* Contenido del post */
+    .post-content {
+        flex: 1;
+        min-width: 150px;
+        /* Evita que se colapse en pantallas muy pequeñas */
+    }
+
+    .post-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .post-description {
+        font-size: 14px;
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .post-footer {
+        font-size: 12px;
+        color: #777;
+    }
+
+    /* Miniatura del video */
+    .post-thumbnail {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .post-thumbnail img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    .video-duration {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+</style>

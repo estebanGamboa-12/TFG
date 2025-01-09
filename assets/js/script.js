@@ -1,15 +1,5 @@
 window.onload = function () {
     // Verificar si el elemento existe antes de añadir el evento
-    const iniciarSesion = document.querySelector(".iniciarSesion");
-    if (iniciarSesion) {
-        iniciarSesion.addEventListener("click", abrirVentanaSesion);
-    }
-
-    const cerrar = document.querySelector(".cerrar");
-    if (cerrar) {
-        cerrar.addEventListener("click", cerrarVentanasModal1);
-        cerrar.addEventListener("click", cerrarVentanaModal2);
-    }
 
     const bars = document.querySelector(".bars");
     if (bars) {
@@ -33,19 +23,18 @@ window.onload = function () {
 
                 if (token) {
                     actualizarCamposGenericos(url, token);
-                } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
-                }
+                } 
                 //--------------------------------------------BOTON VOTAR-----------------------------------------------------------------------------
             } else if (event.target && event.target.classList.contains('votar')) {
                 let token = event.target.getAttribute('data-token-votar'); // Obtener token
 
                 const url = `${parametersBaseUrl}Votos/votar`;
+                console.log("dio a votar");
 
                 if (token) {
                     actualizarCamposGenericos(url, token);
                 } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
                 //--------------------------------------------click encima de una carta -----------------------------------------------------------------------------
             } else if (event.target.closest('.card-section')) {
@@ -54,11 +43,12 @@ window.onload = function () {
                 if (token) {
                     mostrarComentarios(token);
                 } else {
-                    alert('¡Algo salió mal! No se pudo procesar la solicitud.');
+                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
                 }
             }
         });
     }
+
     //---------------------------------------------------------- vista All---------------------------------------------------------------
     const sectionElementAll = document.querySelector('#sectionAll');
     if (sectionElementAll) {
@@ -120,35 +110,29 @@ window.onload = function () {
                     setTimeout(function () {
                         loadMorePosts(url, pagina, "popular");
                         pagina++; // Incrementar la página después de la carga
-                    }, 1000); // 2000 milisegundos = 2 segundos
+                    }, 1000);
                 }
+            }
+        });
+    }
+    //boton de votar en verPost
+    const votar = document.querySelector(".votar");
+    if (votar) {
+        votar.addEventListener("click", (e) => {
+            const token = e.target.getAttribute('data-token-votar');
+            const url = `${parametersBaseUrl}Votos/votar`;
+            if (token) {
+                actualizarCamposGenericos(url, token);
+            } else {
+                alert('¡Algo salió mal! No se pudo procesar la solicitud.');
             }
         });
     }
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+const parametersBaseUrl = "http://xampp/proyectos/TFG/";
 
-function mostrarVentanaRegistrar() {
-    let modalIniciarSesion = document.querySelector(".modalIniciarSesion");
-    let modalRegistrar = document.querySelector(".modalRegistrar");
-    modalIniciarSesion.style.display = "none";
-    modalRegistrar.style.display = "flex";
-}
-function abrirVentanaSesion() {
-
-    let modal = document.querySelector(".modalIniciarSesion");
-    modal.style.display = "flex";
-}
-function cerrarVentanasModal1() {
-    let modal = document.querySelector(".modalIniciarSesion");
-    modal.style.display = "none";
-}
-function cerrarVentanaModal2() {
-    let modal1 = document.querySelector(".modalRegistrar");
-    modal1.style.display = "none";
-}
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');
     let section = document.querySelector("section");
@@ -156,10 +140,11 @@ function mostrarAside() {
     aside.style.display = "flex";
 }
 function cerrarAsideFuera(event) {
+
     let aside = document.querySelector('.contenido-aside');
     let bars = document.querySelector(".bars");
     let section = document.querySelector("section");
-
+    console.log(section);
     if (!aside.contains(event.target) && !bars.contains(event.target)) {
         aside.style.display = "none";
         section.classList.remove("fondo");
@@ -212,6 +197,7 @@ function actualizarCamposGenericos(url, token) {
 
                 }
             } catch (error) {
+                console.log(error);
                 alert('Error al procesar la respuesta del servidor.' + error);
             }
         })
@@ -256,9 +242,10 @@ function loadMorePosts(url, page, campo) {
                     loading = false; // Restablecer el estado de carga incluso si no hay más posts
                     let loadingCaja = document.getElementById('loading');
                     loadingCaja.style.display = 'block';
-                    loadingCaja.innerHTML = "NO SE ENCONTRARON MAS POSTS"
-
-
+                    loadingCaja.innerHTML = "No se encuentras mas post"
+                    setTimeout(function () {
+                        loadingCaja.style.display = 'none';
+                    }, 5000);
                 }
 
             } catch (error) {
@@ -359,25 +346,23 @@ function mostrarComentarios(token) {
         },
         body: JSON.stringify({ token: token })
     })
-        .then(response => {
-            if (!response.ok) { // Si el código de respuesta HTTP no es 200 (OK)
-                return response.text().then(err => {
-                    console.error("Error:", err);
-                    throw new Error("Error al obtener los datos del servidor");
-                });
-            }
-            return response.json(); // Solo parsear como JSON si la respuesta es correcta
-        })
+        .then(response => response.text()) // Cambiar a .text() para ver lo que llega como respuesta
         .then(data => {
-            console.log(data.post);
-            if (data.success) {
-                window.location.href = parametersBaseUrl + 'Post/verPostPorId?titulo=' + data.post.id_post;
+            try {
+                console.log(data);
+                let jsonData = JSON.parse(data); // Intentamos parsear la respuesta
+                console.log(jsonData.post.titulo);
+                if (jsonData.success) {
+                    window.location.href = parametersBaseUrl + 'Post/verPostPorId?titulo=' + jsonData.post.id_post;
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Error al procesar la respuesta del servidor.' + error);
             }
         })
         .catch(error => {
-            console.error("Error:", error);
+            console.error('Error en la solicitud fetch:', error);
         });
-
 }
 
 

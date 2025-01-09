@@ -3,6 +3,9 @@
 namespace admin\foro\Controllers;
 
 use admin\foro\Config\Parameters;
+use admin\foro\Helpers\Authentication;
+use admin\foro\Helpers\GenerarToken as HelpersGenerarToken;
+use admin\foro\Helpers\ImageUploader;
 use admin\foro\Models\PostModel;
 use admin\foro\Models\UsuarioModel;
 use Firebase\JWT\JWT;
@@ -12,54 +15,105 @@ class UsuarioController
     public function cerrarSesion()
     {
         unset($_SESSION['user']);
-        header("location:" . Parameters::$BASE_URL . "Post/popularNoLogeado");
+        header("location:" . Parameters::$BASE_URL);
     }
-    public function mostrarVentanaCerrarSesion()
+    public function mostrarVetananCerrarSesion()
     {
         $_SESSION['cambioVista'] = "cerrarSesion";
-        echo json_encode(["success" => true, "cambiosVista" => $_SESSION['cambioVista']]);
-        exit();
+    }
+    public function verFormularioIniciarSesion()
+    {
+        if (Authentication::isUserLogged()) {
+            header("Location: " . Parameters::$BASE_URL . "Post/home");
+            exit;
+        }
+        ViewController::show("views/usuario/formularioIniciarSesion.php");
+        exit;
+    }
+    public function mostrarFormularioRegistrar()
+    {
+        if (Authentication::isUserLogged()) {
+            header("Location: " . Parameters::$BASE_URL . "Post/home");
+            exit;
+        }
+        ViewController::show("views/usuario/formularioRegistrarUsuario.php");
+        exit;
     }
 
     public function iniciarSesion()
-    {
-        $usuarioModel = new UsuarioModel();
-        $nombre = $_REQUEST['nombre'];
-        $contrasena = $_REQUEST['contrasena'];
-        $datos = $usuarioModel->iniciarSesion($nombre, $contrasena);
+{
+    $usuarioModel = new UsuarioModel();
+    $nombre = $_REQUEST['nombre'];
+    $contrasena = $_REQUEST['contraseña'];
+    
+    // Obtener datos del usuario desde el modelo
+    $datos = $usuarioModel->buscarUsuarioPorNombre($nombre); 
 
-        header('Location: ' . Parameters::$BASE_URL . 'Post/home');
-    }
-    public function registrarUsuarios()
-    {
-        $usuarioModel = new UsuarioModel();
-        var_dump($_POST);
+    if (!$datos) {
+        // Si no se encuentra el usuario
+        $errores = "El usuario o la contraseña son incorrectas";
+        $_SESSION['errores'] = $errores;
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
         exit;
+    }
+    // Comparar contraseña ingresada con la almacenada en la base de datos
+    if (!password_verify($contrasena, $datos['contraseña'])) {
+        // Contraseña incorrecta
+        $errores = "El usuario o la contraseña son incorrectas";
+        $_SESSION['errores'] = $errores;
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
+    }
+    // Redirigir al home de posts
+    header('Location: ' . Parameters::$BASE_URL . 'Post/home');
+    exit;
+}
+    public function registrarUsuario()
+    {
+        $usuarioModel = new UsuarioModel();
+        $imagenUploader = new ImageUploader();
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $email = $_POST['correo'];
+        $contrasena = $_POST['contraseña'];
+        $repetirContrasena = $_POST['repetir_contraseña'];
+        $imagen = $_FILES['imagen'];
 
-        if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['email']) && !empty($_POST['contraseña']) && !empty($_POST['repetir_contraseña'])) {
+        if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['contraseña']) && !empty($_POST['repetir_contraseña'])) {
             if ($_POST['contraseña'] === $_POST['repetir_contraseña']) {
-                $datos = $usuarioModel->registrarUsuario();
-                header("location:index.php");
-                exit;
+                $imagen = $imagenUploader->subirImagen($imagen);
+                $contrasena = password_hash($_REQUEST['contraseña'], PASSWORD_DEFAULT);
+                $comprobar = $usuarioModel->registrarUsuario($nombre, $apellido, $email, $contrasena, $imagen);
+                if ($comprobar) {
+                    header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+                    exit;
+                } else {
+                    //no se pudo registrar el usuario
+                    header("location:" . Parameters::$BASE_URL . "Usuario/mostrarFormularioRegistrar");
+                    exit;
+                }
             } else {
                 //no coinciden las contraseñas
-                header("location:index.php");
+                header("location:" . Parameters::$BASE_URL . "Usuario/mostrarFormularioRegistrar");
                 exit;
             }
         } else {
-            //estan vacio algun cammpo
-            header("location:index.php");
+            //estan vacio algun campo
+            header("location:" . Parameters::$BASE_URL . "Usuario/mostrarFormularioRegistrar");
             exit;
         }
     }
+
     public function verUsuario()
     {
+        if(Authentication::isUserLogged()){
         $_SESSION['cambioVista'] = "perfilUsuario";
         $usuarioModel = new UsuarioModel();
         $postModel = new PostModel();
+        $generarToken = new HelpersGenerarToken();
         $nombre = $_GET['nombre'];
         $token = [];
-        $usuario = $usuarioModel->usuarioPorNombre($nombre);
+        $usuario = $usuarioModel->buscarUsuarioPorNombre($nombre);
         $idUsuarioPerfil = $usuario['id_usuario'];
         $idUsuarioVisita = $_SESSION['user']['idUsuario'];
         $_SESSION['usuarioVer'] = $usuario;
@@ -69,26 +123,15 @@ class UsuarioController
         foreach ($posts as $post) {
             $idUsuario = $_SESSION['user']['idUsuario'];
             if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                $token[$post['id_post']] = self::generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
             } else {
                 $post['jwt_token'] = null;
             }
         }
         ViewController::show("views/usuario/verUsuario.php", ["post" => $posts, "token" => $token, "usuario" => $usuario]);
+    }else{
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
     }
-    public static function generarToken($idUsuario, $idComunidad, $idpost)
-    {
-        $token_data = array(
-            "id_usuario" => $idUsuario,
-            "id_comunidad" => $idComunidad,
-            "id_post" => $idpost,
-        );
-        $key = "123"; //clave secreta
-        $alg = 'HS256';
-        $_SESSION['key'] = $key;
-        $_SESSION['alg'] = $alg;
-        $jwt = JWT::encode($token_data, $key, $alg);
-        return $jwt;
-        // Generar el token JWT
-    }
+}
 }
