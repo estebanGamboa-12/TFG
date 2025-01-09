@@ -131,7 +131,7 @@ window.onload = function () {
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://xampp/proyectos/TFG/";
+const parametersBaseUrl = "http://localhost/TFG/";
 
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');
@@ -173,7 +173,7 @@ function actualizarCamposGenericos(url, token) {
                 // Comprobamos la respuesta completa
                 if (jsonData.success === true) {
                     let numeroVotos = document.querySelector(`[data-token-votar='${encodeURIComponent(token)}']`);//por los caracteres especiales del token
-                    console.log(numeroVotos);
+                    console.log(numeroVotos.value + "numero de votos");
                     if (numeroVotos) {
                         numeroVotos.innerHTML = `votos(${jsonData.votos}) `;
                     } else {
