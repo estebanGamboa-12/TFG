@@ -9,7 +9,7 @@ class Parameters {
 
     public static $PASSWORD_MIN_LENGTH = 6;
     
-    public static $BASE_URL = "http://localhost/proyectos/TFG/";
+    public static $BASE_URL = "http://localhost/TFG/";
 
     public static function getControllerAndAction() {
         if (Authentication::isUserLogged()) {
