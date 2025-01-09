@@ -11,15 +11,14 @@ class UsuarioModel extends Model
         $this->tabla="usuarios";
     }
 
-    public function iniciarSesion($nombre,$contrasena)
+    public function buscarUsuarioPorNombre($nombre)
     {
         try {
 
-          $sql = "SELECT id_usuario, nombre,contraseña, imagen_logo_usuario FROM {$this->tabla} WHERE nombre=:nombre and contraseña=:contrasena";
+          $sql = "SELECT * FROM {$this->tabla} WHERE nombre=:nombre ";
             $consulta = $this->conn->prepare($sql);
             // Vincula los parámetros
             $consulta->bindParam(':nombre', $nombre);
-            $consulta->bindParam(':contrasena', $contrasena);
             $consulta->execute();
             $resultado=$consulta->fetch(\pdo::FETCH_ASSOC);
             if ($consulta->rowCount() > 0) {

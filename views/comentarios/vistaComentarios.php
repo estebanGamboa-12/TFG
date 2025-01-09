@@ -148,7 +148,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         const input = document.querySelector(`#respuesta-${idComentario} input`);
         const subComentario = input.value;
 
-        const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
+        const parametersBaseUrl = "http://xampp/proyectos/TFG/";
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
@@ -201,7 +201,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
     document.querySelector(".boton-enviar-comentario").addEventListener("click", () => {
 
-        const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
+        const parametersBaseUrl = "http://xampp/proyectos/TFG/";
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");

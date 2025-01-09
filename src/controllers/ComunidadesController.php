@@ -42,7 +42,8 @@ class ComunidadesController
                 "tokens" => $token
             ]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 
@@ -84,7 +85,8 @@ class ComunidadesController
 
             ]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
     public function VistaCrearComunidad()
@@ -97,7 +99,8 @@ class ComunidadesController
             $_SESSION['cambioVista'] = "";
             exit;
         } else {
-            header("location:" . Parameters::$BASE_URL . "Post/popularNoLogeado");
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 
@@ -163,6 +166,9 @@ class ComunidadesController
                 $_SESSION['errores'] = $errores;
                 header("location:" . Parameters::$BASE_URL . "Post/home");
             }
+        }else{
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 }

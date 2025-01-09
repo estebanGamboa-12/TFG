@@ -23,9 +23,7 @@ window.onload = function () {
 
                 if (token) {
                     actualizarCamposGenericos(url, token);
-                } else {
-                    // alert('¡Algo salió mal! No se pudo procesar la solicitud.');
-                }
+                } 
                 //--------------------------------------------BOTON VOTAR-----------------------------------------------------------------------------
             } else if (event.target && event.target.classList.contains('votar')) {
                 let token = event.target.getAttribute('data-token-votar'); // Obtener token
@@ -112,7 +110,7 @@ window.onload = function () {
                     setTimeout(function () {
                         loadMorePosts(url, pagina, "popular");
                         pagina++; // Incrementar la página después de la carga
-                    }, 1000); // 2000 milisegundos = 2 segundos
+                    }, 1000);
                 }
             }
         });
@@ -123,7 +121,6 @@ window.onload = function () {
         votar.addEventListener("click", (e) => {
             const token = e.target.getAttribute('data-token-votar');
             const url = `${parametersBaseUrl}Votos/votar`;
-            console.log("dio a votar");
             if (token) {
                 actualizarCamposGenericos(url, token);
             } else {
@@ -134,7 +131,7 @@ window.onload = function () {
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://192.168.1.140/proyectos/TFG/";
+const parametersBaseUrl = "http://xampp/proyectos/TFG/";
 
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');
@@ -143,7 +140,7 @@ function mostrarAside() {
     aside.style.display = "flex";
 }
 function cerrarAsideFuera(event) {
-    
+
     let aside = document.querySelector('.contenido-aside');
     let bars = document.querySelector(".bars");
     let section = document.querySelector("section");
@@ -245,9 +242,10 @@ function loadMorePosts(url, page, campo) {
                     loading = false; // Restablecer el estado de carga incluso si no hay más posts
                     let loadingCaja = document.getElementById('loading');
                     loadingCaja.style.display = 'block';
-                    loadingCaja.innerHTML = "NO SE ENCONTRARON MAS POSTS"
-
-
+                    loadingCaja.innerHTML = "No se encuentras mas post"
+                    setTimeout(function () {
+                        loadingCaja.style.display = 'none';
+                    }, 5000);
                 }
 
             } catch (error) {

@@ -134,7 +134,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
       contenidoHTML += `
       <div class="logo-texto">
             <div id="textoAside1">${tema.nombre}</div>
-            <a class="icono-flecha" href="<?= Parameters::$BASE_URL?>Temas/verTemas?nombreTema=${tema.nombre}">➔</a>
+            
         </div>
       `;
     });

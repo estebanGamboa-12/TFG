@@ -125,7 +125,8 @@ class PostController
             }
             ViewController::show("views/post/popular.php", ['post' => $posts, "token" => $token]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
         }
     }
     public function mostrarForm() //vista formulario para subir post 
@@ -139,7 +140,8 @@ class PostController
             ViewController::show("views/post/crearPost.php", ["comunidades" => $comunidades]);
             exit;
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
         }
     }
     public function subirPost() //subir un post desde el formulario crearPost.php
@@ -184,10 +186,16 @@ class PostController
             }
 
             $post = $postModel->subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad);
-            header('Location:' . Parameters::$BASE_URL . "Post/home");
-            exit;
+            if($post){
+                header('Location:' . Parameters::$BASE_URL . "Post/home");
+                exit;
+            }else{
+                header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
+                exit;
+            }
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
     public function home() // home 
@@ -213,7 +221,8 @@ class PostController
 
             ViewController::show("views/post/home.php", ['post' => $posts, "token" => $token]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
     public function All() // All 
@@ -240,7 +249,8 @@ class PostController
                 "token" => $token
             ]);
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 
@@ -275,7 +285,7 @@ class PostController
                 exit;
             }
             if (!isset($data['vista'])) {
-                echo json_encode(['success' => false, 'message' => 'Ocurrio un erro (132 post controller)']);
+                echo json_encode(['success' => false, 'message' => 'Ocurrio un error inesperado']);
                 exit;
             }
             /*var_dump($vista);

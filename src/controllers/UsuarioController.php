@@ -41,23 +41,33 @@ class UsuarioController
     }
 
     public function iniciarSesion()
-    {
-        $usuarioModel = new UsuarioModel();
-        $nombre = $_REQUEST['nombre'];
-        $contrasena = $_REQUEST['contraseña'];
-        $datos = $usuarioModel->iniciarSesion($nombre, $contrasena);
-        if ($datos == 0) {
-            $errores = [];
-            $errores = "El usuario o la contraseña son incorrectas";
-            $_SESSION['errores'] = $errores;
-            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
-            exit;
-        }
-        if ($datos) {
-            header('Location: ' . Parameters::$BASE_URL . 'Post/home');
-            exit;
-        }
+{
+    $usuarioModel = new UsuarioModel();
+    $nombre = $_REQUEST['nombre'];
+    $contrasena = $_REQUEST['contraseña'];
+    
+    // Obtener datos del usuario desde el modelo
+    $datos = $usuarioModel->buscarUsuarioPorNombre($nombre); 
+
+    if (!$datos) {
+        // Si no se encuentra el usuario
+        $errores = "El usuario o la contraseña son incorrectas";
+        $_SESSION['errores'] = $errores;
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
     }
+    // Comparar contraseña ingresada con la almacenada en la base de datos
+    if (!password_verify($contrasena, $datos['contraseña'])) {
+        // Contraseña incorrecta
+        $errores = "El usuario o la contraseña son incorrectas";
+        $_SESSION['errores'] = $errores;
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
+    }
+    // Redirigir al home de posts
+    header('Location: ' . Parameters::$BASE_URL . 'Post/home');
+    exit;
+}
     public function registrarUsuario()
     {
         $usuarioModel = new UsuarioModel();
@@ -96,13 +106,14 @@ class UsuarioController
 
     public function verUsuario()
     {
+        if(Authentication::isUserLogged()){
         $_SESSION['cambioVista'] = "perfilUsuario";
         $usuarioModel = new UsuarioModel();
         $postModel = new PostModel();
         $generarToken = new HelpersGenerarToken();
         $nombre = $_GET['nombre'];
         $token = [];
-        $usuario = $usuarioModel->usuarioPorNombre($nombre);
+        $usuario = $usuarioModel->buscarUsuarioPorNombre($nombre);
         $idUsuarioPerfil = $usuario['id_usuario'];
         $idUsuarioVisita = $_SESSION['user']['idUsuario'];
         $_SESSION['usuarioVer'] = $usuario;
@@ -118,5 +129,9 @@ class UsuarioController
             }
         }
         ViewController::show("views/usuario/verUsuario.php", ["post" => $posts, "token" => $token, "usuario" => $usuario]);
+    }else{
+        header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+        exit;
     }
+}
 }

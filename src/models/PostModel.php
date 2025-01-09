@@ -239,13 +239,8 @@ UNION ALL
         $consulta->bindParam(':video', $video);
         $consulta->bindParam(':tipoPost', $tipoPost);
         $consulta->bindParam(':idComunidad', $idComunidad);
-
+        return $consulta->execute();
         // Ejecuta la consulta
-        if ($consulta->execute()) {
-            echo "Post insertado correctamente.";
-        } else {
-            echo "Error al insertar el post.";
-        }
     }
     public function getPostPopularNoLogeado($pagina, $postPorPagina) //parte popular no logeado
     {

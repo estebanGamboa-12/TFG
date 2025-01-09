@@ -9,7 +9,7 @@ $temas = $data['temas'] ?? NULL;
     <div class="section">
 
         <div class="form-container">
-            <h2>Formulario</h2>
+            <h2>Crear comunidad</h2>
             <form action="<?= Parameters::$BASE_URL ?>Comunidades/crearComunidad" method="post" enctype="multipart/form-data">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>

@@ -50,7 +50,8 @@ class VotosController
             echo  json_encode( ['success' => false, "message"=>"Ocurrio un error inesperado intentelo mas tarde."]) ;
         }
         } else {
-            ViewController::showError(403);
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
         }
     }
 }

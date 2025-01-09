@@ -111,7 +111,7 @@ use admin\foro\Helpers\Authentication;
                 </div>
             </div>
             <div class="containerUsuario">
-                <a href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion</a>
+                <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion</a>
             </div>
         </header>
 

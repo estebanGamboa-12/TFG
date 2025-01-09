@@ -10,7 +10,7 @@ class ImageUploader
     private $rutaDestino; // Ruta donde se guardarán las imágenes
     private $extensionesPermitidas; // Extensiones de imagen permitidas
 
-    public function __construct($tamanioMaximo = 2 * 1024 * 1024) // 2 MB por defecto
+    public function __construct($tamanioMaximo = 5 * 1024 * 1024) // 2 MB por defecto
     {
         $this->rutaDestino = "C:/xampp/htdocs/proyectos/TFG/assets/img/"; // Asegúrate de que la ruta termine con una barra
         $this->tamanioMaximo = $tamanioMaximo;
