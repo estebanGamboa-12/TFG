@@ -242,28 +242,28 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
   });
   //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-  // Seleccionamos todos los íconos de la flecha, los contenedores de contenido y los botones de ver más/menos
-  const flechaIconos = document.querySelectorAll('.icono');
-  const contenidos = document.querySelectorAll('.contenido1');
-  const verMasButtons = document.querySelectorAll('.ver-mas');
-  //console.log(verMasButtons);
+  // // Seleccionamos todos los íconos de la flecha, los contenedores de contenido y los botones de ver más/menos
+  // const flechaIconos = document.querySelectorAll('.icono');
+  // const contenidos = document.querySelectorAll('.contenido1');
+  // const verMasButtons = document.querySelectorAll('.ver-mas');
+  // //console.log(verMasButtons);
 
-  // Recorremos cada uno de los íconos de la flecha
-  flechaIconos.forEach((flechaIcono, index) => {
-    flechaIcono.addEventListener('click', function() {
-      contenidos[index].classList.toggle('oculto');
+  // // Recorremos cada uno de los íconos de la flecha
+  // flechaIconos.forEach((flechaIcono, index) => {
+  //   flechaIcono.addEventListener('click', function() {
+  //     contenidos[index].classList.toggle('oculto');
 
-      flechaIcono.classList.toggle('rotado');
+  //     flechaIcono.classList.toggle('rotado');
 
-      if (contenidos[index].classList.contains('oculto')) {
-        index = index;
-        console.log(index);
-        verMasButtons[index].style.display = 'none ';
-      } else {
-        index = index;
-        console.log(index);
-        verMasButtons[index].style.display = 'block';
-      }
-    });
-  });
+  //     if (contenidos[index].classList.contains('oculto')) {
+  //       index = index;
+  //       console.log(index);
+  //       verMasButtons[index].style.display = 'none ';
+  //     } else {
+  //       index = index;
+  //       console.log(index);
+  //       verMasButtons[index].style.display = 'block';
+  //     }
+  //   });
+  // });
 </script>

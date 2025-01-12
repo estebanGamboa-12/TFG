@@ -684,7 +684,6 @@ footer {
 
 .contenido {
     height: 50px;
-    background-color: blue;
     z-index: 1000;
     position: sticky;
     top: 0;
