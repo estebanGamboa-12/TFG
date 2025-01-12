@@ -31,7 +31,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
     <div class="recientes-lista contenido1">
       <?php if ($comunidadesRecientes != NULL) {?>
          <div class="recientes">
-         Recientes <i class="fa fa-sort-up icono"></i>
+         Recientes </i>
        </div>
        <?php foreach ($comunidadesRecientes as $comunidad) {
       ?>
@@ -50,7 +50,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     <!-- Temas--------------------------------------------------------------------- -->
     <?php if ($temas != NULL) { ?>
-      <div class="temas">Temas <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Temas </div>
       <div class="temas-lista contenido1">
         <?php
         $temas_por_pagina = 6;
@@ -69,7 +69,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     <!-- Comunidades --------------------------------------------------------------------- -->
     <?php if ($comunidades != NULL) { ?>
-      <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Comunidades </div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
@@ -94,7 +94,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
       <button id="verMasComunidades" class="ver-mas">Ver más</button>
       <button id="verMenosComunidades" class="ver-menos" style="display: none;">Ver Menos</button>
     <?php } else { ?>
-      <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Comunidades </i></div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>

@@ -240,12 +240,13 @@ footer {
 
 
 .popular {
-    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
+    font-size: 1.125rem;
+    border-bottom: 1px solid #45a049;
+    color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
-    color: #007A33;
     align-items: center;
     justify-content: space-between;
 }
@@ -275,10 +276,10 @@ footer {
 }
 
 .comunidades {
-    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
+    border-bottom: 1px solid #45a049;
     color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;

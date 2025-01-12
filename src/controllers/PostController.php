@@ -126,7 +126,7 @@ class PostController
             ViewController::show("views/post/popular.php", ['post' => $posts, "token" => $token]);
         } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
-        exit;
+            exit;
         }
     }
     public function mostrarForm() //vista formulario para subir post 
@@ -141,7 +141,7 @@ class PostController
             exit;
         } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
-        exit;
+            exit;
         }
     }
     public function subirPost() //subir un post desde el formulario crearPost.php
@@ -167,15 +167,25 @@ class PostController
             if ($tipoPost == "normal") {
                 $idComunidad = NULL;
             }
-
             if ($archivo != NULL) {
-                if (strpos($fileType, 'video') !== false) {
+                $imageMimeTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+                $videoMimeTypes = ['mp4', 'avi', 'mkv', 'mov', 'wmv'];
+
+
+                // Obtener la extensión del archivo
+                $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+                // Validar el tipo de archivo según su extensión
+                if (in_array($extension,$videoMimeTypes )) {
+                    // Si es un video
                     $videoUploader = new VideoUploader();
                     $video = $videoUploader->subirVideo($archivo);
-                } elseif (strpos($fileType, 'image') !== false) {
+                } elseif (in_array($extension, $imageMimeTypes )) {
+                    // Si es una imagen
                     $imagenUploader = new ImageUploader();
+                    
                     $imagen = $imagenUploader->subirImagen($archivo);
                 } else {
+                    // Si no es ni un video ni una imagen, redirigir al formulario
                     header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
                     echo "El archivo no es ni video ni imagen.";
                     exit;
@@ -186,10 +196,10 @@ class PostController
             }
 
             $post = $postModel->subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad);
-            if($post){
+            if ($post) {
                 header('Location:' . Parameters::$BASE_URL . "Post/home");
                 exit;
-            }else{
+            } else {
                 header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");
                 exit;
             }
