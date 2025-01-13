@@ -21,6 +21,20 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     // var_dump($post);exit;
     ?>
 </pre>
+<?php
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
+    foreach ($_SESSION['errores'] as $error) {
+        echo "<li>$error</li>";
+    }
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
 <section id="section">
     <div class="sectionAll">
         <div class="contenidoMensajes"></div>
@@ -148,7 +162,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
         const input = document.querySelector(`#respuesta-${idComentario} input`);
         const subComentario = input.value;
 
-        const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+        const parametersBaseUrl = "http://localhost/TFG/";
         let url = parametersBaseUrl + "Comentarios/subirComentario";
 
         fetch(url, {
@@ -201,7 +215,7 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
 
     document.querySelector(".boton-enviar-comentario").addEventListener("click", () => {
 
-        const parametersBaseUrl = "http://localhost/proyectos/TFG/";
+        const parametersBaseUrl = "http://localhost/TFG/";
         let comentario = document.querySelector(".textoComentarioPrincipal").value;
         let url = parametersBaseUrl + "Comentarios/subirComentario";
         let idPost = document.querySelector(".boton-enviar-comentario").getAttribute("data-id-post");

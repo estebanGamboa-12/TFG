@@ -19,6 +19,20 @@ use admin\foro\Config\Parameters;
         grid-column: 2/4;
     }
 </style>
+<?php
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
+    foreach ($_SESSION['errores'] as $error) {
+        echo "<li>$error</li>";
+    }
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
 <section>
     <div class="section">
         <div class="form-container">

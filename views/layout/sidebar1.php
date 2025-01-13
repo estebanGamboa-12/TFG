@@ -10,13 +10,13 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
   <div class="aside1">
     <!-- home ----------------------------------------------------------------------------------------->
     <?php if (Authentication::isUserLogged()) { ?>
-      <a href="<?= Parameters::$BASE_URL ?>Post/home" class="popular">Home </a>
+    <a href="<?= Parameters::$BASE_URL ?>Post/home" class="popular">Home </a>
     <?php } ?>
     <!-- Popular ------------------------------------------------------------------->
     <?php if (Authentication::isUserLogged()) { ?>
-      <a href="<?= Parameters::$BASE_URL ?>Post/popular" class="popular">Popular </a>
+    <a href="<?= Parameters::$BASE_URL ?>Post/popular" class="popular">Popular </a>
     <?php } else { ?>
-      <a href="<?= Parameters::$BASE_URL ?>Post/popularNoLogeado" class="popular">Popular </a>
+    <a href="<?= Parameters::$BASE_URL ?>Post/popularNoLogeado" class="popular">Popular </a>
     <?php } ?>
     <!-- Explorar------------------------------------------------------------------ -->
     <?php if (Authentication::isUserLogged()) { ?>
@@ -27,20 +27,19 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
       <a href="<?= Parameters::$BASE_URL ?>Post/All" class="popular">All </a>
     <?php } ?>
     <!-- recientes--------------------------------------------------------------------- -->
-   
+
     <div class="recientes-lista contenido1">
-      <?php if ($comunidadesRecientes != NULL) {?>
-         <div class="recientes">
-         Recientes <i class="fa fa-sort-up icono"></i>
-       </div>
-       <?php foreach ($comunidadesRecientes as $comunidad) {
-      ?>
+      <?php if ($comunidadesRecientes != NULL) { ?>
+        <div class="recientes">
+          Recientes </i>
+        </div>
+        <?php foreach ($comunidadesRecientes as $comunidad) {
+          ?>
           <div class="logo-texto">
-            <a
-                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $comunidad['nombre'] ?>">
-                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $comunidad['imagen'] ?>" alt="imagen"
-                                class="imagenLogo-section">
-                        </a>
+            <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $comunidad['nombre'] ?>">
+              <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $comunidad['imagen'] ?>" alt="imagen"
+                class="imagenLogo-section">
+            </a>
             <div id="textoAside1"><?= $comunidad['nombre'] ?></div>
           </div>
         <?php }
@@ -50,7 +49,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     <!-- Temas--------------------------------------------------------------------- -->
     <?php if ($temas != NULL) { ?>
-      <div class="temas">Temas <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Temas </div>
       <div class="temas-lista contenido1">
         <?php
         $temas_por_pagina = 6;
@@ -69,10 +68,11 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     <!-- Comunidades --------------------------------------------------------------------- -->
     <?php if ($comunidades != NULL) { ?>
-      <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Comunidades </div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
-        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad
+          </a></div>
       </div>
       <div class="comunidades-lista contenido1">
         <?php
@@ -82,11 +82,10 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
         //muestra los primeros
         foreach (array_slice($comunidades, 0, $comunidades_por_pagina) as $indice => $contenido) { ?>
           <div class="logo-texto">
-          <a
-                            href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre'] ?>">
-                            <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen"
-                                class="imagenLogo-section">
-                        </a>
+            <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=<?= $contenido['nombre'] ?>">
+              <img src="<?= Parameters::$BASE_URL . 'assets/img/' . $contenido['imagen'] ?>" alt="imagen"
+                class="imagenLogo-section">
+            </a>
             <div id="textoAside1"><?= $contenido['nombre'] ?></div>
           </div>
         <?php } ?>
@@ -94,21 +93,27 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
       <button id="verMasComunidades" class="ver-mas">Ver más</button>
       <button id="verMenosComunidades" class="ver-menos" style="display: none;">Ver Menos</button>
     <?php } else { ?>
-      <div class="temas">Comunidades <i class="fa fa-sort-up icono"></i></div>
+      <div class="temas">Comunidades </i></div>
       <div class="crearComunidad logo-texto">
         <i class="fa fa-plus" aria-hidden="true"></i>
-        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad </a></div>
+        <div id="textoAside1"> <a href="<?= Parameters::$BASE_URL ?>Comunidades/VistaCrearComunidad">Crear una comunidad
+          </a></div>
       </div>
     <?php } ?>
   </div>
 </aside>
 <style>
-  .icono-flecha, .icono-punto, .icono-linea {
+  .icono-flecha,
+  .icono-punto,
+  .icono-linea {
     display: inline-block;
-    margin-left: 5px; /* Espacio entre el texto y el ícono */
-    font-size: 20px; /* Tamaño del ícono */
-    color: #000; /* Color del ícono */
-}
+    margin-left: 5px;
+    /* Espacio entre el texto y el ícono */
+    font-size: 20px;
+    /* Tamaño del ícono */
+    color: #000;
+    /* Color del ícono */
+  }
 </style>
 <script>
   // Inicialización de variables
@@ -130,7 +135,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     // Crear el HTML para los temas que se van a mostrar
     let contenidoHTML = '';
-    temasParaMostrar.forEach(function(tema) {
+    temasParaMostrar.forEach(function (tema) {
       contenidoHTML += `
       <div class="logo-texto">
             <div id="textoAside1">${tema.nombre}</div>
@@ -167,13 +172,15 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
 
     // Crear el HTML para las comunidades que se van a mostrar
     let contenidoHTML = '';
-    comunidadesParaMostrar.forEach(function(comunidad) {
+    comunidadesParaMostrar.forEach(function (comunidad) {
       contenidoHTML += `
-        <div class="logo-texto">
-          <img src="<?= Parameters::$BASE_URL ?>assets/img/${comunidad.imagen}" alt="foto">
-          <div id="textoAside1">${comunidad.nombre}</div>
-        </div>
-      `;
+  <div class="logo-texto">
+    <a href="<?= Parameters::$BASE_URL ?>Comunidades/verComunidad?nombreComunidad=${comunidad.nombre}">
+      <img src="<?= Parameters::$BASE_URL ?>assets/img/${comunidad.imagen}" alt="imagen" class="imagenLogo-section">
+    </a>
+    <div id="textoAside1">${comunidad.nombre}</div>
+  </div>
+`
     });
 
     // Insertar el HTML generado en el contenedor de comunidades
@@ -222,48 +229,48 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
   cargarComunidades();
 
   // Evento para el botón "Ver más" de temas
-  document.getElementById("verMasTemas").addEventListener("click", function() {
+  document.getElementById("verMasTemas").addEventListener("click", function () {
     manejarContenido('temas', true); // Mostrar todos los temas
   });
 
   // Evento para el botón "Ver menos" de temas
-  document.getElementById("verMenosTemas").addEventListener("click", function() {
+  document.getElementById("verMenosTemas").addEventListener("click", function () {
     manejarContenido('temas', false); // Volver a los primeros 6 temas
   });
 
   // Evento para el botón "Ver más" de comunidades
-  document.getElementById("verMasComunidades").addEventListener("click", function() {
+  document.getElementById("verMasComunidades").addEventListener("click", function () {
     manejarContenido('comunidades', true); // Mostrar todas las comunidades
   });
 
   // Evento para el botón "Ver menos" de comunidades
-  document.getElementById("verMenosComunidades").addEventListener("click", function() {
+  document.getElementById("verMenosComunidades").addEventListener("click", function () {
     manejarContenido('comunidades', false); // Volver a las primeras 6 comunidades
   });
   //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-  // Seleccionamos todos los íconos de la flecha, los contenedores de contenido y los botones de ver más/menos
-  const flechaIconos = document.querySelectorAll('.icono');
-  const contenidos = document.querySelectorAll('.contenido1');
-  const verMasButtons = document.querySelectorAll('.ver-mas');
-  //console.log(verMasButtons);
+  // // Seleccionamos todos los íconos de la flecha, los contenedores de contenido y los botones de ver más/menos
+  // const flechaIconos = document.querySelectorAll('.icono');
+  // const contenidos = document.querySelectorAll('.contenido1');
+  // const verMasButtons = document.querySelectorAll('.ver-mas');
+  // //console.log(verMasButtons);
 
-  // Recorremos cada uno de los íconos de la flecha
-  flechaIconos.forEach((flechaIcono, index) => {
-    flechaIcono.addEventListener('click', function() {
-      contenidos[index].classList.toggle('oculto');
+  // // Recorremos cada uno de los íconos de la flecha
+  // flechaIconos.forEach((flechaIcono, index) => {
+  //   flechaIcono.addEventListener('click', function() {
+  //     contenidos[index].classList.toggle('oculto');
 
-      flechaIcono.classList.toggle('rotado');
+  //     flechaIcono.classList.toggle('rotado');
 
-      if (contenidos[index].classList.contains('oculto')) {
-        index = index;
-        console.log(index);
-        verMasButtons[index].style.display = 'none ';
-      } else {
-        index = index;
-        console.log(index);
-        verMasButtons[index].style.display = 'block';
-      }
-    });
-  });
+  //     if (contenidos[index].classList.contains('oculto')) {
+  //       index = index;
+  //       console.log(index);
+  //       verMasButtons[index].style.display = 'none ';
+  //     } else {
+  //       index = index;
+  //       console.log(index);
+  //       verMasButtons[index].style.display = 'block';
+  //     }
+  //   });
+  // });
 </script>

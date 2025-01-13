@@ -22,11 +22,15 @@ if (isset($_SESSION['mensaje'])) {
     unset($_SESSION['mensaje']);
 }
 
-if (isset($_SESSION['errores'])) {
-    echo '<div class="error" id="errores">';
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
     foreach ($_SESSION['errores'] as $error) {
-        echo $error . '<br>';
+        echo "<li>$error</li>";
     }
+    echo '</ul>';
+    echo '</div>';
     echo '</div>';
     unset($_SESSION['errores']);
 }

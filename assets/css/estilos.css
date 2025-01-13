@@ -240,12 +240,13 @@ footer {
 
 
 .popular {
-    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
+    font-size: 1.125rem;
+    border-bottom: 1px solid #45a049;
+    color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
-    color: #007A33;
     align-items: center;
     justify-content: space-between;
 }
@@ -275,10 +276,10 @@ footer {
 }
 
 .comunidades {
-    border-bottom: 1px solid #45a049;
     margin: 2% 2%;
     padding-bottom: 2%;
     font-size: 1.125rem;
+    border-bottom: 1px solid #45a049;
     color: #007A33;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
@@ -684,7 +685,6 @@ footer {
 
 .contenido {
     height: 50px;
-    background-color: blue;
     z-index: 1000;
     position: sticky;
     top: 0;
@@ -900,6 +900,58 @@ footer {
     /* Centra horizontalmente */
     z-index: 100;
 }
+/* Contenedor principal para centrar */
+.error-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Estilo del mensaje de error */
+.error-messages {
+    background-color: #ffecec;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+/* Lista de errores */
+.error-messages ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Elemento individual de la lista */
+.error-messages li {
+    margin-bottom: 5px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+}
+
+/* Icono de error */
+.error-messages li::before {
+    content: "⚠️";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 16px;
+}
+ /* Estilo para ocultar con transición */
+    .hidden {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
 
 .error {
     color: red;

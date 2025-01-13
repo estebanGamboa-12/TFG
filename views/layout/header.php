@@ -97,9 +97,11 @@ use admin\foro\Helpers\Authentication;
                 <div class="tresPuntos">
                     <?php if (Authentication::isUserLogged()) { ?>
                         <div class="perfil">
-                            <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm" style="text-decoration: none;">Crear Post</a>
-                            <p style="margin-right: 5px;"> <?= $_SESSION['user']['nombre']?></p>
-                            <img src="<?= Parameters::$BASE_URL . "assets/img/logo1.jpg" ?>" alt="" class="logo-header">
+                            <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm"
+                                style="text-decoration: none;">Crear Post</a>
+                            <p style="margin-right: 5px;"> <?= $_SESSION['user']['nombre'] ?></p>
+                            <img src="<?= Parameters::$BASE_URL . "assets/img/" . $_SESSION['user']['imagen_logo_usuario'] ?>"
+                                alt="" class="logo-header">
                             <div class="listaUsuario">☰</div>
                         </div>
                     <?php } else { ?>
@@ -107,7 +109,7 @@ use admin\foro\Helpers\Authentication;
                             <div class="iniciarSesion">Iniciar Sesion</div>
                         </a>
                         <i class="fa fa-ellipsis-h"></i>
-                    <?php  }  ?>
+                    <?php } ?>
                 </div>
             </div>
             <div class="containerUsuario">
@@ -119,9 +121,9 @@ use admin\foro\Helpers\Authentication;
 <style>
     .containerUsuario {
         display: none;
-        justify-items: flex-end;
-        margin-right: 2%;
-
+        justify-content: flex-end;
+        padding-left: 80rem;
+        padding-top: 1rem;
     }
 
     .containerUsuario a {
@@ -130,7 +132,7 @@ use admin\foro\Helpers\Authentication;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgb(0, 150, 136);
+        background-color: #45a049;;
         font-family: Georgia, 'Times New Roman', Times, serif;
         color: black;
         font-size: 100%;
@@ -141,9 +143,13 @@ use admin\foro\Helpers\Authentication;
 </html>
 <script>
     if (document.querySelector('.listaUsuario')) {
-        document.querySelector('.listaUsuario').addEventListener('click', function() {
-            console.log("entra");
-            document.querySelector('.containerUsuario').style.display = "grid";
+        document.querySelector('.listaUsuario').addEventListener('click', function () {
+            const container = document.querySelector('.containerUsuario');
+            if (container.style.display === "flex") {
+                container.style.display = "none"; // Ocultar el elemento
+            } else {
+                container.style.display = "flex"; // Mostrar el elemento
+            }
         });
     }
 </script>

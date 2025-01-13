@@ -1,4 +1,11 @@
 window.onload = function () {
+    // Función para ocultar el mensaje después de unos segundos
+    setTimeout(() => {
+        const errorOverlay = document.querySelector('.error-container');
+        if (errorOverlay) {
+            errorOverlay.style.display = 'none'; // Ocultar el contenedor del error
+        }
+    }, 2000); // 2 segundos antes de ocultar
     // Verificar si el elemento existe antes de añadir el evento
 
     const bars = document.querySelector(".bars");
@@ -131,7 +138,7 @@ window.onload = function () {
 }
 let loading = false;
 let pagina = 2;
-const parametersBaseUrl = "http://xampp/proyectos/TFG/";
+const parametersBaseUrl = "http://localhost/TFG/";
 
 function mostrarAside() {
     let aside = document.querySelector('.contenido-aside');
@@ -173,7 +180,7 @@ function actualizarCamposGenericos(url, token) {
                 // Comprobamos la respuesta completa
                 if (jsonData.success === true) {
                     let numeroVotos = document.querySelector(`[data-token-votar='${encodeURIComponent(token)}']`);//por los caracteres especiales del token
-                    console.log(numeroVotos);
+                    console.log(numeroVotos.value + "numero de votos");
                     if (numeroVotos) {
                         numeroVotos.innerHTML = `votos(${jsonData.votos}) `;
                     } else {
@@ -182,10 +189,9 @@ function actualizarCamposGenericos(url, token) {
                     //success
                     document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
                     document.querySelector('.contenidoMensajes').classList.add("verde");
-                    setTimeout(() => {
-                        document.querySelector('.contenidoMensajes').classList.remove("verde");
-                        document.querySelector('.contenidoMensajes').style.display = "none";
-                    }, 2000);
+                    location.reload();
+                    
+                    
                 } else {
                     //error
                     document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;

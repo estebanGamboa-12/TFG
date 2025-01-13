@@ -37,6 +37,25 @@ class UsuarioModel extends Model
             die($e->getMessage());
         }
     }
+    public function comprobarUsuario($nombre)
+    {
+        try {
+          $sql = "SELECT * FROM {$this->tabla} WHERE nombre=:nombre ";
+            $consulta = $this->conn->prepare($sql);
+            // Vincula los parámetros
+            $consulta->bindParam(':nombre', $nombre);
+            $consulta->execute();
+            if ($consulta->rowCount() > 0) {
+                  return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
 
    public function registrarUsuario($nombre,$apellido,$email,$contrasena,$imagen)
     {
