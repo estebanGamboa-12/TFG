@@ -189,10 +189,9 @@ function actualizarCamposGenericos(url, token) {
                     //success
                     document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;
                     document.querySelector('.contenidoMensajes').classList.add("verde");
-                    setTimeout(() => {
-                        document.querySelector('.contenidoMensajes').classList.remove("verde");
-                        document.querySelector('.contenidoMensajes').style.display = "none";
-                    }, 2000);
+                    location.reload();
+                    
+                    
                 } else {
                     //error
                     document.querySelector('.contenidoMensajes').innerHTML = jsonData.message;

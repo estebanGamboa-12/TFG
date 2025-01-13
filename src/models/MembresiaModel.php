@@ -66,4 +66,21 @@ class MembresiaModel extends Model
             die($e->getMessage());
         }
     }
+        public function dejarDeSeguirComunidad($idUsuario, $idComunidad)
+        {
+            try {
+                $sql = "DELETE FROM membresias
+                        WHERE id_usuario = :idUsuario AND id_comunidad = :idComunidad";
+        
+                $consulta = $this->conn->prepare($sql);
+                $consulta->bindParam(":idUsuario", $idUsuario);
+                $consulta->bindParam(":idComunidad", $idComunidad);
+                return $consulta->execute();
+                
+            } catch (\PDOException $e) {
+                echo "<h1><br>Fichero: " . $e->getFile();
+                echo "<br>Linea:" . $e->getLine() . "<br>Mensaje : ";
+                die($e->getMessage());
+            }
+        }
 }

@@ -23,6 +23,7 @@ if (!empty($_SESSION['errores'])) {
     unset($_SESSION['errores']);
 }
 ?>
+
 <section>
     <div class="section">
         <div class="contenido"></div>
@@ -38,9 +39,17 @@ if (!empty($_SESSION['errores'])) {
                         </a>
                         <div class="nombreComunidad"><?php echo $contenido['nombre'] ?>
                             <div class="miembrosComunidad" data-token="<?= $token[$contenido['id_comunidad']] ?>">
-                                <?= $membresias[$contenido['id_comunidad']] ?> miembros</div>
+                                <?= $membresias[$contenido['id_comunidad']] ?> miembros
+                            </div>
                         </div>
-                        <div class="botonUnirte unirse" data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
+                        <?php if ($contenido["esta_unido"] == 0) { ?>
+                            <div class="botonUnirte unirse" data-token="<?= $token[$contenido['id_comunidad']] ?>">Unirte</div>
+                        <?php } else { ?>
+                            <div class="dejarDeSeguir">
+                                <a href="<?=Parameters::$BASE_URL?>Membresias/dejarSeguir?idComunidad=<?=$contenido['id_comunidad']?>">
+                                Dejar de seguir</div>
+                                </a>
+                        <?php } ?>
                     </div>
                     <div class="parteAbajo">
                         <?php echo $contenido['descripcion'] ?>
@@ -51,7 +60,26 @@ if (!empty($_SESSION['errores'])) {
     </div>
     </div>
 </section>
-
+<style>
+    .dejarDeSeguir {
+        border-radius: 1rem;
+        background-color: rgb(175, 51, 51);
+        height: 2rem;
+        width: 7rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    section {
+  grid-column: 2/4;
+  grid-row: 2;
+  margin: 0% 3%;
+  overflow-y: auto;
+}
+.second-aside {
+    display: none;
+}
+</style>
 <script>
     function actualizarCamposGenericos(url, token) {
         fetch(url, {

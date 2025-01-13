@@ -53,6 +53,7 @@ if (!empty($_SESSION['errores'])) {
 
                     <div class="fecha-section"><?= $contenido['fecha_creacion'] ?></div>
                     <?php if ($contenido['esta_unido'] == 0 && $contenido['tipo_post'] === "comunidad") { ?>
+                        
                     <?php } else { ?>
 
                     <?php } ?>

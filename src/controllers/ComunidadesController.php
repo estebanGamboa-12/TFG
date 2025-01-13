@@ -22,13 +22,12 @@ class ComunidadesController
 
             $comunidadesModel = new ComunidadModel();
             $membresiasModel = new MembresiaModel();
-            $comunidades = $comunidadesModel->getAll();
+            $idUsuario = $_SESSION['user']['idUsuario'];
+            $comunidades = $comunidadesModel->getAllComunidades($idUsuario);
             $membresias = [];
             $token = [];
             $generarToken = new HelpersGenerarToken();
 
-
-            $idUsuario = $_SESSION['user']['idUsuario'];
 
             foreach ($comunidades as  $indice => $contenido) {
                 $membresiasComunidad = $membresiasModel->getNumeroMiembros($contenido['id_comunidad']);
@@ -149,8 +148,7 @@ class ComunidadesController
                         $comprobacion = $temasComunidadModel->insertarTemasEnComunidad($idTema, $idComunidad);
                     }
                     if ($comprobacion) {
-                        $_SESSION['mensaje'] = "Se ha creado correctamente la comunidad";
-                        header("location:" . Parameters::$BASE_URL . "Post/home");
+                        header("location:" . Parameters::$BASE_URL . "Comunidades/explorar");
                     } else {
                         $errores[] = "Hubo un problema inesperado al crear la comunidad";
                         $_SESSION['errores'] = $errores;

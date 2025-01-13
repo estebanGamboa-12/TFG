@@ -21,7 +21,6 @@ class VotosController
             $data = json_decode(file_get_contents('php://input'), true);
 
             $token = $data['token']; 
-            
             $key = $_SESSION['key']; 
             $alg = $_SESSION['alg'];  
 
@@ -33,6 +32,7 @@ class VotosController
              $comprobarVoto = $votosModel->comprobarVoto($idUsuario, $idPost);
             if (count($comprobarVoto) == 1) {
                 echo json_encode(['success' => false, 'message' => 'No puedes votar a un post que ya has votado']);
+                exit;
             } else {
                 $comprobar = $votosModel->votarPost($idUsuario, $idPost);
                 $votosActuales=$votosModel->numeroVotos($idPost);

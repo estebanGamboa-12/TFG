@@ -129,7 +129,11 @@ public function registrarUsuario()
     if (!$imagen || $imagen['error'] !== UPLOAD_ERR_OK) {
         $errores[] = "Debe subir una imagen válida.";
     }
-    
+    $usuario=$usuarioModel->comprobarUsuario($nombre);
+    if($usuario){
+        $errores[] = "El nombre de usuario ya existe.";
+    }
+
 
     // Si hay errores, redirigir al formulario con mensajes de error
     if (!empty($errores)) {

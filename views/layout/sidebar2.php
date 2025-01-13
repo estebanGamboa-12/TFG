@@ -44,13 +44,7 @@ use admin\foro\Config\Parameters;
     </aside>
 <?php } else if ($_SESSION['cambioVista'] == "perfilComunidades") { ?>
     <aside class="second-aside ">
-        <div class="containerBotones">
-            <?php if ($datosComunidad["usuario_unido"] == "1") { ?>
-
-            <?php } else { ?>
-                <div class="unirseComunidad botones">Unirse </div>
-            <?php  } ?>
-        </div>
+       
         <div class="aside2">
             <div class="nombreComunidad"><?= $datosComunidad['nombre'] ?></div>
             <div class="descripcionComunidad"><?= $datosComunidad['descripcion'] ?></div>
