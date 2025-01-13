@@ -4,6 +4,27 @@ use admin\foro\Config\Parameters;
 use admin\foro\Helpers\Authentication;
 $post = $data['post'] ?? NULL;
 ?>
+<?php
+if (isset($_SESSION['mensaje'])) {
+    echo '<div class="mensaje id="mensaje"">';
+    echo $_SESSION['mensaje'];
+    echo '</div>';
+    unset($_SESSION['mensaje']);
+}
+
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
+    foreach ($_SESSION['errores'] as $error) {
+        echo "<li>$error</li>";
+    }
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
 <section id="sectionPopularNoLogeado">
     <div class="section">
         <?php if (!empty($post)): ?>

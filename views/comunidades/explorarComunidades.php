@@ -9,6 +9,20 @@ $token = $data['tokens'] ?? NULL;
 $idUsuario = $_SESSION['user']['idUsuario'];
 
 ?>
+<?php
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
+    foreach ($_SESSION['errores'] as $error) {
+        echo "<li>$error</li>";
+    }
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
 <section>
     <div class="section">
         <div class="contenido"></div>

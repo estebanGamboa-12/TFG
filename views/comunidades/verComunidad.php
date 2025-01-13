@@ -15,6 +15,20 @@ $idUsuario = $_SESSION['user']['idUsuario'] ?? NULL;
     <?php //var_dump($post);exit;
     ?>
 </pre>
+<?php
+if (!empty($_SESSION['errores'])) {
+    echo '<div class="error-container">';
+    echo '<div class="error-messages">';
+    echo '<ul>';
+    foreach ($_SESSION['errores'] as $error) {
+        echo "<li>$error</li>";
+    }
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['errores']);
+}
+?>
 <section id="section">
     <div class="containerEncabezadoVer">
         <div id="nombreImagenVer">

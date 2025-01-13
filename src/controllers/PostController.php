@@ -197,7 +197,7 @@ class PostController
 
             $post = $postModel->subirPost($titulo, $contenido, $idUsuario, $idTema, $tipoPost, $video, $imagen, $idComunidad);
             if ($post) {
-                header('Location:' . Parameters::$BASE_URL . "Post/home");
+                header('Location:' . Parameters::$BASE_URL . "Post/All");
                 exit;
             } else {
                 header("location:" . Parameters::$BASE_URL . "Post/mostrarForm");

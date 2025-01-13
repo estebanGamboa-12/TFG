@@ -1,4 +1,11 @@
 window.onload = function () {
+    // Función para ocultar el mensaje después de unos segundos
+    setTimeout(() => {
+        const errorOverlay = document.querySelector('.error-container');
+        if (errorOverlay) {
+            errorOverlay.style.display = 'none'; // Ocultar el contenedor del error
+        }
+    }, 2000); // 2 segundos antes de ocultar
     // Verificar si el elemento existe antes de añadir el evento
 
     const bars = document.querySelector(".bars");
