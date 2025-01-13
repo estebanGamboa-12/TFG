@@ -3,7 +3,7 @@
         'name' => 'admin/foro',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b6e7de4dfa68d9f6aee0c268cd7f272fe8ab56cb',
+        'reference' => '4230c91e20a89d623c19dd56d440f0e8d61ea68e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'admin/foro' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b6e7de4dfa68d9f6aee0c268cd7f272fe8ab56cb',
+            'reference' => '4230c91e20a89d623c19dd56d440f0e8d61ea68e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
