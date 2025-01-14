@@ -58,31 +58,37 @@ class ComunidadesController
             $idUsuario = $_SESSION['user']['idUsuario'];
             $nombreComunidad = $_GET['nombreComunidad'];
             $comunidad = $comunidadesModel->comunidadesPorNombre($nombreComunidad);
-            $idComunidad = $comunidad['id_comunidad'];
-            $posts = $postModel->postPorComunidad($idUsuario, $idComunidad);
-            foreach ($posts as $post) {
-                if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
-                    $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
-                } else {
-                    $post['jwt_token'] = null;
+            if ($comunidad) {
+                $idComunidad = $comunidad['id_comunidad'];
+                $posts = $postModel->postPorComunidad($idUsuario, $idComunidad);
+                foreach ($posts as $post) {
+                    if ($post['id_comunidad'] !== NULL || $post['id_usuario'] || $post['id_post']) {
+                        $token[$post['id_post']] = $generarToken->generarToken($idUsuario, $post['id_comunidad'], $post['id_post']);
+                    } else {
+                        $post['jwt_token'] = null;
+                    }
                 }
-            }
-            // Inicializar el array de comunidades recientes si no existe
-            if (!isset($_SESSION['comunidadesRecientes'][$idUsuario])) {
-                $_SESSION['comunidadesRecientes'][$idUsuario] = [];
-            }
+                // Inicializar el array de comunidades recientes si no existe
+                if (!isset($_SESSION['comunidadesRecientes'][$idUsuario])) {
+                    $_SESSION['comunidadesRecientes'][$idUsuario] = [];
+                }
 
-            // Agregar la comunidad al array de comunidades recientes
-            if (!in_array($comunidad, $_SESSION['comunidadesRecientes'][$idUsuario])) {
-                $_SESSION['comunidadesRecientes'][$idUsuario][] = $comunidad;
+                // Agregar la comunidad al array de comunidades recientes
+                if (!in_array($comunidad, $_SESSION['comunidadesRecientes'][$idUsuario])) {
+                    $_SESSION['comunidadesRecientes'][$idUsuario][] = $comunidad;
+                }
+
+                ViewController::show("views/comunidades/verComunidad.php", [
+                    "post" => $posts,
+                    "comunidad" => $comunidad,
+                    "token" => $token,
+
+                ]);
+            } else {
+                header("location:" . Parameters::$BASE_URL . "Post/Home");
+                exit;
             }
-
-            ViewController::show("views/comunidades/verComunidad.php", [
-                "post" => $posts,
-                "comunidad" => $comunidad,
-                "token" => $token,
-
-            ]);
+            
         } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
             exit;
@@ -164,7 +170,7 @@ class ComunidadesController
                 $_SESSION['errores'] = $errores;
                 header("location:" . Parameters::$BASE_URL . "Post/home");
             }
-        }else{
+        } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
             exit;
         }

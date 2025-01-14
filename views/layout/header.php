@@ -127,23 +127,23 @@ use admin\foro\Helpers\Authentication;
     }
 
     .containerUsuario a {
-        padding: 5px 15px;
+        padding: 3px 3rem;
         border-radius: 1rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #45a049;;
+        background-color: #45a049;
         font-family: Georgia, 'Times New Roman', Times, serif;
         color: black;
         font-size: 100%;
-        width: 8rem;
+        width: 9rem;
     }
 </style>
 
 </html>
 <script>
     if (document.querySelector('.listaUsuario')) {
-        document.querySelector('.listaUsuario').addEventListener('click', function () {
+        document.querySelector('.listaUsuario').addEventListener('click', function() {
             const container = document.querySelector('.containerUsuario');
             if (container.style.display === "flex") {
                 container.style.display = "none"; // Ocultar el elemento
