@@ -34,9 +34,9 @@ use admin\foro\Helpers\Authentication;
 
     .tooltip {
         position: absolute;
-        top: 45px;
-        left: 0%;
-        width: 250px;
+        inset-block-start: 45px;
+        inset-inline-start: 0%;
+        inline-size: 250px;
         transform: translateX(-90%);
         background-color: #fff;
         padding: 5px 10px;
@@ -53,10 +53,10 @@ use admin\foro\Helpers\Authentication;
     .tooltip::before {
         content: '';
         position: absolute;
-        top: -40px;
-        left: 0;
-        width: 100%;
-        height: 40px;
+        inset-block-start: -40px;
+        inset-inline-start: 0;
+        inline-size: 100%;
+        block-size: 40px;
         pointer-events: auto;
     }
 
@@ -67,7 +67,7 @@ use admin\foro\Helpers\Authentication;
     }
 
     .tooltip span {
-        text-align: left;
+        text-align: start;
         color: #696969;
         padding: 0px 5px 5px 5px;
     }
@@ -99,7 +99,7 @@ use admin\foro\Helpers\Authentication;
                         <div class="perfil">
                             <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Post/mostrarForm"
                                 style="text-decoration: none;">Crear Post</a>
-                            <p style="margin-right: 5px;"> <?= $_SESSION['user']['nombre'] ?></p>
+                            <p style="margin-inline-end: 5px;"> <?= $_SESSION['user']['nombre'] ?></p>
                             <img src="<?= Parameters::$BASE_URL . "assets/img/" . $_SESSION['user']['imagen_logo_usuario'] ?>"
                                 alt="" class="logo-header">
                             <div class="listaUsuario">☰</div>
@@ -113,37 +113,47 @@ use admin\foro\Helpers\Authentication;
                 </div>
             </div>
             <div class="containerUsuario">
-                <a class="CrearPost" href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion</a>
+                <ul>
+                    <li><a class="botonLista" href="<?= Parameters::$BASE_URL ?>Usuario/cerrarSesion">Cerrar Sesion</a>
+                    </li>
+                    <li><a class="botonLista" href="<?= Parameters::$BASE_URL ?>Usuario/verFormularioEditarUsuario">Editar Usuario</a>
+                    </li>
+                    <li><a class="botonLista" href="<?= Parameters::$BASE_URL ?>Comunidad/editarComunidad">Editar Comunidad</a>
+                    </li>
+                </ul>
             </div>
         </header>
 
 </body>
 <style>
     .containerUsuario {
-        display: none;
-        justify-content: flex-end;
-        padding-left: 80rem;
-        padding-top: 1rem;
+        position: absolute;
+        margin-inline-end: auto;
+        inset-inline-start: 90%;
+    }
+
+    .containerUsuario ul li {
+        margin-block-start: 1%;
+        list-style-type: none;
     }
 
     .containerUsuario a {
-        padding: 3px 3rem;
+        background-color: #45a049;
+        padding: 5px 0px;
         border-radius: 1rem;
+        margin-inline-end: 10px;
+        cursor: pointer;
+        font-size: 1rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #45a049;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        color: black;
-        font-size: 100%;
-        width: 9rem;
     }
 </style>
 
 </html>
 <script>
     if (document.querySelector('.listaUsuario')) {
-        document.querySelector('.listaUsuario').addEventListener('click', function() {
+        document.querySelector('.listaUsuario').addEventListener('click', function () {
             const container = document.querySelector('.containerUsuario');
             if (container.style.display === "flex") {
                 container.style.display = "none"; // Ocultar el elemento

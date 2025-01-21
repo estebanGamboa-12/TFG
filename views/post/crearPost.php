@@ -36,7 +36,7 @@ if (!empty($_SESSION['errores'])) {
                         <?php foreach ($comunidades as $comunidad): ?>
                             <option value="<?= $comunidad['id_comunidad']; ?>">
                                 <img src="<?= $comunidad['imagen']; ?>" alt="<?= $comunidad['nombre']; ?>"
-                                    style="width: 20px; height: 20px; vertical-align: middle;">
+                                    style="inline-size: 20px; block-size: 20px; vertical-align: middle;">
                                 <?= $comunidad['nombre']; ?>
                             </option>
                         <?php endforeach; ?>

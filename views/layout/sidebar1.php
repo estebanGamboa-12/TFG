@@ -107,7 +107,7 @@ $comunidadesRecientes = $_SESSION['comunidadesRecientes'][$idUsuario] ?? NULL;
   .icono-punto,
   .icono-linea {
     display: inline-block;
-    margin-left: 5px;
+    margin-inline-start: 5px;
     /* Espacio entre el texto y el ícono */
     font-size: 20px;
     /* Tamaño del ícono */

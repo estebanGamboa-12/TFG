@@ -76,6 +76,20 @@ class UsuarioModel extends Model
             die($e->getMessage());
         }
     }
+    public function usuarioPorId($idUsuario ){
+        try{
+            $sql="SELECT *  FROM usuarios WHERE id_usuario=:idUsuario";
+            $consulta=$this->conn->prepare($sql);
+            $consulta->bindParam(":idUsuario",$idUsuario);
+            $consulta->execute();
+            $resultado=$consulta->fetch(\PDO::FETCH_ASSOC);
+            return $resultado;
+       } catch (\Exception $e) {
+            echo "<h1><br>Fichero: " . $e->getFile();
+            echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
+            die($e->getMessage());
+        }
+    }
     public function usuarioPorNombre($nombre){
         try{
             $sql="SELECT *  FROM usuarios WHERE nombre=:nombre";

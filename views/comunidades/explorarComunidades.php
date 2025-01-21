@@ -64,11 +64,12 @@ if (!empty($_SESSION['errores'])) {
     .dejarDeSeguir {
         border-radius: 1rem;
         background-color: rgb(175, 51, 51);
-        height: 2rem;
-        width: 7rem;
+        block-size: 2rem;
+        inline-size: 7rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        cursor: pointer;
     }
     section {
   grid-column: 2/4;

@@ -86,7 +86,7 @@ if (!empty($_SESSION['errores'])) {
                             <?php
                             $contenido_texto = trim($contenido['contenido']); // Elimina los espacios alrededor del texto
                             if (strpos($contenido_texto, 'http') !== false) { ?>
-                                <a href="#" class="link" style="color: blue; border-bottom: 1px solid blue;"><?= $contenido_texto ?></a>
+                                <a href="#" class="link" style="color: blue; border-block-end: 1px solid blue;"><?= $contenido_texto ?></a>
                             <?php } else { ?>
                                 <div> <?= $contenido_texto ?></div>
                             <?php } ?>

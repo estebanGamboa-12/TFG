@@ -30,6 +30,28 @@ class UsuarioController
         ViewController::show("views/usuario/formularioIniciarSesion.php");
         exit;
     }
+    public function verFormularioEditarUsuario()
+    {
+        if (Authentication::isUserLogged()) {
+            $idUsario=$_SESSION['user']['idUsuario']; 
+            $usuarioModel =new UsuarioModel();
+            $datosUsuario=$usuarioModel->usuarioPorId($idUsario);
+            ViewController::show("views/usuario/formularioEditarUsuario.php", ["datosUsuario"=>$datosUsuario]);
+            } else {
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
+        }
+    }
+    public function editarUsuario(){
+        if(Authentication::isUserLogged()){
+            $idUsario=$_SESSION['user']['idUsuario']; 
+            $usuarioModel =new UsuarioModel();
+            var_dump($_POST);exit;
+        }else{
+            header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
+            exit;
+        }
+    }
     public function mostrarFormularioRegistrar()
     {
         if (Authentication::isUserLogged()) {

@@ -60,9 +60,9 @@ use admin\foro\Config\Parameters;
 
     <?php } else { ?>
         <aside class="second-aside">
-            <div style="display: flex;flex-direction: row; justify-content: flex-start;margin-top: 5%;padding-right: 9%;">
+            <div style="display: flex;flex-direction: row; justify-content: flex-start;margin-block-start: 5%;padding-inline-end: 9%;">
                 <h2>Post recientes</h2>
-                <a style="margin-left:42%;" href="<?= Parameters::$BASE_URL ?>Post/borrarPostRecientes">Borrar</a>
+                <a style="margin-inline-start:42%;" href="<?= Parameters::$BASE_URL ?>Post/borrarPostRecientes">Borrar</a>
             </div>
             <div class="recent-post-container">
                 <?php foreach ($postRecientes as $post) {
@@ -129,7 +129,7 @@ use admin\foro\Config\Parameters;
 
     h2 {
         font-size: 18px;
-        margin-bottom: 10px;
+        margin-block-end: 10px;
         color: #333;
     }
 
@@ -155,15 +155,15 @@ use admin\foro\Config\Parameters;
     }
 
     .post-icon img {
-        width: 40px;
-        height: 40px;
+        inline-size: 40px;
+        block-size: 40px;
         border-radius: 50%;
     }
 
     /* Contenido del post */
     .post-content {
         flex: 1;
-        min-width: 150px;
+        min-inline-size: 150px;
         /* Evita que se colapse en pantallas muy pequeñas */
     }
 
@@ -191,16 +191,16 @@ use admin\foro\Config\Parameters;
     }
 
     .post-thumbnail img {
-        width: 60px;
-        height: 60px;
+        inline-size: 60px;
+        block-size: 60px;
         border-radius: 8px;
         object-fit: cover;
     }
 
     .video-duration {
         position: absolute;
-        bottom: 5px;
-        right: 5px;
+        inset-block-end: 5px;
+        inset-inline-end: 5px;
         background-color: rgba(0, 0, 0, 0.7);
         color: #fff;
         font-size: 10px;

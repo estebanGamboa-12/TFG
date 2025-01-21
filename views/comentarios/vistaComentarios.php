@@ -73,9 +73,9 @@ if (!empty($_SESSION['errores'])) {
             } else{?>
             <div class="imagen-post-comentarios">
                 <?php if ($post['video'] != NULL) { ?>
-                    <video style="width: 100%; margin:2% 0%" src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
+                    <video style="inline-size: 100%; margin:2% 0%" src="<?= Parameters::$BASE_URL ?>assets/videos/<?= $post['video'] ?>" controls autoplay></video>
                 <?php } else { ?>
-                    <img  style="width: 100%; margin-top: 2%;" src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
+                    <img  style="inline-size: 100%; margin-block-start: 2%;" src="<?= Parameters::$BASE_URL ?>assets/img/<?= $post['imagen'] ?>" alt="imagen">
                 <?php } ?>
             </div>
             <?php } ?>
