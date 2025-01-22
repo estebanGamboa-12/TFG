@@ -33,21 +33,96 @@ class UsuarioController
     public function verFormularioEditarUsuario()
     {
         if (Authentication::isUserLogged()) {
-            $idUsario=$_SESSION['user']['idUsuario']; 
-            $usuarioModel =new UsuarioModel();
-            $datosUsuario=$usuarioModel->usuarioPorId($idUsario);
-            ViewController::show("views/usuario/formularioEditarUsuario.php", ["datosUsuario"=>$datosUsuario]);
-            } else {
+            $idUsario = $_SESSION['user']['idUsuario'];
+            $usuarioModel = new UsuarioModel();
+            $datosUsuario = $usuarioModel->usuarioPorId($idUsario);
+            ViewController::show("views/usuario/formularioEditarUsuario.php", ["datosUsuario" => $datosUsuario]);
+        } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
             exit;
         }
     }
-    public function editarUsuario(){
-        if(Authentication::isUserLogged()){
-            $idUsario=$_SESSION['user']['idUsuario']; 
-            $usuarioModel =new UsuarioModel();
-            var_dump($_POST);exit;
-        }else{
+    public function editarUsuario()
+    {
+        if (Authentication::isUserLogged()) {
+            $idUsario = $_SESSION['user']['idUsuario'];
+            $nombre = trim($_POST['nombre'] ?? '');
+            $apellido = trim($_POST['apellido'] ?? '');
+            $correo = trim($_POST['correo'] ?? '');
+            $contrasena = $_POST['contraseña'] ?? '';
+            $repetir_contrasena = $_POST['repetir_contraseña'] ?? '';
+            $imagen = $_FILES['imagen'] ?? null;
+
+            $errores = [];
+
+            // Validaciones de los campos
+            if (!empty($nombre) && !preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/", $nombre)) {
+                $errores[] = "El nombre solo puede contener letras y espacios.";
+            }
+
+            if (!empty($apellido) && !preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/", $apellido)) {
+                $errores[] = "El apellido solo puede contener letras y espacios.";
+            }
+
+            if (!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                $errores[] = "El correo electrónico no es válido.";
+            }
+
+            if (!empty($contrasena) && !empty($repetir_contrasena) && $contrasena !== $repetir_contrasena) {
+                $errores[] = "Las contraseñas no coinciden.";
+            }
+
+            if (!empty($errores)) {
+                $_SESSION['errores'] = $errores;
+                header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioEditarUsuario");
+                exit;
+            } else {
+                // Obtener los datos actuales del usuario desde la base de datos
+                $usuarioModel = new UsuarioModel();
+                $usuarioActual = $usuarioModel->usuarioPorId($idUsario);
+
+                // Verificar si la contraseña fue modificada
+                if (!empty($contrasena)) {
+                    $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+                } else {
+                    $contrasenaHash = $usuarioActual['contraseña']; // Mantener la contraseña actual si no se cambió
+                }
+
+                // Verificar si se subió una nueva imagen
+                if ($imagen && $imagen['error'] === UPLOAD_ERR_OK) {
+                    $imagenUploader = new ImageUploader();
+                    $imagenSubida = $imagenUploader->subirImagen($imagen);
+                    $nombreImagen = $imagenSubida;
+                } else {
+                    $nombreImagen = $usuarioActual['imagen_logo_usuario'];
+                }
+
+                // Ahora actualizamos los campos que han cambiado
+                $verificar = $usuarioModel->editarUsuario($nombre, $apellido, $correo, $contrasenaHash, $nombreImagen, $idUsario);
+                $usuarioModificado = $usuarioModel->usuarioPorId($idUsario);
+                $_SESSION['user'] = [
+                    "idUsuario" => $usuarioModificado['id_usuario'],
+                    'nombre' => $usuarioModificado['nombre'],
+                    'imagen_logo_usuario' => $usuarioModificado['imagen_logo_usuario'],
+                ];
+
+                if ($verificar) {
+                    if (!empty($contrasena)) {
+                        header('Location: ' .Parameters::$BASE_URL. "Usuario/cerrarSesion");
+                        exit;
+                    } else {
+                        header("Location: " . Parameters::$BASE_URL . "Post/home");
+                        exit;
+                    }
+                } else {
+                    $_SESSION['errores'] = ["Hubo un error al actualizar el usuario"];
+                    header("Location: " . Parameters::$BASE_URL . "Usuario/verFormularioEditarUsuario");
+                    exit;
+                }
+            }
+
+
+        } else {
             header("location:" . Parameters::$BASE_URL . "Usuario/verFormularioIniciarSesion");
             exit;
         }

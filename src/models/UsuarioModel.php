@@ -121,4 +121,21 @@ class UsuarioModel extends Model
             die($e->getMessage());
         }
     }
+    public function editarUsuario($nombre, $apellido, $correo, $contrasenaHash, $nombreImagen, $idUsuario){
+    try {
+        $sql = "UPDATE usuarios SET nombre=:nombre, apellido=:apellido, correo=:correo, contraseña=:contrasena, imagen_logo_usuario=:imagen_logo_usuario WHERE id_usuario=:idUsuario";
+        $consulta = $this->conn->prepare($sql);
+        $consulta->bindParam(":nombre", $nombre);
+        $consulta->bindParam(":apellido", $apellido);
+        $consulta->bindParam(":correo", $correo);
+        $consulta->bindParam(":contrasena", $contrasenaHash);
+        $consulta->bindParam(":imagen_logo_usuario", $nombreImagen);
+        $consulta->bindParam(":idUsuario", $idUsuario);
+        return $consulta->execute();
+    } catch (\Exception $e) {
+        echo "<h1><br>Fichero: " . $e->getFile();
+        echo "<br>Linea:" .  $e->getLine() . "<br>Mensaje : ";
+        die($e->getMessage());
+    }
+}
 }

@@ -130,6 +130,7 @@ use admin\foro\Helpers\Authentication;
         position: absolute;
         margin-inline-end: auto;
         inset-inline-start: 90%;
+        display: none;
     }
 
     .containerUsuario ul li {
